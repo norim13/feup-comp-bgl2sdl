@@ -20,4 +20,10 @@
             availability="YES"/>
       </Services>
 
+  	<Tower
+         lat="25.8065129444003"
+         lon="-80.2752287685871"
+         alt="18.897M"
+         />
+
 </Airport>
