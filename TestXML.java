@@ -54,9 +54,9 @@ class TestXML{
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 0, 1500, 800);
+        scrollPane.setBounds(0, 0, 1000, 700);
         JPanel contentPane = new JPanel(null);
-        contentPane.setPreferredSize(new Dimension(1500, 800));
+        contentPane.setPreferredSize(new Dimension(1000, 700));
         contentPane.add(scrollPane);
         frame.setContentPane(contentPane);
         frame.pack();

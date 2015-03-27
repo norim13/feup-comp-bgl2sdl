@@ -10,5 +10,14 @@
       airportTestRadius="5000.0M"
       ident="LPPR"
       >
+	  
+	  <Services>
+         <Fuel
+            type="130"
+            availability="YES"/>
+         <Fuel
+            type="JETA"
+            availability="YES"/>
+      </Services>
 
 </Airport>
