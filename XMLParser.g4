@@ -6,7 +6,7 @@ document    :  airport;
 
 
 
-airport: OpenAirport airportAttributes* CLOSE service? EndAirport; 
+airport: OpenAirport airportAttributes* CLOSE service? tower? EndAirport; 
 
 airportAttributes: 
 	region  
@@ -65,4 +65,14 @@ fuel: OpenFuel type availability SLASH_CLOSE;
 
 type: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL DOUBLE_QUOTES;
 availability: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES;
+
+tower: OpenTower towerAttributes* SLASH_CLOSE;
+
+towerAttributes:
+	latitude 
+	| longitude 
+	| altitude;
+
+
+
 

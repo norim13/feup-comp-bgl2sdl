@@ -76,3 +76,22 @@ NauticalMiles: 'N' ;
 Boolean: 'TRUE' | 'FALSE';
 IntegerValue: ('+' | '-' )? ( '0' | ([1-9][0-9]* (DOT '0')?)  );
 FloatingPointValue: IntegerValue DOT [0-9]+ ;
+
+
+
+
+/* PARTE DA TOWER */
+
+ OpenTower: '<Tower';
+ 
+
+
+
+ 
+
+
+
+
+
+
+
