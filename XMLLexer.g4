@@ -23,12 +23,12 @@ NauticalMiles: 'N' ;
  /* End Units */ 
  
  /* -------------------------------MIRA-------------------*/
-/*Fuel*/
+/*Fuel*****************************************************/
 TYPESFUEL: '73'|'87'|'100'|'130'|'145'|'MOGAS'|'JET'|'JETA'|'JETA1'|'JETAP'|'JETB'|'JET4'|'JET5'|'UNKNOWN';
 AVAILABILITYFUEL: YES_NO|'UNKNOWN'|'PRIOR_REQUEST';
 
  
- /*Delete Airport */
+ /*Delete Airport *****************************************/
 
  DELETEAIRPORTATRIBUTES: 
 'deleteAllApproaches'		|
@@ -44,7 +44,7 @@ AVAILABILITYFUEL: YES_NO|'UNKNOWN'|'PRIOR_REQUEST';
 'deleteAllControlTowers'	|
 'deleteAllJetways'			;
 
-/*Runway*/
+/*Runway*****************************************************/
 SURFACERUNWAY:
 		'ASPHALT'			|
 		'BITUMINOUS'		|
@@ -118,6 +118,7 @@ OpenStart: '<Start' ;
 OpenCom: '<Com' ;
 OpenFuel: '<Fuel' ;
 OpenDeleteAirport:'<DeleteAirport'	;
+OpenMarkings: '<Markings';
 
 /* End Elements */
 EndAirport: '</Airport>';
@@ -159,6 +160,19 @@ SECONDARYDESIGNATOR: 'secondaryDesignator';
 FREQUENCY: 'frequency' ;
 AVAILABILITY: 'availability' ;
 SURFACE: 'surface';
+
+EDGES:'edges';
+THRESHOLD:'threshold';
+FIXEDDISTANCE:'fixedDistance';
+TOUCHDOWN:'touchdown';
+DASHES:'dashes';
+PRECISION:'precision';
+EDGEPAVEMENT:'edgePavement';
+SINGLEEND:'singleEnd';
+PRIMARYCLOSED:'primaryClosed';
+SECONDARYCLOSED:'secondaryClosed';
+PRIMARYSTOL:'primaryStol';
+SECONDARYSTOL:'secondaryStol';
 
 
 
