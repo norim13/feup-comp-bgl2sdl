@@ -133,6 +133,99 @@ DESIGNATORVALUES:
 
  /* -----------------------------------------------------------*/
 
+ /* -------------------------------Filippo-------------------*/
+
+OpenLight: '<Lights' ;
+
+CENTER: 'center';
+EDGE: 'edge';
+CENTER_RED: 'centerRed';
+
+LEVELS:
+	'NONE' |
+	'LOW' |
+	'MEDIUM' |
+	'HIGH' ;
+
+
+
+OpenOffsetThreshold: '<OffsetThreshold';
+
+
+
+PRIORITY:
+	'PRIMARY' |
+	'SECONDARY';	
+
+
+OpenBlastPad: '<BlastPad';
+
+OpenOverrun: '<Overrun';
+
+
+OpenApproachLights: '<ApproachLights' ;
+
+PositiveInteger: [0-9]+;
+PositiveFloat: [0-9]+ DOT [0-9]+ ; 
+FloatUpToTen: [0-9] DOT [0-9]+;
+
+SYSTEM: 'system';
+STROBES: 'strobes';
+REIL: 'reil';
+ENDLIGHTS: 'endLights';
+
+SYSTEM_OPTIONS: 
+	'NONE' |
+	'ALSF1' |
+	'ALSF2' |
+	'CALVERT' |
+	'CALVERT2' |
+	'MALS'|
+	'MALSF'|
+	'MALSR'|
+	'ODALS'|
+	'RAIL'|
+	'SALS'|
+	'SALSF'|
+	'SSALF'|
+	'SSALR'|
+	'SSALS' ;
+
+
+OpenVasi: '<Vasi';
+
+SIDE: 'side';
+BIASZ: 'biasZ';
+SPACING: 'spacing';
+PITCH: 'pitch';
+
+VASI_TYPE: 
+	'PAPI2'
+	'PAPI4'
+	'PVASI'
+	'TRICOLOR'
+	'TVASI' 
+	'VASI21'
+	'VASI22'
+	'VASI23'
+	'VASI31'
+	'VASI32'
+	'VASI33'
+	'BALL'
+	'APAP'
+	'PANELS';
+
+OpenIls: '<Ils';
+CloseIls: '</Ils>';
+
+RANGE: 'range';
+BACKCOURSE: 'backCourse';
+
+
+
+
+  /* -----------------------------------------------------------*/
+
 
 /* Other */
 YES_NO: 'YES' | 'NO' ;
