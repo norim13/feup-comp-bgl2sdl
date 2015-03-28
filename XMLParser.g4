@@ -124,7 +124,7 @@ stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
 /////////////////////////////////////////////////////////////////////
 
-airportElements: services* deleteAirport* tower* runway* start* com* ;
+airportElements: services* deleteAirport* deleteRunway* tower* runway* start* com* ;
 
 	services: OpenServices servicesElements EndServices;
 
@@ -138,10 +138,14 @@ airportElements: services* deleteAirport* tower* runway* start* com* ;
 
 					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES ;
 	
-	deleteAirport: OpenDeleteAirport deleteairportatributes* SLASH_CLOSE;
+	deleteAirport: OpenDeleteAirport deleteAirportAtributes* SLASH_CLOSE;
 	
-		deleteairportatributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+		deleteAirportAtributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
+	deleteRunway: OpenDeleteRunway deleteRunwayAtributes SLASH_CLOSE;
+	
+		deleteRunwayAtributes: surface number designator;
+		
 	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
 
 		towerAttributes: latitude longitude altitude  ;

@@ -43,6 +43,7 @@ AVAILABILITYFUEL: YES_NO|'UNKNOWN'|'PRIOR_REQUEST';
 'deleteAllBoundaryFences'	|
 'deleteAllControlTowers'	|
 'deleteAllJetways'			;
+ 
 
 /*Runway*****************************************************/
 SURFACERUNWAY:
@@ -118,6 +119,7 @@ OpenStart: '<Start' ;
 OpenCom: '<Com' ;
 OpenFuel: '<Fuel' ;
 OpenDeleteAirport:'<DeleteAirport'	;
+OpenDeleteRunway:'<DeleteRunway';
 OpenMarkings: '<Markings';
 
 /* End Elements */
