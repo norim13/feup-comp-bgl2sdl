@@ -6,7 +6,9 @@ document    :  airport;
 
 
 
-airport: OpenAirport airportAttributes* CLOSE service? tower? EndAirport; 
+airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
+
+
 
 airportAttributes: 
 	region  
@@ -22,57 +24,129 @@ airportAttributes:
 	| airportTestRadius
 	| trafficScalar;
 
-region: REGION EQUALS STRING_LETTERS ; /* String (48 characters max) */
-country: COUNTRY EQUALS STRING_LETTERS ; /* String (48 characters max) */
-state: STATE EQUALS STRING_LETTERS ; /* String (48 characters max) */
-city: CITY EQUALS STRING_LETTERS ; /* String (48 characters max) */
-name: NAME EQUALS STRING_LETTERS ; /* String (48 characters max) */
+region: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ; 
+
+country: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+state: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+city: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+name: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
 
 latitude: LAT EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ;
-									 	/* 	-90 to +90 degrees 
-											Format can be decimal or degrees-minutes-seconds
-										*/
+
 longitude: LON EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
-										/* 	-180 to +180 degrees 
-											Format can be decimal or degrees-minutes-seconds
-										*/
-altitude: ALT EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet) DOUBLE_QUOTES;
-										 /* 	Any floating point value. Altitude may 
-												be suffixed by 'M' or 'F' to designate 
-												meters or feet. Default is meters. */
+
+altitude: ALT EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES;
 
 magvar:  MAGVAR EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ;
-											 /* -360.0 to 360.0 floating point value. 
-												Default = 0.0. East magvar is negative, West magvar is positive. */
 
-ident: IDENT EQUALS STRING_LETTERS ; /*  	String (4 characters max)*/
+ident: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES ; 
+
 airportTestRadius: AIRPORTTESTRADIUS EQUALS DOUBLE_QUOTES IntegerValue (Meters | Feet | NauticalMiles) DOUBLE_QUOTES ; 
-														/*  	Distance in feet, meters or 
-															Nautical miles (F, M, N suffix).
-														*/
 
 trafficScalar: TRAFFICSCALAR EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ; 
-														/* Value between 0.01 and 1.0. */
 
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+
+type: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
+
+heading: HEADING EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
+
+length: LENGTH EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES;
+
+width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES;
+
+designator: DESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
+
+primaryDesignator: PRIMARYDESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
+
+secondaryDesignator: SECONDARYDESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
+
+patternAltitude: PATTERNALTITUDE EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES; 
+
+primaryTakeoff : PRIMARYTAKEOFF EQUALS DOUBLE_QUOTES YES_NO_BOOLEAN DOUBLE_QUOTES;
+
+primaryLanding : PRIMARYLANDING EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+primaryPattern : PRIMARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+
+secondaryTakeoff : SECONDARYTAKEOFF EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+secondaryLanding : SECONDARYLANDING EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+
+primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
+
+secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
+
+//////////////////////////////////////////////////////////////////////
+surface: SURFACE EQUALS DOUBLE_QUOTES SURFACERUNWAY DOUBLE_QUOTES;
+number: NUMBER EQUALS DOUBLE_QUOTES NUMBERRUNWAY DOUBLE_QUOTES;
+
+yes_no: YES_NO ;
+bool: BOOLEAN ;
+
+
+/////////////////////////////////////////////////////////////////////
 
 floatingPointValue: FloatingPointValue | IntegerValue ;
 
+stringLettersMixedCase: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS ;
 
+stringLettersLowerCase: STRING_LETTERS_LOWERCASE ;
 
-service: OpenServices fuel* CloseServices;
+stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 
-fuel: OpenFuel type availability SLASH_CLOSE;
+stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
+/////////////////////////////////////////////////////////////////////
 
-type: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL DOUBLE_QUOTES;
-availability: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES;
+airportElements: services* deleteAirport* tower* runway* start* com* ;
 
-tower: OpenTower towerAttributes* SLASH_CLOSE;
+	services: OpenServices servicesElements EndServices;
 
-towerAttributes:
-	latitude 
-	| longitude 
-	| altitude;
+		servicesElements: fuel*;
 
+			fuel: OpenFuel fuelAttributes SLASH_CLOSE ;
 
+				fuelAttributes: typefuel availabilityFuel ;
+			
+					typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL DOUBLE_QUOTES;
 
+					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES ;
+	
+	deleteAirport: OpenDeleteAirport deleteairportatributes* SLASH_CLOSE;
+	
+		deleteairportatributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
+	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
+
+		towerAttributes: latitude longitude altitude  ;
+
+	runway: OpenRunway runwayAttributes CLOSE runwayElements EndRunway;
+
+		runwayAttributes:  latitude longitude altitude surface heading			/*heading devia ser de 0 a 360?*/
+							length width number designator? primaryDesignator?
+							secondaryDesignator? patternAltitude? primaryTakeoff?
+							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
+							primaryMarkingBias? secondaryMarkingBias?; /* faltam muitos atributos */
+
+		runwayElements: ;
+
+	start: OpenStart startAttributes SLASH_CLOSE;
+
+		startAttributes: type latitude longitude altitude heading designator ;
+
+	com: OpenCom comAttributes SLASH_CLOSE;
+
+		comAttributes: frequencyCom type nameCom ;
+
+			frequencyCom: FREQUENCY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ;
+
+			nameCom: NAME EQUALS DOUBLE_QUOTES STRING_LETTERS DOUBLE_QUOTES ;
