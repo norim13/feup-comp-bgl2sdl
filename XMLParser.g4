@@ -5,9 +5,7 @@ options { tokenVocab=XMLLexer; }
 document    :  airport;
 
 
-
 airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
-
 
 
 airportAttributes: 
@@ -85,6 +83,7 @@ secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTE
 primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
 
 secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
+
 //////////////////////////////////////////////////////////////////////
 
 edges: EDGES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
@@ -101,17 +100,10 @@ secondaryClosed: SECONDARYCLOSED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
-//////////////////////////////////////////////////////////////////////
 
-typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;
 
 //////////////////////////////////////////////////////////////////////
 
-frequency:FREQUENCY EQUALS DOUBLE_QUOTES FREQUENCYVALUES DOUBLE_QUOTES;
-
-typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;
-
-//////////////////////////////////////////////////////////////////////
 surface: SURFACE EQUALS DOUBLE_QUOTES SURFACERUNWAY DOUBLE_QUOTES;
 number: NUMBER EQUALS DOUBLE_QUOTES NUMBERRUNWAY DOUBLE_QUOTES;
 
@@ -130,9 +122,10 @@ stringLettersLowerCase: STRING_LETTERS_LOWERCASE ;
 stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
+
 /////////////////////////////////////////////////////////////////////
 
-airportElements: services* deletes tower* runway* start* com* ;
+airportElements: services* deleteAirport* deleteRunway* tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
 
 	services: OpenServices servicesElements EndServices;
 
@@ -146,34 +139,19 @@ airportElements: services* deletes tower* runway* start* com* ;
 
 					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES ;
 	
+	deleteAirport: OpenDeleteAirport deleteAirportAtributes* SLASH_CLOSE;
 	
-	
-	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency;
-	
-	deleteAirport: OpenDeleteAirport deleteAirportAttributes* SLASH_CLOSE;
-	
-		deleteAirportAttributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+		deleteAirportAtributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
-	deleteRunway: OpenDeleteRunway deleteRunwayAttributes SLASH_CLOSE;
+	deleteRunway: OpenDeleteRunway deleteRunwayAtributes SLASH_CLOSE;
 	
-		deleteRunwayAttributes: surface number designator;
+		deleteRunwayAtributes: surface number designator;
 		
-	deleteStart: OpenDeleteStart deleteStartAttributes SLASH_CLOSE;
-		
-		deleteStartAttributes: typeDeleteStart number designator?;
-	
-	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes SLASH_CLOSE;
-		
-		deleteFrequencyAttributes: frequency typeDeleteFrequency;
-		
-		
-		
-	
 	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
 
 		towerAttributes: latitude longitude altitude  ;
 
-	runway: OpenRunway runwayAttributes CLOSE runwayElements EndRunway;
+	runway: OpenRunway runwayAttributes CLOSE runwayElements* EndRunway;
 
 		runwayAttributes:  latitude longitude altitude surface heading			/*heading devia ser de 0 a 360?*/
 							length width number designator? primaryDesignator?
@@ -200,3 +178,71 @@ airportElements: services* deletes tower* runway* start* com* ;
 			frequencyCom: FREQUENCY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ;
 
 			nameCom: NAME EQUALS DOUBLE_QUOTES STRING_LETTERS DOUBLE_QUOTES ;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/* -------------------TAXIWAYPOINT -----------------------------------------------------------------*/
+taxiwayPoint: OpenTaxiwayPoint taxiwayPointAttributes SLASH_CLOSE; 
+
+taxiwayPointAttributes: taxiway_index taxiwaypoint_type taxiway_orientation? (taxiway_lat taxiway_lon | taxiway_biasX taxiway_biasY);
+
+taxiway_index: INDEX EQUALS DOUBLE_QUOTES INDEXVALUE DOUBLE_QUOTES; 
+taxiwaypoint_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPOINTTYPE DOUBLE_QUOTES; 
+taxiway_orientation: ORIENTATION EQUALS DOUBLE_QUOTES ORIENTATIONTYPE DOUBLE_QUOTES; 
+taxiway_lat: LAT EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
+taxiway_lon: LON EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
+taxiway_biasX: BIASX EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+taxiway_biasY: BIASY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+
+/*-------------------------------TaxiwayParking-----------------------------------------------------*/
+taxiwayParking: OpenTaxiwayParking taxiwayParkingAttributes SLASH_CLOSE; 
+
+taxiwayParkingAttributes: taxiway_index (taxiway_lon taxiway_lat | taxiway_biasX taxiway_biasY) taxiway_heading taxiway_radius taxiwayparking_type taxiwayparking_name taxiway_number taxiway_airlineCodes? taxiway_pushBack taxiway_teeOffset*;
+
+//index: INDEX EQUALS INDEXVALUE; 
+taxiwayparking_orientation: ORIENTATION EQUALS DOUBLE_QUOTES ORIENTATIONTYPE DOUBLE_QUOTES; 
+//lat: LAT EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
+//lon: LON EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES; 
+//biasX: BIASX EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+//biasY: BIASY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+taxiway_heading: HEADING EQUALS DOUBLE_QUOTES HEADINGVALUE DOUBLE_QUOTES;
+taxiway_radius: RADIUS EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+taxiwayparking_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPARKINGTYPE DOUBLE_QUOTES;
+taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES NAMETAXIWAYPARKING DOUBLE_QUOTES;
+taxiway_number: NUMBER EQUALS DOUBLE_QUOTES INDEXVALUE DOUBLE_QUOTES;
+taxiway_airlineCodes: AIRLINECODES EQUALS DOUBLE_QUOTES AIRLINECODESVALUES DOUBLE_QUOTES;
+taxiway_pushBack: PUSHBACK EQUALS DOUBLE_QUOTES PUSHBACKVALUES DOUBLE_QUOTES;
+taxiway_teeOffset: TEEOFFSET EQUALS DOUBLE_QUOTES TEEOFFSETVALUES DOUBLE_QUOTES;
+
+/*--------------------------------------TAXINAME-------------------------------*/
+taxiName: OpenTaxiName taxiNameAttributes SLASH_CLOSE;
+
+taxiNameAttributes: taxiNameIndex taxiNameName;
+
+taxiNameIndex: INDEX EQUALS DOUBLE_QUOTES TAXINAMEINDEX DOUBLE_QUOTES;
+taxiNameName: NAME EQUALS DOUBLE_QUOTES TAXINAME DOUBLE_QUOTES;
+
+/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
+taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes SLASH_CLOSE;
+
+taxiwayPathAttributes: taxiwaypath_type taxiway_start taxiway_end taxiway_width taxiway_weightLimit taxiway_surface taxiway_drawSurface 
+						taxiway_drawDetail taxiway_centerLine? taxiway_centerLineLighted? taxiway_leftEdge? taxiway_leftEdgeLighted? 
+						taxiway_rightEdge? taxiway_rightEdgeLighted? taxiway_number? taxiway_designator? taxiway_name?;
+
+taxiwaypath_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPATHTYPE DOUBLE_QUOTES;
+taxiway_start: START EQUALS DOUBLE_QUOTES NUMBER DOUBLE_QUOTES;
+taxiway_end: END EQUALS DOUBLE_QUOTES NUMBER DOUBLE_QUOTES;
+taxiway_width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+taxiway_weightLimit: WEIGHTLIMIT EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+taxiway_surface: SURFACE EQUALS DOUBLE_QUOTES SURFACETYPES DOUBLE_QUOTES;
+taxiway_drawSurface: DRAWSURFACE EQUALS BOOLEAN DOUBLE_QUOTES;
+taxiway_drawDetail: DRAWDETAIL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+taxiway_centerLine: CENTERLINE EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+taxiway_centerLineLighted: CENTERLINELIGHTED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+taxiway_leftEdge: LEFTEDGE EQUALS DOUBLE_QUOTES EDGETYPE DOUBLE_QUOTES;
+taxiway_leftEdgeLighted: LEFTEDGELIGHTED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+taxiway_rightEdge: RIGHTEDGE EQUALS DOUBLE_QUOTES EDGETYPE DOUBLE_QUOTES;
+taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+taxiway_numberTaxiwayPath: NUMBER EQUALS DOUBLE_QUOTES NUMBERTAXIWAYPATH DOUBLE_QUOTES;
+taxiway_designator: DESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORTYPES DOUBLE_QUOTES;
+taxiway_name: NAME EQUALS DOUBLE_QUOTES TAXIWAYPATHNAMETYPE DOUBLE_QUOTES;
