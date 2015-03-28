@@ -35,6 +35,13 @@
       surface="ASPHALT"
       number="18"
       designator="NONE"/>
+	<DeleteStart
+	  type="RUNWAY"
+	  number="18"
+	  designator="NONE"/>
+	<DeleteFrequency
+      frequency= "136.992"
+      type="CENTER" />
    <Tower
       lat="41.2387912720442"
       lon="-8.67242753505707"

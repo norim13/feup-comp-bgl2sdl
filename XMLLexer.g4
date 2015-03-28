@@ -43,7 +43,36 @@ AVAILABILITYFUEL: YES_NO|'UNKNOWN'|'PRIOR_REQUEST';
 'deleteAllBoundaryFences'	|
 'deleteAllControlTowers'	|
 'deleteAllJetways'			;
+
+ /*Delete Start *****************************************/
  
+TYPEDELETESTART:
+		'RUNWAY'			|
+		'HELIPAD'			|
+		'WATER'				;
+
+ /*Delete Frequency ***************************************/
+ 
+ /*108.0 to 136.992 */
+ FREQUENCYVALUES: 	'1'('0'[89]|[12][0-9]|'3'[0-5])DOT ([0-9])* |
+					'136' DOT ([0-9]{1,2}|[1-8][0-9]{2}|'9'[0-8][0-9]|'99'[0-2]);
+
+ TYPEDELETEFREQUENCY:
+	'APPROACH'				|
+	'ASOS'					|
+	'ATIS'					|
+	'AWOS'					|
+	'CENTER'				|
+	'CLEARANCE'				|
+	'CLEARANCE_PRE_TAXI'	|
+	'CTAF'					|
+	'DEPARTURE'				|
+	'FSS'					|
+	'GROUND'				|
+	'MULTICOM'				|
+	'REMOTE_CLEARANCE_DELIVERY'|
+	'TOWER'					|
+	'UNICOM'				;
 
 /*Runway*****************************************************/
 SURFACERUNWAY:
@@ -98,6 +127,8 @@ DESIGNATORVALUES:
 			'A'				|
 			'B'				;
 
+			
+	
 
 
  /* -----------------------------------------------------------*/
@@ -120,6 +151,8 @@ OpenCom: '<Com' ;
 OpenFuel: '<Fuel' ;
 OpenDeleteAirport:'<DeleteAirport'	;
 OpenDeleteRunway:'<DeleteRunway';
+OpenDeleteStart:'<DeleteStart';
+OpenDeleteFrequency:'<DeleteFrequency';
 OpenMarkings: '<Markings';
 
 /* End Elements */

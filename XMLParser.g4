@@ -101,7 +101,15 @@ secondaryClosed: SECONDARYCLOSED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
+//////////////////////////////////////////////////////////////////////
 
+typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;
+
+//////////////////////////////////////////////////////////////////////
+
+frequency:FREQUENCY EQUALS DOUBLE_QUOTES FREQUENCYVALUES DOUBLE_QUOTES;
+
+typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;
 
 //////////////////////////////////////////////////////////////////////
 surface: SURFACE EQUALS DOUBLE_QUOTES SURFACERUNWAY DOUBLE_QUOTES;
@@ -124,7 +132,7 @@ stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
 /////////////////////////////////////////////////////////////////////
 
-airportElements: services* deleteAirport* deleteRunway* tower* runway* start* com* ;
+airportElements: services* deletes tower* runway* start* com* ;
 
 	services: OpenServices servicesElements EndServices;
 
@@ -138,14 +146,29 @@ airportElements: services* deleteAirport* deleteRunway* tower* runway* start* co
 
 					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES ;
 	
-	deleteAirport: OpenDeleteAirport deleteAirportAtributes* SLASH_CLOSE;
 	
-		deleteAirportAtributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+	
+	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency;
+	
+	deleteAirport: OpenDeleteAirport deleteAirportAttributes* SLASH_CLOSE;
+	
+		deleteAirportAttributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
-	deleteRunway: OpenDeleteRunway deleteRunwayAtributes SLASH_CLOSE;
+	deleteRunway: OpenDeleteRunway deleteRunwayAttributes SLASH_CLOSE;
 	
-		deleteRunwayAtributes: surface number designator;
+		deleteRunwayAttributes: surface number designator;
 		
+	deleteStart: OpenDeleteStart deleteStartAttributes SLASH_CLOSE;
+		
+		deleteStartAttributes: typeDeleteStart number designator?;
+	
+	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes SLASH_CLOSE;
+		
+		deleteFrequencyAttributes: frequency typeDeleteFrequency;
+		
+		
+		
+	
 	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
 
 		towerAttributes: latitude longitude altitude  ;
