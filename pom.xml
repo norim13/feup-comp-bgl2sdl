@@ -77,7 +77,7 @@
          orientation="FORWARD"
          lat="25.8064247667789"
          lon="-80.2744697034359"/>
-         <TaxiwayParking
+      <TaxiwayParking
          index="0"
          lat="25.8062785863876"
          lon="-80.2752301096916"
@@ -97,36 +97,6 @@
          name="PARKING"
          number="2"
          pushBack="NONE"/>
-      <TaxiwayParking
-         index="2"
-         lat="25.8069762960076"
-         lon="-80.2741169929504"
-         heading="162"
-         radius="10.0M"
-         type="RAMP_GA_SMALL"
-         name="PARKING"
-         number="3"
-         pushBack="NONE"/>
-      <TaxiwayParking
-         index="3"
-         lat="25.8065873757005"
-         lon="-80.2742233872414"
-         heading="315"
-         radius="10.0M"
-         type="RAMP_GA_SMALL"
-         name="PARKING"
-         number="4"
-         pushBack="NONE"/>
-      <TaxiwayParking
-         index="4"
-         lat="25.8059285581112"
-         lon="-80.2757647633553"
-         heading="86"
-         radius="10.0M"
-         type="RAMP_GA_SMALL"
-         name="PARKING"
-         number="5"
-         pushBack="NONE"/>
       <TaxiName
          index="0"
          name=""/>
@@ -142,141 +112,6 @@
       <TaxiName
          index="4"
          name="N1"/>
-      <TaxiName
-         index="5"
-         name="N"/>
-      <TaxiName
-         index="6"
-         name="Y"/>
-      <TaxiName
-         index="7"
-         name="HH"/>
-      <TaxiName
-         index="8"
-         name="Y1"/>
-      <TaxiName
-         index="9"
-         name="Y2"/>
-      <TaxiName
-         index="10"
-         name="P"/>
-      <TaxiName
-         index="11"
-         name="W"/>
-      <TaxiName
-         index="12"
-         name="M7"/>
-      <TaxiName
-         index="13"
-         name="M3"/>
-      <TaxiName
-         index="14"
-         name="T2"/>
-      <TaxiName
-         index="15"
-         name="Q"/>
-      <TaxiName
-         index="16"
-         name="Q1"/>
-      <TaxiName
-         index="17"
-         name="Y"/>
-      <TaxiName
-         index="18"
-         name="V"/>
-      <TaxiName
-         index="19"
-         name="S"/>
-      <TaxiName
-         index="20"
-         name="JJ"/>
-      <TaxiName
-         index="21"
-         name="M"/>
-      <TaxiName
-         index="22"
-         name="L7"/>
-      <TaxiName
-         index="23"
-         name="M1"/>
-      <TaxiName
-         index="24"
-         name="M5"/>
-      <TaxiName
-         index="25"
-         name="M4"/>
-      <TaxiName
-         index="26"
-         name="M6"/>
-      <TaxiName
-         index="27"
-         name="Q8"/>
-      <TaxiName
-         index="28"
-         name="T5"/>
-      <TaxiName
-         index="29"
-         name="T3"/>
-      <TaxiName
-         index="30"
-         name="R2"/>
-      <TaxiName
-         index="31"
-         name="Q"/>
-      <TaxiName
-         index="32"
-         name="T"/>
-      <TaxiName
-         index="33"
-         name="S"/>
-      <TaxiName
-         index="34"
-         name="L3"/>
-      <TaxiName
-         index="35"
-         name="L4"/>
-      <TaxiName
-         index="36"
-         name="L5"/>
-      <TaxiName
-         index="37"
-         name="L8"/>
-      <TaxiName
-         index="38"
-         name="L1"/>
-      <TaxiName
-         index="39"
-         name="Z"/>
-      <TaxiName
-         index="40"
-         name="T1"/>
-      <TaxiName
-         index="41"
-         name="L6"/>
-      <TaxiwayPath
-         type="PARKING"
-         start="0"
-         end="0"
-         width="0.0M"
-         weightLimit="500000"
-         surface="CONCRETE"
-         name="0"
-         centerLine="TRUE"
-         leftEdge="DASHED"
-         rightEdge="DASHED"
-         />
-      <TaxiwayPath
-         type="PARKING"
-         start="1"
-         end="1"
-         width="0.0M"
-         weightLimit="500000"
-         surface="CONCRETE"
-         name="0"
-         centerLine="TRUE"
-         leftEdge="DASHED"
-         rightEdge="DASHED"
-         />
       <TaxiwayPath
          type="TAXI"
          start="1"
@@ -303,29 +138,4 @@
          leftEdge="DASHED"
          rightEdge="DASHED"
          />
-      <TaxiwayPath
-         type="PARKING"
-         start="1"
-         end="3"
-         width="0.0M"
-         weightLimit="500000"
-         surface="CONCRETE"
-         name="0"
-         centerLine="TRUE"
-         leftEdge="DASHED"
-         rightEdge="DASHED"
-         />
-      <TaxiwayPath
-         type="PARKING"
-         start="0"
-         end="4"
-         width="0.0M"
-         weightLimit="500000"
-         surface="CONCRETE"
-         name="0"
-         centerLine="TRUE"
-         leftEdge="DASHED"
-         rightEdge="DASHED"
-         />
-
  </Airport>
