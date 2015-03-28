@@ -53,6 +53,20 @@
       secondaryTakeoff="YES"
       secondaryLanding="YES"
       secondaryPattern="LEFT">
-</Runway>
+		  <Markings
+		  edges="TRUE"
+		  threshold="TRUE"
+		  fixedDistance="TRUE"
+		  touchdown="TRUE"
+		  dashes="TRUE"
+		  ident="TRUE"
+		  precision="TRUE"
+		  edgePavement="TRUE"
+		  singleEnd="TRUE"
+		  primaryClosed="TRUE"
+		  secondaryClosed="TRUE"
+		  primaryStol="TRUE"
+		  secondaryStol="TRUE"/>
+	</Runway>
 
  </Airport>

@@ -85,6 +85,23 @@ secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTE
 primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
 
 secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
+//////////////////////////////////////////////////////////////////////
+
+edges: EDGES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+threshold: THRESHOLD EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+fixedDistance: FIXEDDISTANCE EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+touchdown: TOUCHDOWN EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+dashes: DASHES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+identMarkings: IDENT EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+precision: PRECISION EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+edgePavement: EDGEPAVEMENT EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+singleEnd: SINGLEEND EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+primaryClosed: PRIMARYCLOSED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+secondaryClosed: SECONDARYCLOSED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+
 
 //////////////////////////////////////////////////////////////////////
 surface: SURFACE EQUALS DOUBLE_QUOTES SURFACERUNWAY DOUBLE_QUOTES;
@@ -135,9 +152,15 @@ airportElements: services* deleteAirport* tower* runway* start* com* ;
 							length width number designator? primaryDesignator?
 							secondaryDesignator? patternAltitude? primaryTakeoff?
 							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
-							primaryMarkingBias? secondaryMarkingBias?; /* faltam muitos atributos */
+							primaryMarkingBias? secondaryMarkingBias?; 
 
-		runwayElements: ;
+		runwayElements: markings;
+		
+				markings: OpenMarkings markingAttributes SLASH_CLOSE;
+
+				markingAttributes:edges threshold fixedDistance touchdown dashes
+				identMarkings precision edgePavement singleEnd primaryClosed
+				secondaryClosed primaryStol secondaryStol;
 
 	start: OpenStart startAttributes SLASH_CLOSE;
 
