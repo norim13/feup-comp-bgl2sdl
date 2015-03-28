@@ -178,7 +178,74 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
 							primaryMarkingBias? secondaryMarkingBias?; 
 
-		runwayElements: markings;
+			runwayElements: lights* offsetThreshold* blastPad* overrun* approachLights* vasi* ils*;
+
+ /* -------------------------------Filippo-------------------*/
+
+
+	lights: OpenLight lightAttributes SLASH_CLOSE;
+
+	lightAttributes: center edge centerRed;
+
+	center: CENTER EQUALS DOUBLE_QUOTES LEVELS DOUBLE_QUOTES ;
+	edge: EDGE EQUALS DOUBLE_QUOTES LEVELS DOUBLE_QUOTES;
+	centerRed: CENTER_RED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+
+	offsetThreshold: OpenOffsetThreshold offsetThresholdAttributes SLASH_CLOSE;
+
+	offsetThresholdAttributes: end length width? surface?;
+
+	end: END EQUALS DOUBLE_QUOTES PRIORITY DOUBLE_QUOTES;
+
+
+	blastPad: OpenBlastPad blastPadAttributes SLASH_CLOSE;
+
+	blastPadAttributes: end length width? surface?;
+
+
+	overrun: OpenOverrun overrunAttributes SLASH_CLOSE;
+
+	overrunAttributes: end length width? surface?;
+
+
+	approachLights: OpenApproachLights approachLightsAttributes SLASH_CLOSE;
+
+	approachLightsAttributes: end system? strobes? reil? touchdown? endLights?;
+
+	system: SYSTEM EQUALS DOUBLE_QUOTES SYSTEM_OPTIONS DOUBLE_QUOTES;
+	strobes: STROBES EQUALS DOUBLE_QUOTES PositiveInteger DOUBLE_QUOTES;
+	reil: REIL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+	endLights: ENDLIGHTS EQUALS BOOLEAN DOUBLE_QUOTES; 
+
+
+	vasi: OpenVasi vasiAttributes SLASH_CLOSE;
+
+	vasiAttributes: end type side biasX biasZ spacing pitch;
+
+	side: SIDE EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+	biasX: BIASX EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+	biasZ: BIASZ EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
+	spacing: SPACING EQUALS DOUBLE_QUOTES PositiveFloat DOUBLE_QUOTES;
+	pitch: PITCH EQUALS DOUBLE_QUOTES FloatUpToTen DOUBLE_QUOTES;
+
+
+	ils: OpenIls ilsAttributes ilsElements CLOSE CloseIls;
+
+	ilsAttributes: latitude longitude altitude heading frequencyILS end range magvar ident width? name? backCourse?; 
+	ilsElements: ; 
+
+	frequencyILS: FREQUENCY EQUALS DOUBLE_QUOTES FREQUENCYVALUES DOUBLE_QUOTES;
+	range: RANGE EQUALS DOUBLE_QUOTES PositiveFloat DOUBLE_QUOTES;
+	/* E PRECISO POR RANGE NO MAGVAR AQUI */ 
+	backCourse: BACKCOURSE EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+
+
+
+
+
+
+  /* -----------------------------------------------------------*/
 		
 				markings: OpenMarkings markingAttributes SLASH_CLOSE;
 

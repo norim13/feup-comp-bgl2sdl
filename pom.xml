@@ -64,6 +64,59 @@
       secondaryTakeoff="YES"
       secondaryLanding="YES"
       secondaryPattern="LEFT">
+
+<OffsetThreshold
+      end="PRIMARY"
+      length="250F"
+      width="200F"
+      surface="ASPHALT"/>
+
+<BlastPad
+      end="PRIMARY"
+      length="250F"
+      width="100F"
+      surface="ASPHALT"/>
+
+<Overrun
+      end="PRIMARY"
+      length="250F"
+      width="100F"
+      surface="DIRT"/>
+
+<ApproachLights
+      end="PRIMARY"
+      system="ALSF2"
+      strobes="11"
+      reil="TRUE"
+      touchdown="TRUE"
+      endLights="TRUE"/>
+
+<Vasi
+      end="PRIMARY"
+      type="VASI21"
+      side="LEFT"
+      biasX="50F"
+      biasZ="4000F"
+      spacing="250F"
+      pitch="3.10"/>
+
+<Ils
+      lat="41.35184943"
+      lon="-89.15309158"
+      alt="199.33918762"
+      heading="359.580000"
+      frequency="110.3500"
+      end="PRIMARY"
+      range="12000"
+      magvar="0.0"
+      ident="ABDY"
+      width="5.00"
+      name="Some Airport ILS"
+      backCourse="FALSE">
+</Ils>
+
+
+
 	</Runway>
       <TaxiwayPoint
          index="0"
