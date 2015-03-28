@@ -1,7 +1,6 @@
 
 lexer grammar XMLLexer;
 
-
 COMMENT     :   '<!--' .*? '-->' ;
 
 OPEN        :   '<'   ;
@@ -98,7 +97,6 @@ SURFACERUNWAY:
 		'UNKNOWN'			|
 		'WATER'				;
 		
-//INDEXVALUE: [0-9]{1,3} | [1-3][0-9]{3}; //[0-3999]
 NUMBERRUNWAY:
 			([0][0-9])			|
 			([0-9]|[12][0-9]|[3][0-6])			|
@@ -238,6 +236,7 @@ LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGE: 'rightEdge';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
 
+
 IntegerValue: ('+' | '-' )? ( '0' | ([1-9][0-9]* (DOT '0')?)  );
 FloatingPointValue: IntegerValue DOT [0-9]+ ;
 
@@ -245,6 +244,7 @@ STRING_LETTERS_UPPERCASE : [A-Z ]+ ;
 STRING_LETTERS_LOWERCASE : [a-z ]+ ;
 STRING_LETTERS : [A-Za-z ]+  ;
 STRING_LETTERS_NUMBERS: [0-9A-Za-z ]+  ;
+
 
 
 /*--------------------------------- TAXIWAYPOINT ------------------------------*/
@@ -328,3 +328,6 @@ TAXIWAYPATHNAMETYPE: [0-9]{1,2} | '1'[0-9]{2} | '2'[0-4][0-9] | '25'[0-5]; //[0-
 /*--------------------------------- TAXIWAYNAME ------------------------------*/
 TAXINAMEINDEX: [0-9]{1,2} | '1'[0-9]{2} | '2'[0-4][0-9] | '25'[0-5]; //[0-255];
 TAXINAME: [0-9A-Za-z]{0,8};
+
+
+

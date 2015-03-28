@@ -7,7 +7,6 @@ document    :  airport;
 
 airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
 
-
 airportAttributes: 
 	region  
 	| country
@@ -83,7 +82,6 @@ secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTE
 primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
 
 secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
-
 //////////////////////////////////////////////////////////////////////
 
 edges: EDGES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
@@ -100,10 +98,17 @@ secondaryClosed: SECONDARYCLOSED EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
+//////////////////////////////////////////////////////////////////////
 
+typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;
 
 //////////////////////////////////////////////////////////////////////
 
+frequency:FREQUENCY EQUALS DOUBLE_QUOTES FREQUENCYVALUES DOUBLE_QUOTES;
+
+typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;
+
+//////////////////////////////////////////////////////////////////////
 surface: SURFACE EQUALS DOUBLE_QUOTES SURFACERUNWAY DOUBLE_QUOTES;
 number: NUMBER EQUALS DOUBLE_QUOTES NUMBERRUNWAY DOUBLE_QUOTES;
 
@@ -122,10 +127,9 @@ stringLettersLowerCase: STRING_LETTERS_LOWERCASE ;
 stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
-
 /////////////////////////////////////////////////////////////////////
 
-airportElements: services* deleteAirport* deleteRunway* tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
+airportElements: services* deleteAirport* deletes tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
 
 	services: OpenServices servicesElements EndServices;
 
@@ -139,19 +143,34 @@ airportElements: services* deleteAirport* deleteRunway* tower* runway* start* co
 
 					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES AVAILABILITYFUEL DOUBLE_QUOTES ;
 	
-	deleteAirport: OpenDeleteAirport deleteAirportAtributes* SLASH_CLOSE;
 	
-		deleteAirportAtributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
+	
+	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency;
+	
+	deleteAirport: OpenDeleteAirport deleteAirportAttributes* SLASH_CLOSE;
+	
+		deleteAirportAttributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES BOOLEAN DOUBLE_QUOTES;
 
-	deleteRunway: OpenDeleteRunway deleteRunwayAtributes SLASH_CLOSE;
+	deleteRunway: OpenDeleteRunway deleteRunwayAttributes SLASH_CLOSE;
 	
-		deleteRunwayAtributes: surface number designator;
+		deleteRunwayAttributes: surface number designator;
 		
+	deleteStart: OpenDeleteStart deleteStartAttributes SLASH_CLOSE;
+		
+		deleteStartAttributes: typeDeleteStart number designator?;
+	
+	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes SLASH_CLOSE;
+		
+		deleteFrequencyAttributes: frequency typeDeleteFrequency;
+		
+		
+		
+	
 	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
 
 		towerAttributes: latitude longitude altitude  ;
 
-	runway: OpenRunway runwayAttributes CLOSE runwayElements* EndRunway;
+	runway: OpenRunway runwayAttributes CLOSE runwayElements EndRunway;
 
 		runwayAttributes:  latitude longitude altitude surface heading			/*heading devia ser de 0 a 360?*/
 							length width number designator? primaryDesignator?
