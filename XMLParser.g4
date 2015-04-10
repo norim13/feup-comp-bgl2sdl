@@ -56,46 +56,25 @@ length: LENGTH EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_Q
 
 width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES;
 
-designator: DESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
+designator: DESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
-primaryDesignator: PRIMARYDESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
-
-secondaryDesignator: SECONDARYDESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORVALUES DOUBLE_QUOTES; 
-
-patternAltitude: PATTERNALTITUDE EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES; 
-
-primaryTakeoff : PRIMARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
-
-primaryLanding : PRIMARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
-
-primaryPattern : PRIMARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
-
-secondaryTakeoff : SECONDARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
-
-secondaryLanding : SECONDARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
-
-secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
-
-primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
-
-secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
 //////////////////////////////////////////////////////////////////////
 
 
 
 //////////////////////////////////////////////////////////////////////
 
-typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;
 
 //////////////////////////////////////////////////////////////////////
 
-frequency:FREQUENCY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;/*108.0-136.992*/
 
-typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;
+
+
 
 //////////////////////////////////////////////////////////////////////
-surface: SURFACE EQUALS DOUBLE_QUOTES SURFACETYPES DOUBLE_QUOTES;
-number: NUMBER EQUALS DOUBLE_QUOTES (NUMBERRUNWAY | unsignedIntegerValue) DOUBLE_QUOTES;/*0-36*/
+surface: SURFACE SURFACETYPES DOUBLE_QUOTES;
+number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-36*/
+frequency:FREQUENCY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
 biasX: BIASX EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
 biasY: BIASY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
 biasZ: BIASZ EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
@@ -121,8 +100,6 @@ floatingPointValue: FloatingPointValue | UnsignedFloatValue | IntegerValue | Uns
 
 stringLettersMixedCase: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS ;
 
-stringLettersLowerCase: STRING_LETTERS_LOWERCASE ;
-
 stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
 
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | STRING_LETTERS_NUMBERS | IntegerValue;
@@ -138,9 +115,9 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 				fuelAttributes: typefuel availabilityFuel ;
 			
-					typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL DOUBLE_QUOTES;
+					typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;
 
-					availabilityFuel: AVAILABILITY EQUALS DOUBLE_QUOTES (AVAILABILITYFUEL | YES_NO) DOUBLE_QUOTES ;
+					availabilityFuel: AVAILABILITY AVAILABILITY_WORDS DOUBLE_QUOTES ;
 	
 	
 	
@@ -157,11 +134,14 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 	deleteStart: OpenDeleteStart deleteStartAttributes SLASH_CLOSE;
 		
 		deleteStartAttributes: typeDeleteStart number designator?;
+
+			typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;
 	
 	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes SLASH_CLOSE;
 		
 		deleteFrequencyAttributes: frequency typeDeleteFrequency;
 		
+			typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;
 		
 		
 	
@@ -177,6 +157,29 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
 							primaryMarkingBias? secondaryMarkingBias?; 
 
+			primaryDesignator: PRIMARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
+
+			secondaryDesignator: SECONDARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
+
+			patternAltitude: PATTERNALTITUDE EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet)? DOUBLE_QUOTES; 
+
+			primaryTakeoff : PRIMARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
+
+			primaryLanding : PRIMARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
+
+			primaryPattern : PRIMARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+
+			secondaryTakeoff : SECONDARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
+
+			secondaryLanding : SECONDARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
+
+			secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+
+			primaryMarkingBias: PRIMARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet |NauticalMiles) DOUBLE_QUOTES;
+
+			secondaryMarkingBias: SECONDARYMARKINGBIAS EQUALS DOUBLE_QUOTES floatingPointValue (Meters | Feet|NauticalMiles) DOUBLE_QUOTES;
+
+			
 			runwayElements: markings* lights* offsetThreshold* blastPad* overrun* approachLights* vasi* ils*;
 
 				markings: OpenMarkings markingAttributes SLASH_CLOSE;
@@ -203,8 +206,8 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 					lightAttributes: center edge centerRed;
 
-						center: CENTER EQUALS DOUBLE_QUOTES LEVELS DOUBLE_QUOTES ;
-						edge: EDGE EQUALS DOUBLE_QUOTES LEVELS DOUBLE_QUOTES;
+						center: CENTER LEVELS DOUBLE_QUOTES ;
+						edge: EDGE LEVELS DOUBLE_QUOTES;
 						centerRed: CENTER_RED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
 
@@ -229,7 +232,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 					approachLightsAttributes: end system? strobes? reil? touchdown? endLights?;
 
-						system: SYSTEM EQUALS DOUBLE_QUOTES SYSTEM_OPTIONS DOUBLE_QUOTES;
+						system: SYSTEM SYSTEM_OPTIONS DOUBLE_QUOTES;
 						strobes: STROBES EQUALS DOUBLE_QUOTES unsignedIntegerValue DOUBLE_QUOTES;
 						reil: REIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						endLights: ENDLIGHTS EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES; 
@@ -273,7 +276,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 			frequencyCom: FREQUENCY EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES ;
 
-			nameCom: NAME EQUALS DOUBLE_QUOTES STRING_LETTERS DOUBLE_QUOTES ;
+			nameCom: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +302,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 			taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES NAMETAXIWAYPARKING DOUBLE_QUOTES;
 			taxiway_number: NUMBER EQUALS DOUBLE_QUOTES unsignedIntegerValue DOUBLE_QUOTES;/*0-3999*/
 			taxiway_airlineCodes: AIRLINECODES EQUALS DOUBLE_QUOTES AIRLINECODESVALUES DOUBLE_QUOTES;
-			taxiway_pushBack: PUSHBACK EQUALS DOUBLE_QUOTES PUSHBACKVALUES DOUBLE_QUOTES;
+			taxiway_pushBack: PUSHBACK PUSHBACKVALUES DOUBLE_QUOTES;
 			taxiway_teeOffset: TEEOFFSET EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;/*0.1-50.0*/
 
 	/*--------------------------------------TAXINAME-------------------------------*/
@@ -308,7 +311,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 		taxiNameAttributes: taxiNameIndex taxiNameName;
 
 			taxiNameIndex: INDEX EQUALS DOUBLE_QUOTES unsignedIntegerValue DOUBLE_QUOTES;/*0-255*/
-			taxiNameName: NAME EQUALS DOUBLE_QUOTES TAXINAME DOUBLE_QUOTES;
+			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
 	taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes SLASH_CLOSE;
@@ -319,9 +322,9 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 			taxiwaypath_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPATHTYPE DOUBLE_QUOTES;
 			
-			taxiway_start: START EQUALS DOUBLE_QUOTES NUMBER DOUBLE_QUOTES;
+			taxiway_start: START EQUALS DOUBLE_QUOTES integerValue DOUBLE_QUOTES; /*0-3999*/
 			
-			taxiway_end: END EQUALS DOUBLE_QUOTES NUMBER DOUBLE_QUOTES;
+			taxiway_end: END EQUALS DOUBLE_QUOTES integerValue DOUBLE_QUOTES; /*0-3999*/
 			
 			taxiway_width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;
 			
@@ -335,11 +338,11 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 			
 			taxiway_centerLineLighted: CENTERLINELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
-			taxiway_leftEdge: LEFTEDGE EQUALS DOUBLE_QUOTES EDGETYPE DOUBLE_QUOTES;
+			taxiway_leftEdge: LEFTEDGE EDGETYPE DOUBLE_QUOTES;
 			
 			taxiway_leftEdgeLighted: LEFTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
-			taxiway_rightEdge: RIGHTEDGE EQUALS DOUBLE_QUOTES EDGETYPE DOUBLE_QUOTES;
+			taxiway_rightEdge: RIGHTEDGE EDGETYPE DOUBLE_QUOTES;
 			
 			taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
