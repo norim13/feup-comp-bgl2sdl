@@ -36,7 +36,7 @@ class TestXML{
 	    ParserInterpreter parser = pg.createParserInterpreter(tokens);
 	    ParseTree tree = parser.parse(pg.getRule(startRule).index);
 
-	    System.out.println("parse tree: " + tree.toStringTree(parser));
+	   // System.out.println("parse tree: " + tree.toStringTree(parser));
 
 	    
 	    //show AST in GUI
@@ -54,9 +54,9 @@ class TestXML{
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(0, 0, 1000, 600);
+        scrollPane.setBounds(0, 0, 1850, 600);
         JPanel contentPane = new JPanel(null);
-        contentPane.setPreferredSize(new Dimension(1000, 600));
+        contentPane.setPreferredSize(new Dimension(1850, 600));
         contentPane.add(scrollPane);
         frame.setContentPane(contentPane);
         frame.pack();
@@ -75,7 +75,11 @@ class TestXML{
 	}
 
 	public static void main(String[] args)  throws IOException{
-		ParseTree t = parse("pom.xml", "XMLLexer.g4", "XMLParser.g4", "document");
+		String fileName;
+                if (args.length < 1)
+                        fileName = "pom.xml";
+                else fileName = args[0];
+                ParseTree t = parse(fileName, "XMLLexer.g4", "XMLParser.g4", "document");
 	}
 
 
