@@ -33,7 +33,7 @@ NUMBER: 'number="'  -> pushMode(NUMBER_MODE);
 CENTER: 'center="' -> pushMode(LEVELS_MODE);
 EDGE: 'edge="' -> pushMode(LEVELS_MODE);
 SYSTEM: 'system="' -> pushMode(SYSTEM_MODE);
-PUSHBACK: 'pushBack' ->pushMode(PUSHBACK_MODE);
+PUSHBACK: 'pushBack="' ->pushMode(PUSHBACK_MODE);
 LEFTEDGE: 'leftEdge="' -> pushMode(EDGETYPE_MODE);
 RIGHTEDGE: 'rightEdge="' -> pushMode(EDGETYPE_MODE);
  /*Delete Airport *****************************************/

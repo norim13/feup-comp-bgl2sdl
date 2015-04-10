@@ -121,7 +121,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 	
 	
 	
-	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency;
+	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency*;
 	
 	deleteAirport: OpenDeleteAirport deleteAirportAttributes* SLASH_CLOSE;
 	
