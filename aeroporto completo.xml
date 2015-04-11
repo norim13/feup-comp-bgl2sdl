@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- Created by Scenery Design Engine (SDE) on 16/03/2015 -->
-<FSData
-   version="9.0"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:noNamespaceSchemaLocation="bglcomp.xsd">
+
    <Airport
       country="United States"
       state="Florida"
@@ -30,8 +25,9 @@
          deleteAllFrequencies="TRUE"
          deleteAllTaxiways="TRUE"
          deleteAllAprons="TRUE"
+         deleteAllApproaches="FALSE"
          deleteAllApronLights="TRUE"
-         deleteAllApproaches="FALSE"/>
+         />
       <Tower
          lat="25.8065129444003"
          lon="-80.2752287685871"
@@ -560,4 +556,4 @@
          rightEdge="DASHED"
          />
    </Airport>
-</FSData>
+

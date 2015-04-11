@@ -40,7 +40,7 @@
 	  number="18"
 	  designator="NONE"/>
 	<DeleteFrequency
-      frequency= "136.992"
+      frequency="136.992"
       type="CENTER" />
    <Tower
       lat="41.2387912720442"
