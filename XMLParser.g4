@@ -299,7 +299,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 		taxiNameAttributes: taxiNameIndex taxiNameName;
 
 			taxiNameIndex: INDEX unsignedIntegerValue DOUBLE_QUOTES;/*0-255*/
-			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
+			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES;
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
 	taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes* SLASH_CLOSE;
