@@ -14,16 +14,7 @@ DOT: '.' ;
 WS			: 	[ \t\n\r]+ 			-> skip ;
 
 
-/* Units */
 
-Meters: 'M' ;
-Feet: 'F' ;
-NauticalMiles: 'N' ;
-
- /* End Units */ 
- 
- /* -------------------------------MIRA-------------------*/
-/*Fuel*****************************************************/
 AVAILABILITY: 'availability="' -> pushMode(AVAILABILITY_MODE);
 SURFACE: 'surface="' -> pushMode(SURFACE_MODE); 
 DESIGNATOR: 'designator="' -> pushMode(DESIGNATOR_MODE);
@@ -36,41 +27,42 @@ SYSTEM: 'system="' -> pushMode(SYSTEM_MODE);
 PUSHBACK: 'pushBack="' ->pushMode(PUSHBACK_MODE);
 LEFTEDGE: 'leftEdge="' -> pushMode(EDGETYPE_MODE);
 RIGHTEDGE: 'rightEdge="' -> pushMode(EDGETYPE_MODE);
- /*Delete Airport *****************************************/
 
- DELETEAIRPORTATRIBUTES: 
-'deleteAllApproaches'		|
-'deleteAllApronLights'		|
-'deleteAllAprons'			|
-'deleteAllFrequencies'		|
-'deleteAllHelipads'			|
-'deleteAllRunways'			|
-'deleteAllStarts'			|
-'deleteAllTaxiways'			|
-'deleteAllBlastFences'		|
-'deleteAllBoundaryFences'	|
-'deleteAllControlTowers'	|
-'deleteAllJetways'			;
+/////////////////////FLOATS///////////////////////
+LAT: 'lat="' -> pushMode(FLOAT_MODE);
+LON: 'lon="'-> pushMode(FLOAT_MODE);
+ALT: 'alt="' -> pushMode(FLOAT_MODE);
+MAGVAR: 'magvar="' -> pushMode(FLOAT_MODE);
+FREQUENCY: 'frequency="' -> pushMode(FLOAT_MODE);
+TRAFFICSCALAR: 'trafficScalar="' -> pushMode(FLOAT_MODE);
+PATTERNALTITUDE: 'patternAltitude="' -> pushMode(FLOAT_MODE);
+SECONDARYMARKINGBIAS:'secondaryMarkingBias="'-> pushMode(FLOAT_MODE);
+PRIMARYMARKINGBIAS:'primaryMarkingBias="'-> pushMode(FLOAT_MODE);
+SPACING: 'spacing="'-> pushMode(FLOAT_MODE);
+PITCH: 'pitch="'-> pushMode(FLOAT_MODE);
+RANGE: 'range="'-> pushMode(FLOAT_MODE);
+HEADING: 'heading="' -> pushMode(FLOAT_MODE);
+TEEOFFSET: 'teeOffset'[1-9]'="'-> pushMode(FLOAT_MODE);
+WEIGHTLIMIT: 'weightLimit="'-> pushMode(FLOAT_MODE);
+LENGTH: 'length="' -> pushMode(FLOAT_MODE);
+WIDTH: 'width="'-> pushMode(FLOAT_MODE);
+BIASX: 'biasX="'-> pushMode(FLOAT_MODE);
+BIASY: 'biasY="'-> pushMode(FLOAT_MODE);
+BIASZ: 'biasZ="'-> pushMode(FLOAT_MODE);
 
 
-/*Runway*****************************************************/
+/////////////////////INTEGERS///////////////////////
+STROBES: 'strobes="' -> pushMode(INTEGER_MODE);
+INDEX: 'index="' -> pushMode(INTEGER_MODE);
+START: 'start="' -> pushMode(INTEGER_MODE);
+AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
+RADIUS: 'radius="' -> pushMode(INTEGER_MODE);
 
-		
-LEFT_RIGHT:'LEFT' | 'RIGHT';
-	
-
-TYPESFUEL_WORDS: '73'|'87'|'100'|'130'|'145'|'MOGAS'|'JET'|'JETA'
-	|'JETA1'|'JETAP'|'JETB'|'JET4'|'JET5'|'UNKNOWN';	
-
- /* -----------------------------------------------------------*/
-
- /* -------------------------------Filippo-------------------*/
-
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
 OpenLight: '<Lights' ;
 
-
 CENTER_RED: 'centerRed';
-
 
 OpenOffsetThreshold: '<OffsetThreshold';
 
@@ -78,40 +70,22 @@ OpenBlastPad: '<BlastPad';
 
 OpenOverrun: '<Overrun';
 
-
 OpenApproachLights: '<ApproachLights' ;
 
 
-STROBES: 'strobes';
 REIL: 'reil';
 ENDLIGHTS: 'endLights';
-
-
 
 
 OpenVasi: '<Vasi';
 
 SIDE: 'side';
-BIASZ: 'biasZ';
-SPACING: 'spacing';
-PITCH: 'pitch';
+
 
 OpenIls: '<Ils';
 CloseIls: '</Ils>';
 
-RANGE: 'range';
 BACKCOURSE: 'backCourse';
-
-
-
-
-  /* -----------------------------------------------------------*/
-
-
-/* Other */
-YES_NO: 'YES' | 'NO' ;
-BOOLEAN: 'TRUE' | 'FALSE' ;
-/* End Other */
 
 
 /* Open elements */
@@ -139,36 +113,32 @@ EndRunway: '</Runway>' ;
 EndTower: '</Tower>' ;
 
 
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////// ATRIBUTE NAMES //////////////////////////
+//////////////////////////////////////////////////////////////////////
+
 /* Attributes */
-LAT: 'lat';
-LON: 'lon';
-ALT: 'alt' ;
-HEADING: 'heading' ;
+
 
 NAME: 'name';
 REGION: 'region';
 COUNTRY: 'country';
 STATE: 'state';
 CITY: 'city';
-MAGVAR: 'magvar' ;
+
 IDENT: 'ident' ;
-AIRPORTTESTRADIUS : 'airportTestRadius' ;
-TRAFFICSCALAR: 'trafficScalar' ;
-LENGTH: 'length' ;
-WIDTH: 'width' ;
+
 
 TYPE: 'type' ;
+END: 'end';
 
-PATTERNALTITUDE: 'patternAltitude' ;
 PRIMARYTAKEOFF: 'primaryTakeoff' ;
 PRIMARYLANDING: 'primaryLanding' ;
 PRIMARYPATTERN : 'primaryPattern';
-PRIMARYMARKINGBIAS:'primaryMarkingBias';
 SECONDARYTAKEOFF: 'secondaryTakeoff' ;
 SECONDARYLANDING: 'secondaryLanding' ;
 SECONDARYPATTERN: 'secondaryPattern' ;
-SECONDARYMARKINGBIAS:'secondaryMarkingBias';
-FREQUENCY: 'frequency' ;
 
 
 EDGES:'edges';
@@ -183,40 +153,52 @@ PRIMARYCLOSED:'primaryClosed';
 SECONDARYCLOSED:'secondaryClosed';
 PRIMARYSTOL:'primaryStol';
 SECONDARYSTOL:'secondaryStol';
-INDEX: 'index';
 ORIENTATION: 'orientation';
-BIASX: 'biasX';
-BIASY: 'biasY';
 
-RADIUS: 'radius';
 AIRLINECODES: 'airlineCodes';
 
-TEEOFFSET: 'teeOffset'[1-9];
 
 DRAWSURFACE: 'drawSurface';
 DRAWDETAIL: 'drawDetail';
 CENTERLINE: 'centerLine';
 CENTERLINELIGHTED: 'centerLineLighted';
-START: 'start';
 
-WEIGHTLIMIT: 'weightLimit';
+
 LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
 
 
-END: 'end';
+ DELETEAIRPORTATRIBUTES: 
+'deleteAllApproaches'		|
+'deleteAllApronLights'		|
+'deleteAllAprons'			|
+'deleteAllFrequencies'		|
+'deleteAllHelipads'			|
+'deleteAllRunways'			|
+'deleteAllStarts'			|
+'deleteAllTaxiways'			|
+'deleteAllBlastFences'		|
+'deleteAllBoundaryFences'	|
+'deleteAllControlTowers'	|
+'deleteAllJetways'			;
 
+
+//////////////////////////////////////////////////////////////////////
+///////////////////////////////// WORDS //////////////////////////////
+//////////////////////////////////////////////////////////////////////
+METERS: 'M';
+FEET: 'F';
+NAUTICALMILES: 'N';
+
+
+LEFT_RIGHT:'LEFT' | 'RIGHT';
+
+YES_NO: 'YES' | 'NO' ;
+BOOLEAN: 'TRUE' | 'FALSE' ;
 
 PRIORITY: 'PRIMARY' | 'SECONDARY';
-/*--------------------------------- TAXIWAYPOINT ------------------------------*/
-
 
 ORIENTATIONTYPE: 'FORWARD' | 'REVERSE';
-
-/*--------------------------------- TAXIWAYPARKING ------------------------------*/
-
-
-
 
 NAMETAXIWAYPARKING:
 'PARKING'
@@ -227,13 +209,6 @@ NAMETAXIWAYPARKING:
 | ['N'|'NE'|'NW'|'SE'|'S'|'SW'|'W'|'E']'_PARKING';
 
 
-
-/*--------------------------------- TAXIWAYPATH ------------------------------*/
-
-
-
-
-
 DESIGNATORTYPES: 
 'NONE' | 'C' 
 'CENTER' | 'L' 
@@ -242,91 +217,23 @@ DESIGNATORTYPES:
 'WATER' | 'A' | 'B';
 
 
-
-/*--------------------------------- TAXIWAYNAME ------------------------------*/
-
-
-
-
- /*Delete Start *****************************************/
- 
-TYPEDELETESTART:
-		'RUNWAY'			|
-		'HELIPAD'			|
-		'WATER'				;
-
- /*Delete Frequency ***************************************/
-
-
- TYPEDELETEFREQUENCY:
-	'APPROACH'				|
-	'ASOS'					|
-	'ATIS'					|
-	'AWOS'					|
-	'CENTER'				|
-	'CLEARANCE'				|
-	'CLEARANCE_PRE_TAXI'	|
-	'CTAF'					|
-	'DEPARTURE'				|
-	'FSS'					|
-	'GROUND'				|
-	'MULTICOM'				|
-	'REMOTE_CLEARANCE_DELIVERY'|
-	'TOWER'					|
-	'UNICOM'				;
-
-
-VASI_TYPE: 
-	'PAPI2'
-	'PAPI4'
-	'PVASI'
-	'TRICOLOR'
-	'TVASI' 
-	'VASI21'
-	'VASI22'
-	'VASI23'
-	'VASI31'
-	'VASI32'
-	'VASI33'
-	'BALL'
-	'APAP'
-	'PANELS';
-
-
-TAXIWAYPOINTTYPE: 'NORMAL' | 'HOLD_SHORT' | 'ILS_HOLD_SHORT' | 'HOLD_SHORT_NO_DRAW' | 'ILS_HOLD_SHORT_NO_DRAW';
-
-TAXIWAYPATHTYPE: 'RUNWAY' | 'PARKING' | 'TAXI' | 'PATH' | 'CLOSED' | 'VEHICLE';
-
-TAXIWAYPARKINGTYPE: 
-'NONE'
-| 'DOCK_GA'
-| 'FUEL'
-| 'GATE_'['HEAVY'|'MEDIUM'|'SMALL']
-| 'RAMP_CARGO'
-| 'RAMP_GA'('_'('LARGE'|'MEDIUM'|'SMALL'))?
-| 'RAMP_MIL_'['CARGO'|'COMBAT']
-| 'VEHICLE';
-
-
-
-
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////// GENERAL /////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
+INT_NUMBER: DIGIT+; 
+/*tive de por isto pq o atributo "end" aparece 
+sempre como integer, mas há um sitio em que 
+aparece a receber palavras... estragou-me o esquema todo*/
 
-UnsignedIntegerValue: [0-9] | ([1-9][0-9]* (DOT '0')?) ;
-IntegerValue: ('+' | '-' )? UnsignedIntegerValue ;
-UnsignedFloatValue: UnsignedIntegerValue DOT [0-9]+ ;
-FloatingPointValue: IntegerValue DOT [0-9]+ ;
 
 STRING_LETTERS_UPPERCASE : [A-Z ]+ ;
 STRING_LETTERS_LOWERCASE : [a-z ]+ ;
 STRING_LETTERS : [A-Za-z ]+  ;
-STRING_LETTERS_NUMBERS: (DIGIT | UPPER_CASE_LETTER | LOWER_CASE_LETTER)+  ;
+STRING_LETTERS_NUMBERS: (DIGIT | UPPER_CASE_LETTER | LOWER_CASE_LETTER | '_')+  ;
 
 
-AIRLINECODESVALUES: [A-Z]+(','[A-Z]+)*;
+AIRLINECODESVALUES: UPPER_CASE_LETTER+(','UPPER_CASE_LETTER+)*;
 
 fragment DIGIT: [0-9] ;
 fragment UPPER_CASE_LETTER: [A-Z] ;
@@ -381,8 +288,15 @@ DESIGNATORVALUES:
 			'B'				)->popMode;
 
 mode NUMBER_MODE;
-NUMBER_VALUES:( ([0][0-9]) | DIRECTIONS	| [0-9]([0-9])?	)-> popMode; 
-/*no final: 00-09 | 0-36 | DIR */	
+NUMBER_VALUES:( ([0-9][0-9]?[0-9]?[0-9]?) | DIRECTIONS )-> popMode; 
+
+/*( ([0][0-9]) | DIRECTIONS	| [0-9]([0-9])?	)*/
+/*
+no final: 
+	00-09 | 0-36 | DIR 
+	ou 0-3999
+conforme o atributo onde estamos...
+*/	
 
 DIRECTIONS:
 			'EAST'			|
@@ -426,3 +340,79 @@ PUSHBACKVALUES: ('NONE' | 'BOTH' | 'LEFT' | 'RIGHT') -> popMode;
 
 mode EDGETYPE_MODE;
 EDGETYPE: ('NONE' | 'SOLID' | 'DASHED' | 'SOLID_DASHED') -> popMode;
+
+
+mode INTEGER_MODE;
+UnsignedIntegerValue: ([0-9] | ([1-9][0-9]* (DOT '0')?) ) ->popMode;
+IntegerValue: ('+' | '-' )? UnsignedIntegerValue ->popMode;
+
+mode FLOAT_MODE;
+UnsignedFloatValue: UnsignedIntegerValue2 (DOT [0-9]+)? -> popMode;
+FloatingPointValue: IntegerValue (DOT [0-9]+)? ->popMode;
+UnsignedIntegerValue2: [0-9] | ([1-9][0-9]*);
+
+
+
+//////////////////////////////////////////////////////////////////////
+/////////////////////////  TYPES COMENTADOS  /////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+/*
+TYPESFUEL_WORDS: '73'|'87'|'100'|'130'|'145'|'MOGAS'|'JET'|'JETA'
+	|'JETA1'|'JETAP'|'JETB'|'JET4'|'JET5'|'UNKNOWN';	
+
+
+TYPEDELETESTART:
+		'RUNWAY'			|
+		'HELIPAD'			|
+		'WATER'				;
+
+ TYPEDELETEFREQUENCY:
+	'APPROACH'				|
+	'ASOS'					|
+	'ATIS'					|
+	'AWOS'					|
+	'CENTER'				|
+	'CLEARANCE'				|
+	'CLEARANCE_PRE_TAXI'	|
+	'CTAF'					|
+	'DEPARTURE'				|
+	'FSS'					|
+	'GROUND'				|
+	'MULTICOM'				|
+	'REMOTE_CLEARANCE_DELIVERY'|
+	'TOWER'					|
+	'UNICOM'				;
+
+VASI_TYPE: 
+	'PAPI2'
+	'PAPI4'
+	'PVASI'
+	'TRICOLOR'
+	'TVASI' 
+	'VASI21'
+	'VASI22'
+	'VASI23'
+	'VASI31'
+	'VASI32'
+	'VASI33'
+	'BALL'
+	'APAP'
+	'PANELS';
+
+
+TAXIWAYPOINTTYPE: 'NORMAL' | 'HOLD_SHORT' | 'ILS_HOLD_SHORT' | 'HOLD_SHORT_NO_DRAW' | 'ILS_HOLD_SHORT_NO_DRAW';
+
+TAXIWAYPATHTYPE: 'RUNWAY' | 'PARKING' | 'TAXI' | 'PATH' | 'CLOSED' | 'VEHICLE';
+
+TAXIWAYPARKINGTYPE: 
+'NONE'
+| 'DOCK_GA'
+| 'FUEL'
+| 'GATE_'['HEAVY'|'MEDIUM'|'SMALL']
+| 'RAMP_CARGO'
+| 'RAMP_GA'('_'('LARGE'|'MEDIUM'|'SMALL'))?
+| 'RAMP_MIL_'['CARGO'|'COMBAT']
+| 'VEHICLE';
+
+*/
