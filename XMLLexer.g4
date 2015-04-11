@@ -14,6 +14,9 @@ DOT: '.' ;
 WS			: 	[ \t\n\r]+ 			-> skip ;
 
 
+//////////////////////////////////////////////////////////////////
+//////////////////// ATTRIBUTES GOING TO MODES ///////////////////
+//////////////////////////////////////////////////////////////////
 
 AVAILABILITY: 'availability="' -> pushMode(AVAILABILITY_MODE);
 SURFACE: 'surface="' -> pushMode(SURFACE_MODE); 
@@ -58,37 +61,12 @@ START: 'start="' -> pushMode(INTEGER_MODE);
 AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
 RADIUS: 'radius="' -> pushMode(INTEGER_MODE);
 
+
 //////////////////////////////////////////////////////////////////
+/////////////////////////// ELEMENTS /////////////////////////////
 //////////////////////////////////////////////////////////////////
-OpenLight: '<Lights' ;
 
-CENTER_RED: 'centerRed';
-
-OpenOffsetThreshold: '<OffsetThreshold';
-
-OpenBlastPad: '<BlastPad';
-
-OpenOverrun: '<Overrun';
-
-OpenApproachLights: '<ApproachLights' ;
-
-
-REIL: 'reil';
-ENDLIGHTS: 'endLights';
-
-
-OpenVasi: '<Vasi';
-
-SIDE: 'side';
-
-
-OpenIls: '<Ils';
-CloseIls: '</Ils>';
-
-BACKCOURSE: 'backCourse';
-
-
-/* Open elements */
+/*Open Elements*/
 OpenAirport: '<Airport' ;
 OpenServices: '<Services>' ;
 OpenTower: '<Tower' ;
@@ -96,40 +74,45 @@ OpenRunway: '<Runway';
 OpenStart: '<Start' ;
 OpenCom: '<Com' ;
 OpenFuel: '<Fuel' ;
+
+OpenLight: '<Lights' ;
+OpenOffsetThreshold: '<OffsetThreshold';
+OpenBlastPad: '<BlastPad';
+OpenOverrun: '<Overrun';
+OpenApproachLights: '<ApproachLights' ;
+OpenVasi: '<Vasi';
+OpenIls: '<Ils';
+
 OpenDeleteAirport:'<DeleteAirport'	;
 OpenDeleteRunway:'<DeleteRunway';
 OpenDeleteStart:'<DeleteStart';
 OpenDeleteFrequency:'<DeleteFrequency';
 OpenMarkings: '<Markings';
+
 OpenTaxiwayPoint: '<TaxiwayPoint';
 OpenTaxiwayParking: '<TaxiwayParking';
 OpenTaxiwayPath: '<TaxiwayPath';
 OpenTaxiName: '<TaxiName';
+
 
 /* End Elements */
 EndAirport: '</Airport>';
 EndServices: '</Services>' ;
 EndRunway: '</Runway>' ;
 EndTower: '</Tower>' ;
-
+CloseIls: '</Ils>';
 
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////// ATRIBUTE NAMES //////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-/* Attributes */
-
-
 NAME: 'name';
 REGION: 'region';
 COUNTRY: 'country';
 STATE: 'state';
 CITY: 'city';
-
 IDENT: 'ident' ;
-
-
 TYPE: 'type' ;
 END: 'end';
 
@@ -140,6 +123,11 @@ SECONDARYTAKEOFF: 'secondaryTakeoff' ;
 SECONDARYLANDING: 'secondaryLanding' ;
 SECONDARYPATTERN: 'secondaryPattern' ;
 
+CENTER_RED: 'centerRed';
+REIL: 'reil';
+ENDLIGHTS: 'endLights';
+BACKCOURSE: 'backCourse';
+SIDE: 'side';
 
 EDGES:'edges';
 THRESHOLD:'threshold';
@@ -154,19 +142,14 @@ SECONDARYCLOSED:'secondaryClosed';
 PRIMARYSTOL:'primaryStol';
 SECONDARYSTOL:'secondaryStol';
 ORIENTATION: 'orientation';
-
 AIRLINECODES: 'airlineCodes';
-
 
 DRAWSURFACE: 'drawSurface';
 DRAWDETAIL: 'drawDetail';
 CENTERLINE: 'centerLine';
 CENTERLINELIGHTED: 'centerLineLighted';
-
-
 LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
-
 
  DELETEAIRPORTATRIBUTES: 
 'deleteAllApproaches'		|
@@ -186,6 +169,9 @@ RIGHTEDGELIGHTED: 'rightEdgeLighted';
 //////////////////////////////////////////////////////////////////////
 ///////////////////////////////// WORDS //////////////////////////////
 //////////////////////////////////////////////////////////////////////
+// estas palavras todas talvez devessem estar também em modes
+// mas não sei bem como o fazer
+
 METERS: 'M';
 FEET: 'F';
 NAUTICALMILES: 'N';
@@ -356,6 +342,9 @@ UnsignedIntegerValue2: [0-9] | ([1-9][0-9]*);
 //////////////////////////////////////////////////////////////////////
 /////////////////////////  TYPES COMENTADOS  /////////////////////////
 //////////////////////////////////////////////////////////////////////
+// pus estes types a ler strings normais, em vez das palavras, visto
+// que são vários atributos "type", e diferentes conjuntos de palavras
+// esperadas, não sabia o que fazer.
 
 /*
 TYPESFUEL_WORDS: '73'|'87'|'100'|'130'|'145'|'MOGAS'|'JET'|'JETA'
