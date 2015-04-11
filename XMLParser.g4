@@ -336,6 +336,6 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 			
 			taxiway_designator: DESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORTYPES DOUBLE_QUOTES;
 			
-			taxiway_name: NAME EQUALS DOUBLE_QUOTES NAMETAXIWAYPARKING DOUBLE_QUOTES;
+			taxiway_name: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES;
 			
 
