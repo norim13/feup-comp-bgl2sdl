@@ -10,13 +10,16 @@ import org.antlr.v4.runtime.tree.gui.TreeViewer;
 import org.antlr.v4.tool.Grammar;
 import org.antlr.v4.tool.LexerGrammar;
 
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.misc.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import java.awt.Dimension;
 import java.util.Arrays;
-
+import java.util.Iterator;
 import java.io.IOException;
 
 
@@ -34,7 +37,21 @@ class TestXML{
 	    LexerInterpreter lexEngine = lg.createLexerInterpreter(input);
 	    CommonTokenStream tokens = new CommonTokenStream(lexEngine);
 	    ParserInterpreter parser = pg.createParserInterpreter(tokens);
-	    ParseTree tree = parser.parse(pg.getRule(startRule).index);
+
+            //COMENTAR LINHAS ABAIXO PARA VER ERROS DEFAULT DO ANTLR4
+	    	parser.removeErrorListeners();
+            parser.addErrorListener(new ErrorListener());
+           // parser.setErrorHandler(new BailErrorStrategy());
+            
+          
+            ParseTree tree;
+        try{
+        	tree = parser.parse(pg.getRule(startRule).index);
+        }
+	    catch(Exception e){
+	    	System.out.println("exception no parse: "+e.getClass().toString());
+	    	return null;
+	    }
 
 	   // System.out.println("parse tree: " + tree.toStringTree(parser));
 
@@ -82,5 +99,8 @@ class TestXML{
                 ParseTree t = parse(fileName, "XMLLexer.g4", "XMLParser.g4", "document");
 	}
 
+
+   
+     
 
 }

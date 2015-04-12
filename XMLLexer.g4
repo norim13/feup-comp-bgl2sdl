@@ -30,6 +30,13 @@ SYSTEM: 'system="' -> pushMode(SYSTEM_MODE);
 PUSHBACK: 'pushBack="' ->pushMode(PUSHBACK_MODE);
 LEFTEDGE: 'leftEdge="' -> pushMode(EDGETYPE_MODE);
 RIGHTEDGE: 'rightEdge="' -> pushMode(EDGETYPE_MODE);
+ORIENTATION: 'orientation="' -> pushMode(ORIENTATION_MODE);
+END: 'end="' -> pushMode(END_MODE);
+AIRLINECODES: 'airlineCodes="' -> pushMode(AIRLINECODES_MODE);
+
+PRIMARYPATTERN : 'primaryPattern="' -> pushMode(LEFT_RIGHT_MODE);
+SECONDARYPATTERN: 'secondaryPattern="' -> pushMode(LEFT_RIGHT_MODE);
+SIDE: 'side="' -> pushMode(LEFT_RIGHT_MODE);
 
 /////////////////////FLOATS///////////////////////
 LAT: 'lat="' -> pushMode(FLOAT_MODE);
@@ -114,20 +121,17 @@ STATE: 'state';
 CITY: 'city';
 IDENT: 'ident' ;
 TYPE: 'type' ;
-END: 'end';
+
 
 PRIMARYTAKEOFF: 'primaryTakeoff' ;
 PRIMARYLANDING: 'primaryLanding' ;
-PRIMARYPATTERN : 'primaryPattern';
 SECONDARYTAKEOFF: 'secondaryTakeoff' ;
 SECONDARYLANDING: 'secondaryLanding' ;
-SECONDARYPATTERN: 'secondaryPattern' ;
 
 CENTER_RED: 'centerRed';
 REIL: 'reil';
 ENDLIGHTS: 'endLights';
 BACKCOURSE: 'backCourse';
-SIDE: 'side';
 
 EDGES:'edges';
 THRESHOLD:'threshold';
@@ -141,8 +145,6 @@ PRIMARYCLOSED:'primaryClosed';
 SECONDARYCLOSED:'secondaryClosed';
 PRIMARYSTOL:'primaryStol';
 SECONDARYSTOL:'secondaryStol';
-ORIENTATION: 'orientation';
-AIRLINECODES: 'airlineCodes';
 
 DRAWSURFACE: 'drawSurface';
 DRAWDETAIL: 'drawDetail';
@@ -172,19 +174,8 @@ RIGHTEDGELIGHTED: 'rightEdgeLighted';
 // estas palavras todas talvez devessem estar também em modes
 // mas não sei bem como o fazer
 
-METERS: 'M';
-FEET: 'F';
-NAUTICALMILES: 'N';
-
-
-LEFT_RIGHT:'LEFT' | 'RIGHT';
-
 YES_NO: 'YES' | 'NO' ;
 BOOLEAN: 'TRUE' | 'FALSE' ;
-
-PRIORITY: 'PRIMARY' | 'SECONDARY';
-
-ORIENTATIONTYPE: 'FORWARD' | 'REVERSE';
 
 NAMETAXIWAYPARKING:
 'PARKING'
@@ -195,31 +186,17 @@ NAMETAXIWAYPARKING:
 | ['N'|'NE'|'NW'|'SE'|'S'|'SW'|'W'|'E']'_PARKING';
 
 
-DESIGNATORTYPES: 
-'NONE' | 'C' 
-'CENTER' | 'L' 
-'LEFT' | 'R'
-'RIGHT' | 'W'
-'WATER' | 'A' | 'B';
-
-
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////// GENERAL /////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
 INT_NUMBER: DIGIT+; 
-/*tive de por isto pq o atributo "end" aparece 
-sempre como integer, mas há um sitio em que 
-aparece a receber palavras... estragou-me o esquema todo*/
-
-
+SINGLE_LETTER_UPPER: UPPER_CASE_LETTER;
 STRING_LETTERS_UPPERCASE : [A-Z ]+ ;
 STRING_LETTERS_LOWERCASE : [a-z ]+ ;
 STRING_LETTERS : [A-Za-z ]+  ;
 STRING_LETTERS_NUMBERS: (DIGIT | UPPER_CASE_LETTER | LOWER_CASE_LETTER | '_')+  ;
 
-
-AIRLINECODESVALUES: UPPER_CASE_LETTER+(','UPPER_CASE_LETTER+)*;
 
 fragment DIGIT: [0-9] ;
 fragment UPPER_CASE_LETTER: [A-Z] ;
@@ -327,6 +304,18 @@ PUSHBACKVALUES: ('NONE' | 'BOTH' | 'LEFT' | 'RIGHT') -> popMode;
 mode EDGETYPE_MODE;
 EDGETYPE: ('NONE' | 'SOLID' | 'DASHED' | 'SOLID_DASHED') -> popMode;
 
+mode ORIENTATION_MODE;
+ORIENTATIONTYPE: ( 'FORWARD' | 'REVERSE' ) -> popMode;
+
+mode END_MODE;
+PRIORITY: ( 'PRIMARY' | 'SECONDARY' ) -> popMode; /*offsetThreshold -> end*/
+INT_NUMBER2: [0-9]+ -> popMode; /*taxiway -> end */
+
+mode LEFT_RIGHT_MODE;
+LEFT_RIGHT: ('LEFT' | 'RIGHT') -> popMode ;
+
+mode AIRLINECODES_MODE;
+AIRLINECODESVALUES: ( [A-Z]+(','[A-Z]+)* ) -> popMode ;
 
 mode INTEGER_MODE;
 UnsignedIntegerValue: ([0-9] | ([1-9][0-9]* (DOT '0')?) ) ->popMode;
@@ -343,8 +332,8 @@ UnsignedIntegerValue2: [0-9] | ([1-9][0-9]*);
 /////////////////////////  TYPES COMENTADOS  /////////////////////////
 //////////////////////////////////////////////////////////////////////
 // pus estes types a ler strings normais, em vez das palavras, visto
-// que são vários atributos "type", e diferentes conjuntos de palavras
-// esperadas, não sabia o que fazer.
+// que são vários atributos "type", com conjuntos de palavras
+// que aparecem várias vezes... não sei mt bem o que fazer.
 
 /*
 TYPESFUEL_WORDS: '73'|'87'|'100'|'130'|'145'|'MOGAS'|'JET'|'JETA'

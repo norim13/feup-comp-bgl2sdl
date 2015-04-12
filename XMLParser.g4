@@ -4,76 +4,52 @@ options { tokenVocab=XMLLexer; }
 
 document    :  airport;
 
-
-airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
-
-airportAttributes: 
-	region  
-	| country
-	| state
-	| city 
-	| name
-	| latitude 
-	| longitude 
-	| altitude 
-	| magvar 
-	| ident
-	| airportTestRadius
-	| trafficScalar;
-
-region: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ; 
-
-country: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
-
-state: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
-
-city: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
-
-name: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
-
-latitude: LAT floatingPointValue DOUBLE_QUOTES ;
-
-longitude: LON floatingPointValue DOUBLE_QUOTES; 
-
-altitude: ALT floatingPointValue units?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
-
-magvar:  MAGVAR floatingPointValue DOUBLE_QUOTES ;
-
-ident: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES ; 
-
-airportTestRadius: AIRPORTTESTRADIUS integerValue units /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES ; 
-
-trafficScalar: TRAFFICSCALAR floatingPointValue DOUBLE_QUOTES ; 
-
-
+/////////////////////////////////////////////////////////////////////
+///////////////////////// SOME COMMON ATTRIBUTES ////////////////////
 /////////////////////////////////////////////////////////////////////
 
 type: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
-
 heading: HEADING floatingPointValue DOUBLE_QUOTES; 
-
-length: LENGTH floatingPointValue units?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
-
-width: WIDTH floatingPointValue units?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
-
+length: LENGTH floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
+width: WIDTH floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
 designator: DESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
 
-//////////////////////////////////////////////////////////////////////
 surface: SURFACE SURFACETYPES DOUBLE_QUOTES;
 number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-36*/
 frequency:FREQUENCY floatingPointValue DOUBLE_QUOTES;
-biasX: BIASX floatingPointValue units? DOUBLE_QUOTES;
-biasY: BIASY floatingPointValue units? DOUBLE_QUOTES;
-biasZ: BIASZ floatingPointValue units? DOUBLE_QUOTES;
+biasX: BIASX floatingPointValue units_all? DOUBLE_QUOTES;
+biasY: BIASY floatingPointValue units_all? DOUBLE_QUOTES;
+biasZ: BIASZ floatingPointValue units_all? DOUBLE_QUOTES;
 
+/////////////////////////////////////////////////////////////////////
+//////////////////////////// SOME DATA TYPES ////////////////////////
+/////////////////////////////////////////////////////////////////////
 yes_no: YES_NO ;
 bool: BOOLEAN ;
 yes_no_bool: YES_NO | BOOLEAN;
 
-units: METERS | FEET | NAUTICALMILES ;
-/////////////////////////////////////////////////////////////////////
+units_all: SINGLE_LETTER_UPPER {
+						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
+							&& !$SINGLE_LETTER_UPPER.text.equals("F")
+							&& !$SINGLE_LETTER_UPPER.text.equals("N")){
+							notifyErrorListeners( "Invalid units... Use only M, F or N." );
+            			}
+					};
+units_meters: SINGLE_LETTER_UPPER {
+						if (!$SINGLE_LETTER_UPPER.text.equals("M")){
+							notifyErrorListeners( "Invalid units... Use only M." );
+            			}
+					};
+units_meters_feet: SINGLE_LETTER_UPPER {
+						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
+							&& !$SINGLE_LETTER_UPPER.text.equals("F")){
+							notifyErrorListeners( "Invalid units... Use only M or F." );
+            			}
+					};					
 
+
+/////////////////////////////////////////////////////////////////////
 
 unsignedIntegerValue: UnsignedIntegerValue;
 
@@ -83,30 +59,77 @@ unsignedFloatValue: UnsignedFloatValue | UnsignedIntegerValue;
 
 floatingPointValue: FloatingPointValue | UnsignedFloatValue | IntegerValue | UnsignedIntegerValue ;
 
-
 /////////////////////////////////////////////////////////////////////
 
-stringLettersMixedCase: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS ;
+stringLettersMixedCase: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | SINGLE_LETTER_UPPER;
 
-stringLettersUpperCase: STRING_LETTERS_UPPERCASE ;
+stringLettersUpperCase: STRING_LETTERS_UPPERCASE | SINGLE_LETTER_UPPER;
 
 stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS 
- 		| STRING_LETTERS_NUMBERS | INT_NUMBER;
+ 		| STRING_LETTERS_NUMBERS | INT_NUMBER | SINGLE_LETTER_UPPER;
+
+
+/////////////////////////////////////////////////////////////////////
+//////////////////////////// ELEMENTS IN XML ////////////////////////
 /////////////////////////////////////////////////////////////////////
 
-airportElements: services* deleteAirport* deletes tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
 
-	services: OpenServices servicesElements EndServices;
+airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
 
-		servicesElements: fuel*;
+	airportAttributes: 
+		region  
+		| country
+		| state
+		| city 
+		| name
+		| latitude 
+		| longitude 
+		| altitude 
+		| magvar 
+		| ident
+		| airportTestRadius
+		| trafficScalar;
 
-			fuel: OpenFuel fuelAttributes SLASH_CLOSE ;
+		region: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ; 
 
-				fuelAttributes: /*typefuel*/type availabilityFuel ;
-			
-					/*typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;*/
+		country: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
 
-					availabilityFuel: AVAILABILITY AVAILABILITY_WORDS DOUBLE_QUOTES ;
+		state: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+		city: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+		name: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+
+		latitude: LAT floatingPointValue DOUBLE_QUOTES ;
+
+		longitude: LON floatingPointValue DOUBLE_QUOTES; 
+
+		altitude: ALT floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
+
+		magvar:  MAGVAR floatingPointValue DOUBLE_QUOTES ;
+
+		ident: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES ; 
+
+		airportTestRadius: AIRPORTTESTRADIUS integerValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES ; 
+
+		trafficScalar: TRAFFICSCALAR floatingPointValue DOUBLE_QUOTES ; 
+
+
+////////////////////////////////////////////////////////////////
+
+	airportElements: services* deleteAirport* deletes tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
+
+		services: OpenServices servicesElements EndServices;
+
+			servicesElements: fuel*;
+
+				fuel: OpenFuel fuelAttributes SLASH_CLOSE ;
+
+					fuelAttributes: /*typefuel*/type availabilityFuel ;
+				
+						/*typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;*/
+
+						availabilityFuel: AVAILABILITY AVAILABILITY_WORDS DOUBLE_QUOTES ;
 	
 	
 	
@@ -140,7 +163,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 	runway: OpenRunway runwayAttributes CLOSE runwayElements EndRunway;
 
-		runwayAttributes:  latitude longitude altitude surface heading			/*heading devia ser de 0 a 360?*/
+		runwayAttributes:  latitude longitude altitude surface heading	/*heading -> 0 a 360?*/
 							length width number designator? primaryDesignator?
 							secondaryDesignator? patternAltitude? primaryTakeoff?
 							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
@@ -150,23 +173,23 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 			secondaryDesignator: SECONDARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
-			patternAltitude: PATTERNALTITUDE floatingPointValue units?/*M | F */ DOUBLE_QUOTES; 
+			patternAltitude: PATTERNALTITUDE floatingPointValue units_meters_feet?/*M | F */ DOUBLE_QUOTES; 
 
 			primaryTakeoff : PRIMARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
 
 			primaryLanding : PRIMARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
 
-			primaryPattern : PRIMARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+			primaryPattern : PRIMARYPATTERN LEFT_RIGHT DOUBLE_QUOTES;
 
 			secondaryTakeoff : SECONDARYTAKEOFF EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
 
 			secondaryLanding : SECONDARYLANDING EQUALS DOUBLE_QUOTES yes_no_bool DOUBLE_QUOTES;
 
-			secondaryPattern : SECONDARYPATTERN EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
+			secondaryPattern : SECONDARYPATTERN LEFT_RIGHT DOUBLE_QUOTES;
 
-			primaryMarkingBias: PRIMARYMARKINGBIAS floatingPointValue units /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
+			primaryMarkingBias: PRIMARYMARKINGBIAS floatingPointValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
 
-			secondaryMarkingBias: SECONDARYMARKINGBIAS floatingPointValue units /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
+			secondaryMarkingBias: SECONDARYMARKINGBIAS floatingPointValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
 
 			
 			runwayElements: markings* lights* offsetThreshold* blastPad* overrun* approachLights* vasi* ils*;
@@ -204,7 +227,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 					offsetThresholdAttributes: end length width? surface?;
 
-						end: END EQUALS DOUBLE_QUOTES PRIORITY DOUBLE_QUOTES;
+						end: END PRIORITY DOUBLE_QUOTES;
 
 
 				blastPad: OpenBlastPad blastPadAttributes SLASH_CLOSE;
@@ -231,8 +254,8 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 					vasiAttributes: end type side biasX biasZ spacing pitch;
 
-						side: SIDE EQUALS DOUBLE_QUOTES LEFT_RIGHT DOUBLE_QUOTES;
-						spacing: SPACING unsignedFloatValue units? DOUBLE_QUOTES;
+						side: SIDE LEFT_RIGHT DOUBLE_QUOTES;
+						spacing: SPACING unsignedFloatValue units_all? DOUBLE_QUOTES;
 						pitch: PITCH floatingPointValue DOUBLE_QUOTES;/*0.0-9.9*/
 
 
@@ -261,10 +284,9 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 	com: OpenCom comAttributes SLASH_CLOSE;
 
-		comAttributes: frequency type nameCom ;
+		comAttributes: frequency type /*nameCom*/name ;
 
-
-			nameCom: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ;
+			/*nameCom: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ;*/
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +297,7 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 			taxiway_index: INDEX unsignedIntegerValue DOUBLE_QUOTES; /*0-3999*/
 			/*taxiwaypoint_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPOINTTYPE DOUBLE_QUOTES; */
-			taxiway_orientation: ORIENTATION EQUALS DOUBLE_QUOTES ORIENTATIONTYPE DOUBLE_QUOTES; 
+			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
 
 	/*-------------------------------TaxiwayParking-----------------------------------------------------*/
 	taxiwayParking: OpenTaxiwayParking taxiwayParkingAttributes SLASH_CLOSE; 
@@ -283,13 +305,12 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 		taxiwayParkingAttributes: taxiway_index ( (latitude longitude) | (biasX biasY) ) heading taxiway_radius /*taxiwayparking_type*/type taxiwayparking_name taxiway_number taxiway_airlineCodes? taxiway_pushBack taxiway_teeOffset*;
 
 			//index: INDEX EQUALS INDEXVALUE; 
-			taxiwayparking_orientation: ORIENTATION EQUALS DOUBLE_QUOTES ORIENTATIONTYPE DOUBLE_QUOTES; 
 			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
-			taxiway_radius: RADIUS floatingPointValue METERS? DOUBLE_QUOTES;
+			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
 			/*taxiwayparking_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPARKINGTYPE DOUBLE_QUOTES;*/
 			taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES NAMETAXIWAYPARKING DOUBLE_QUOTES;
 			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999*/
-			taxiway_airlineCodes: AIRLINECODES EQUALS DOUBLE_QUOTES AIRLINECODESVALUES DOUBLE_QUOTES;
+			taxiway_airlineCodes: AIRLINECODES AIRLINECODESVALUES DOUBLE_QUOTES;
 			taxiway_pushBack: PUSHBACK PUSHBACKVALUES DOUBLE_QUOTES;
 			taxiway_teeOffset: TEEOFFSET floatingPointValue DOUBLE_QUOTES;/*0.1-50.0*/
 
@@ -306,13 +327,13 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 
 		taxiwayPathAttributes: type | taxiway_start | taxiway_end | width | taxiway_weightLimit | surface | taxiway_drawSurface 
 							| taxiway_drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
-							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | taxiway_designator | taxiway_name;
+							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiway_name;
 
 			/*taxiwaypath_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPATHTYPE DOUBLE_QUOTES;*/
 			
 			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999*/
 			
-			taxiway_end: END EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES; /*0-3999*/
+			taxiway_end: END INT_NUMBER2 DOUBLE_QUOTES; /*0-3999*/
 			
 			/*taxiway_width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;*/
 			
@@ -333,8 +354,6 @@ airportElements: services* deleteAirport* deletes tower* runway* start* com* tax
 			taxiway_rightEdge: RIGHTEDGE EDGETYPE DOUBLE_QUOTES;
 			
 			taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
-			
-			taxiway_designator: DESIGNATOR EQUALS DOUBLE_QUOTES DESIGNATORTYPES DOUBLE_QUOTES;
 			
 			taxiway_name: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES;
 			

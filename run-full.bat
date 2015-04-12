@@ -1,0 +1,1 @@
+antlr4 XMLLexer.g4 && antlr4 XMLParser.g4 && javac *.java && java TestXML "aeroporto completo.xml"
