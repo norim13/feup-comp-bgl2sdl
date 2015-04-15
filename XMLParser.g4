@@ -33,17 +33,20 @@ units_all: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
 							&& !$SINGLE_LETTER_UPPER.text.equals("F")
 							&& !$SINGLE_LETTER_UPPER.text.equals("N")){
+							System.out.println("1");
 							notifyErrorListeners( "Invalid units... Use only M, F or N." );
             			}
 					};
 units_meters: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M")){
+							System.out.println("2");
 							notifyErrorListeners( "Invalid units... Use only M." );
             			}
 					};
 units_meters_feet: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
 							&& !$SINGLE_LETTER_UPPER.text.equals("F")){
+							System.out.println("3");
 							notifyErrorListeners( "Invalid units... Use only M or F." );
             			}
 					};					
@@ -308,7 +311,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
 			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
 			/*taxiwayparking_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPARKINGTYPE DOUBLE_QUOTES;*/
-			taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES NAMETAXIWAYPARKING DOUBLE_QUOTES;
+			taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES /*NAMETAXIWAYPARKING*/stringLettersUpperCase DOUBLE_QUOTES;
 			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999*/
 			taxiway_airlineCodes: AIRLINECODES AIRLINECODESVALUES DOUBLE_QUOTES;
 			taxiway_pushBack: PUSHBACK PUSHBACKVALUES DOUBLE_QUOTES;
