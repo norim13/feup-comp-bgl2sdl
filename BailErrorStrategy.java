@@ -9,7 +9,7 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
 	 */
 	@Override
 	public void recover(Parser recognizer, RecognitionException e) {
-		recognizer.notifyErrorListeners("errororororororo3");
+		//recognizer.notifyErrorListeners("errororororororo3");
 		throw new RuntimeException(e);
 	}
 
@@ -19,7 +19,7 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
 	 */
 	@Override
 	public Token recoverInline(Parser recognizer) throws RecognitionException {
-		recognizer.notifyErrorListeners("errororororororo2");
+		//recognizer.notifyErrorListeners("errororororororo2");
 		//throw new RuntimeException(new InputMismatchException(recognizer));
 		return null;
 		
@@ -28,7 +28,7 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
 	/** Make sure we don't attempt to recover from problems in subrules. */
 	@Override
 	public void sync(Parser recognizer) {
-		//recognizer.notifyErrorListeners("errororororororo1");
+		recognizer.notifyErrorListeners("errororororororo1");
 	}
 
 	@Override

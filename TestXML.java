@@ -39,8 +39,8 @@ class TestXML{
 	    ParserInterpreter parser = pg.createParserInterpreter(tokens);
 
             //COMENTAR LINHAS ABAIXO PARA VER ERROS DEFAULT DO ANTLR4
-	    	parser.removeErrorListeners();
-            parser.addErrorListener(new ErrorListener());
+	    	//parser.removeErrorListeners();
+            //parser.addErrorListener(new ErrorListener());
            // parser.setErrorHandler(new BailErrorStrategy());
             
           

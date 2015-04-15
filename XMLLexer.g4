@@ -171,19 +171,9 @@ RIGHTEDGELIGHTED: 'rightEdgeLighted';
 //////////////////////////////////////////////////////////////////////
 ///////////////////////////////// WORDS //////////////////////////////
 //////////////////////////////////////////////////////////////////////
-// estas palavras todas talvez devessem estar também em modes
-// mas não sei bem como o fazer
 
 YES_NO: 'YES' | 'NO' ;
 BOOLEAN: 'TRUE' | 'FALSE' ;
-
-NAMETAXIWAYPARKING:
-'PARKING'
-| 'DOCK'
-| 'GATE'
-| 'GATE_'[A-Z] 
-| 'NONE'
-| ['N'|'NE'|'NW'|'SE'|'S'|'SW'|'W'|'E']'_PARKING';
 
 
 //////////////////////////////////////////////////////////////////////
@@ -393,4 +383,18 @@ TAXIWAYPARKINGTYPE:
 | 'RAMP_MIL_'['CARGO'|'COMBAT']
 | 'VEHICLE';
 
+*/
+
+///////////////// NAME COMENTADO //////////////
+/* este name também está comentado pois há um name que leva isto, 
+   e outro que é uma string qq */
+
+/*
+NAMETAXIWAYPARKING:
+'PARKING'
+| 'DOCK'
+| 'GATE'
+| 'GATE_'[A-Z] 
+| 'NONE'
+| ['N'|'NE'|'NW'|'SE'|'S'|'SW'|'W'|'E']'_PARKING';
 */
