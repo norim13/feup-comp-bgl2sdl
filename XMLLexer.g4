@@ -38,6 +38,13 @@ PRIMARYPATTERN : 'primaryPattern="' -> pushMode(LEFT_RIGHT_MODE);
 SECONDARYPATTERN: 'secondaryPattern="' -> pushMode(LEFT_RIGHT_MODE);
 SIDE: 'side="' -> pushMode(LEFT_RIGHT_MODE);
 
+GATENAME: 'gateName="' -> pushMode (GATENAME_MODE);
+WAYPOINTTYPE: 'waypointType="' -> pushMode(WAYPOINTTYPE_MODE);
+ROUTETYPE: 'routeType="' -> pushMode(ROUTETYPE_MODE);
+
+INSTANCE_ID: 'instanceId="' -> pushMode(GUID_MODE);
+PROFILE: 'profile="' -> pushMode(GUID_MODE);
+
 /////////////////////FLOATS///////////////////////
 LAT: 'lat="' -> pushMode(FLOAT_MODE);
 LON: 'lon="'-> pushMode(FLOAT_MODE);
@@ -60,6 +67,7 @@ BIASX: 'biasX="'-> pushMode(FLOAT_MODE);
 BIASY: 'biasY="'-> pushMode(FLOAT_MODE);
 BIASZ: 'biasZ="'-> pushMode(FLOAT_MODE);
 
+ALTITUDEMINIMUM: 'altitudeMinimum="' -> pushMode(FLOAT_MODE) ;
 
 /////////////////////INTEGERS///////////////////////
 STROBES: 'strobes="' -> pushMode(INTEGER_MODE);
@@ -67,6 +75,7 @@ INDEX: 'index="' -> pushMode(INTEGER_MODE);
 START: 'start="' -> pushMode(INTEGER_MODE);
 AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
 RADIUS: 'radius="' -> pushMode(INTEGER_MODE);
+PARKINGNUMBER: 'parkingNumber="' -> pushMode(INTEGER_MODE);
 
 
 //////////////////////////////////////////////////////////////////
@@ -101,6 +110,17 @@ OpenTaxiwayParking: '<TaxiwayParking';
 OpenTaxiwayPath: '<TaxiwayPath';
 OpenTaxiName: '<TaxiName';
 
+OpenJetway: '<Jetway';
+StartAprons: '<Aprons>'
+OpenApron: '<Apron' ;
+OpenVertex: '<Vertex';
+StartApronEdgeLights: '<ApronEdgeLights>'
+StartEdgeLights: '<EdgeLights>';
+OpenTaxiwaySign: '<TaxiwaySign';
+OpenWaypoint: '<Waypoint' ;
+OpenPrevious: '<Previous';
+OpenNext: '<Next';
+OpenBoundaryFence: '<BoundaryFence';
 
 /* End Elements */
 EndAirport: '</Airport>';
@@ -108,8 +128,13 @@ EndServices: '</Services>' ;
 EndRunway: '</Runway>' ;
 EndTower: '</Tower>' ;
 CloseIls: '</Ils>';
-
-
+CloseJetway: '</Jetway>';
+CloseAprons: '</Aprons>';
+EndApron:  '</Apron>' ;
+EndApronEdgeLights: '</ApronEdgeLights>;'
+EndEdgeLights: '</EdgeLights>';
+EndWaypoint: '</Waypoint>';
+CloseBoundaryFence: '</BoundaryFence>';
 //////////////////////////////////////////////////////////////////////
 //////////////////////////// ATRIBUTE NAMES //////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -152,6 +177,9 @@ CENTERLINE: 'centerLine';
 CENTERLINELIGHTED: 'centerLineLighted';
 LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
+
+WAYPOINTREGION: 'waypointRegion';
+WAYPOINTIDENT: 'waypointIdent' ;
 
  DELETEAIRPORTATRIBUTES: 
 'deleteAllApproaches'		|
@@ -316,7 +344,41 @@ UnsignedFloatValue: UnsignedIntegerValue2 (DOT [0-9]+)? -> popMode;
 FloatingPointValue: IntegerValue (DOT [0-9]+)? ->popMode;
 UnsignedIntegerValue2: [0-9] | ([1-9][0-9]*);
 
+mode GATENAME_MODE;
+GATENAME_WORDS:
+	( 'PARKING'
+	| 'DOCK'
+	| 'GATE'
+	| 'GATE_'[A-Z] 
+	| 'NONE'
+	| ['N'|'NE'|'NW'|'SE'|'S'|'SW'|'W'|'E']'_PARKING' ) -> popMode;
 
+
+mode WAYPOINTTYPE_MODE;
+WAYPOINTTYPE_WORDS: 
+	 ('NAMED'
+	| 'UNNAMED'
+	| 'VOR'
+	| 'NDB'
+	| 'OFF_ROUTE'
+	| 'IAF'
+	| 'FAF' ) -> popMode;
+
+mode ROUTETYPE_MODE;
+ROUTETYPE_WORDS: ('VICTOR' | 'JET' | 'BOTH') -> popMode;
+
+mode GUID_MODE;
+GUID: ('{' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID
+	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
+	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
+	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
+	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
+			FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
+			FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID '}' ) ->popMode
+
+
+
+fragment FRAG_GUID: [a-zA-Z0-9] ;
 
 //////////////////////////////////////////////////////////////////////
 /////////////////////////  TYPES COMENTADOS  /////////////////////////

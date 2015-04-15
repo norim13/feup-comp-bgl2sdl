@@ -120,7 +120,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 ////////////////////////////////////////////////////////////////
 
-	airportElements: services* deleteAirport* deletes tower* runway* start* com* taxiwayPoint* taxiwayParking* taxiName* taxiwayPath*;
+	airportElements: services* deleteAirport* deletes tower* runway* start* com* 
+		taxiwayPoint* taxiwayParking* taxiName* taxiwayPath* jetway*
+		aprons* apronEdgeLights* boundaryFence* blastFence* waypoint*;
 
 		services: OpenServices servicesElements EndServices;
 
@@ -328,8 +330,8 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
 	taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes* SLASH_CLOSE;
 
-		taxiwayPathAttributes: type | taxiway_start | taxiway_end | width | taxiway_weightLimit | surface | taxiway_drawSurface 
-							| taxiway_drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
+		taxiwayPathAttributes: type | taxiway_start | taxiway_end | width | taxiway_weightLimit | surface | drawSurface 
+							| drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
 							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiway_name;
 
 			/*taxiwaypath_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPATHTYPE DOUBLE_QUOTES;*/
@@ -342,9 +344,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			
 			taxiway_weightLimit: WEIGHTLIMIT floatingPointValue DOUBLE_QUOTES;
 			
-			taxiway_drawSurface: DRAWSURFACE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+			drawSurface: DRAWSURFACE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
-			taxiway_drawDetail: DRAWDETAIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+			drawDetail: DRAWDETAIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
 			taxiway_centerLine: CENTERLINE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
@@ -359,5 +361,82 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
 			taxiway_name: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES;
-			
 
+
+	jetway: OpenJetway jetwayAttributes CLOSE jetwayElements CloseJetway;
+
+		jetwayAttributes: gateName parkingNumber;
+
+			gateName: GATENAME GATENAME_WORDS DOUBLE_QUOTES;
+
+			parkingNumber: PARKINGNUMBER UnsignedIntegerValue DOUBLE_QUOTES;
+
+		jetwayElements: ;
+
+	aprons: StartAprons apron* CloseAprons;
+
+		apron: OpenApron apronAttributes CLOSE vertex* EndApron;
+
+			apronAttributes: surface drawSurface drawDetail;
+
+			vertex: OpenVertex vertexAttributes SLASH_CLOSE;
+
+				vertexAttributes: (latitude longitude) | (biasX biasY);
+
+	apronEdgeLights: StartApronEdgeLights apronEdgeLightsElements EndApronEdgeLights;
+
+		apronEdgeLightsElements: edgeLights* ;
+
+			edgeLights: StartEdgeLights vertex* EndEdgeLights;
+
+	/* TODO taxiwaySign: OpenTaxiwaySign taxiwaySignAttributes SLASH_CLOSE;
+
+		taxiwaySignAttributes: latitude longitude heading; */
+
+
+	boundaryFence : OpenBoundaryFence boundaryFenceAttributes* SLASH_CLOSE boundaryFenceElements*;
+
+		boundaryFenceAttributes: instanceId | profile  ;
+		  
+			instanceId: INSTANCE_ID GUID DOUBLE_QUOTES; 
+
+			profile: PROFILE GUID DOUBLE_QUOTES;
+
+		boundaryFenceElements: vertex vertex vertex* ;
+
+
+	blastFence : OpenBlastFence blastFenceAttributes* SLASH_CLOSE blastFenceElements*;
+
+		blastFenceAttributes: instanceId | profile  ;
+
+		blastFenceElements: vertex vertex vertex* ;
+
+
+	waypoint: OpenWaypoint waypointAttributes CLOSE waypointElements EndWaypoint;
+
+		waypointAttributes: latitude longitude type waypointType magvar
+			waypointRegion waypointIdent;
+
+			waypointType: WAYPOINTTYPE WAYPOINTTYPE_WORDS DOUBLE_QUOTES;
+
+			waypointRegion: WAYPOINTREGION DOUBLE_QUOTES EQUALS stringLettersNumbers DOUBLE_QUOTES;
+
+			waypointIdent: WAYPOINTIDENT DOUBLE_QUOTES EQUALS stringLettersNumbers DOUBLE_QUOTES;
+
+		waypointElements: route* ;
+
+			route: OpenRoute routeAttributes CLOSE routeElements EndRoute;
+
+				routeAttributes: routeType name ;
+
+					routeType: ROUTETYPE ROUTETYPE_WORDS DOUBLE_QUOTES ; 
+
+				routeElements: previous* next* ;
+
+					previous: OpenPrevious previousAttributes SLASH_CLOSE;
+
+						previousAttributes: waypointType waypointRegion waypointIdent altitudeMinimum;
+
+							altitudeMinimum: ALTITUDEMINIMUM floatingPointValue DOUBLE_QUOTES;
+
+					next: OpenNext previousAttributes SLASH_CLOSE;
