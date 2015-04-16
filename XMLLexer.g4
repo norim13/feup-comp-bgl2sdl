@@ -111,16 +111,18 @@ OpenTaxiwayPath: '<TaxiwayPath';
 OpenTaxiName: '<TaxiName';
 
 OpenJetway: '<Jetway';
-StartAprons: '<Aprons>'
+StartAprons: '<Aprons>' ;
 OpenApron: '<Apron' ;
 OpenVertex: '<Vertex';
-StartApronEdgeLights: '<ApronEdgeLights>'
+StartApronEdgeLights: '<ApronEdgeLights>' ;
 StartEdgeLights: '<EdgeLights>';
 OpenTaxiwaySign: '<TaxiwaySign';
 OpenWaypoint: '<Waypoint' ;
 OpenPrevious: '<Previous';
 OpenNext: '<Next';
+OpenRoute: '<Route' ;
 OpenBoundaryFence: '<BoundaryFence';
+OpenBlastFence: '<BlastFence';
 
 /* End Elements */
 EndAirport: '</Airport>';
@@ -131,10 +133,12 @@ CloseIls: '</Ils>';
 CloseJetway: '</Jetway>';
 CloseAprons: '</Aprons>';
 EndApron:  '</Apron>' ;
-EndApronEdgeLights: '</ApronEdgeLights>;'
+EndApronEdgeLights: '</ApronEdgeLights>' ;
 EndEdgeLights: '</EdgeLights>';
 EndWaypoint: '</Waypoint>';
+EndRoute: '</Route>' ;
 CloseBoundaryFence: '</BoundaryFence>';
+CloseBlastFence: '</BlastFence>';
 //////////////////////////////////////////////////////////////////////
 //////////////////////////// ATRIBUTE NAMES //////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -374,7 +378,7 @@ GUID: ('{' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID
 	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
 	'-' FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
 			FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID 
-			FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID '}' ) ->popMode
+			FRAG_GUID FRAG_GUID FRAG_GUID FRAG_GUID '}' ) ->popMode ;
 
 
 
