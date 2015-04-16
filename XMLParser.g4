@@ -128,9 +128,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 			servicesElements: fuel*;
 
-				fuel: OpenFuel fuelAttributes SLASH_CLOSE ;
+				fuel: OpenFuel fuelAttributes* SLASH_CLOSE;
 
-					fuelAttributes: /*typefuel*/type availabilityFuel ;
+					fuelAttributes: /*typefuel*/ type | availabilityFuel;
 				
 						/*typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;*/
 
@@ -138,41 +138,39 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 	
 	
 	
-	deletes:	deleteAirport* deleteRunway* deleteStart* deleteFrequency*;
+	deletes: deleteAirport* deleteRunway* deleteStart* deleteFrequency*;
 	
 	deleteAirport: OpenDeleteAirport deleteAirportAttributes* SLASH_CLOSE;
 	
 		deleteAirportAttributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
-	deleteRunway: OpenDeleteRunway deleteRunwayAttributes SLASH_CLOSE;
+	deleteRunway: OpenDeleteRunway deleteRunwayAttributes* SLASH_CLOSE;
 	
-		deleteRunwayAttributes: surface number designator;
+		deleteRunwayAttributes: surface | number | designator;
 		
-	deleteStart: OpenDeleteStart deleteStartAttributes SLASH_CLOSE;
+	deleteStart: OpenDeleteStart deleteStartAttributes* SLASH_CLOSE;
 		
-		deleteStartAttributes: /*typeDeleteStart*/type number designator?;
+		deleteStartAttributes: /*typeDeleteStart*/type | number | designator;
 
 			/*typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;*/
 	
-	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes SLASH_CLOSE;
+	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes* SLASH_CLOSE;
 		
-		deleteFrequencyAttributes: frequency /*typeDeleteFrequency*/type;
+		deleteFrequencyAttributes: frequency /*typeDeleteFrequency*/ | type;
 		
 			/*typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;*/
 		
-		
-	
-	tower: OpenTower towerAttributes ( SLASH_CLOSE | (CLOSE EndTower) );
+	tower: OpenTower towerAttributes* ( SLASH_CLOSE | (CLOSE EndTower) );
 
-		towerAttributes: latitude longitude altitude  ;
+		towerAttributes: latitude | longitude | altitude  ;
 
-	runway: OpenRunway runwayAttributes CLOSE runwayElements EndRunway;
+	runway: OpenRunway runwayAttributes* CLOSE runwayElements EndRunway;
 
-		runwayAttributes:  latitude longitude altitude surface heading	/*heading -> 0 a 360?*/
-							length width number designator? primaryDesignator?
-							secondaryDesignator? patternAltitude? primaryTakeoff?
-							primaryLanding? primaryPattern? secondaryTakeoff? secondaryLanding? secondaryPattern?
-							primaryMarkingBias? secondaryMarkingBias?; 
+		runwayAttributes:  latitude | longitude | altitude | surface | heading	/*heading -> 0 a 360*/
+							| length | width | number | designator | primaryDesignator
+							| secondaryDesignator | patternAltitude | primaryTakeoff
+							| primaryLanding | primaryPattern | secondaryTakeoff | secondaryLanding | secondaryPattern
+							| primaryMarkingBias | secondaryMarkingBias; 
 
 			primaryDesignator: PRIMARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
@@ -195,15 +193,14 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			primaryMarkingBias: PRIMARYMARKINGBIAS floatingPointValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
 
 			secondaryMarkingBias: SECONDARYMARKINGBIAS floatingPointValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES;
-
 			
 			runwayElements: markings* lights* offsetThreshold* blastPad* overrun* approachLights* vasi* ils*;
 
-				markings: OpenMarkings markingAttributes SLASH_CLOSE;
+				markings: OpenMarkings markingAttributes* SLASH_CLOSE;
 
-					markingAttributes:edges threshold fixedDistance touchdown dashes
-						identMarkings precision edgePavement singleEnd primaryClosed		
-						secondaryClosed primaryStol secondaryStol;
+					markingAttributes: edges | threshold | fixedDistance | touchdown | dashes
+						| identMarkings | precision | edgePavement | singleEnd | primaryClosed		
+						| secondaryClosed | primaryStol | secondaryStol;
 
 						edges: EDGES EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						threshold: THRESHOLD EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
@@ -219,54 +216,51 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 						primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
-				lights: OpenLight lightAttributes SLASH_CLOSE;
+				lights: OpenLight lightAttributes* SLASH_CLOSE;
 
-					lightAttributes: center edge centerRed;
+					lightAttributes: center | edge | centerRed;
 
 						center: CENTER LEVELS DOUBLE_QUOTES ;
 						edge: EDGE LEVELS DOUBLE_QUOTES;
 						centerRed: CENTER_RED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
 
-				offsetThreshold: OpenOffsetThreshold offsetThresholdAttributes SLASH_CLOSE;
+				offsetThreshold: OpenOffsetThreshold offsetThresholdAttributes* SLASH_CLOSE;
 
-					offsetThresholdAttributes: end length width? surface?;
+					offsetThresholdAttributes: end | length | width | surface;
 
 						end: END PRIORITY DOUBLE_QUOTES;
 
 
-				blastPad: OpenBlastPad blastPadAttributes SLASH_CLOSE;
+				blastPad: OpenBlastPad blastPadAttributes* SLASH_CLOSE;
 
-					blastPadAttributes: end length width? surface?;
+					blastPadAttributes: end | length | width | surface;
 
+				overrun: OpenOverrun overrunAttributes* SLASH_CLOSE;
 
-				overrun: OpenOverrun overrunAttributes SLASH_CLOSE;
+					overrunAttributes: end | length | width | surface;
 
-					overrunAttributes: end length width? surface?;
+				approachLights: OpenApproachLights approachLightsAttributes* SLASH_CLOSE;
 
-
-				approachLights: OpenApproachLights approachLightsAttributes SLASH_CLOSE;
-
-					approachLightsAttributes: end system? strobes? reil? touchdown? endLights?;
+					approachLightsAttributes: end | system | strobes | reil | touchdown | endLights;
 
 						system: SYSTEM SYSTEM_OPTIONS DOUBLE_QUOTES;
 						strobes: STROBES unsignedIntegerValue DOUBLE_QUOTES;
 						reil: REIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						endLights: ENDLIGHTS EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES; 
 
+				vasi: OpenVasi vasiAttributes* SLASH_CLOSE;
 
-				vasi: OpenVasi vasiAttributes SLASH_CLOSE;
-
-					vasiAttributes: end type side biasX biasZ spacing pitch;
+					vasiAttributes: end | type | side | biasX | biasZ | spacing | pitch;
 
 						side: SIDE LEFT_RIGHT DOUBLE_QUOTES;
 						spacing: SPACING unsignedFloatValue units_all? DOUBLE_QUOTES;
 						pitch: PITCH floatingPointValue DOUBLE_QUOTES;/*0.0-9.9*/
 
+				ils: OpenIls ilsAttributes* ilsElements CLOSE CloseIls;
 
-				ils: OpenIls ilsAttributes ilsElements CLOSE CloseIls;
-
-					ilsAttributes: latitude longitude altitude heading frequency end range magvar ident width? name? backCourse?; 
+					ilsAttributes: latitude | longitude | altitude | heading | frequency 
+									| end | range | magvar | ident | width | name | backCourse; 
 					
 						range: RANGE unsignedFloatValue DOUBLE_QUOTES;
 
@@ -276,38 +270,37 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 
 
-
-
-
   /* -----------------------------------------------------------*/
 		
 
 
-	start: OpenStart startAttributes SLASH_CLOSE;
+	start: OpenStart startAttributes* SLASH_CLOSE;
 
-		startAttributes: type? latitude longitude altitude heading number? designator? ;
+		startAttributes: type | latitude | longitude | altitude | heading | number | designator;
 
-	com: OpenCom comAttributes SLASH_CLOSE;
+	com: OpenCom comAttributes* SLASH_CLOSE;
 
-		comAttributes: frequency type /*nameCom*/name ;
+		comAttributes: frequency | type | /*nameCom*/name ;
 
 			/*nameCom: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ;*/
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /* -------------------TAXIWAYPOINT -----------------------------------------------------------------*/
-	taxiwayPoint: OpenTaxiwayPoint taxiwayPointAttributes SLASH_CLOSE; 
+	taxiwayPoint: OpenTaxiwayPoint taxiwayPointAttributes* SLASH_CLOSE; 
 
-		taxiwayPointAttributes: taxiway_index /*taxiwaypoint_type*/type taxiway_orientation? (latitude longitude | biasX biasY);
+		taxiwayPointAttributes: taxiway_index |/*taxiwaypoint_type*/type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
 
 			taxiway_index: INDEX unsignedIntegerValue DOUBLE_QUOTES; /*0-3999*/
 			/*taxiwaypoint_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPOINTTYPE DOUBLE_QUOTES; */
 			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
 
 	/*-------------------------------TaxiwayParking-----------------------------------------------------*/
-	taxiwayParking: OpenTaxiwayParking taxiwayParkingAttributes SLASH_CLOSE; 
+	taxiwayParking: OpenTaxiwayParking taxiwayParkingAttributes* SLASH_CLOSE; 
 
-		taxiwayParkingAttributes: taxiway_index ( (latitude longitude) | (biasX biasY) ) heading taxiway_radius /*taxiwayparking_type*/type taxiwayparking_name taxiway_number taxiway_airlineCodes? taxiway_pushBack taxiway_teeOffset*;
+		taxiwayParkingAttributes: taxiway_index | ((latitude longitude) | (biasX biasY)) | heading 
+									| taxiway_radius /*taxiwayparking_type*/ | type | taxiwayparking_name 
+									| taxiway_number | taxiway_airlineCodes | taxiway_pushBack | taxiway_teeOffset+;
 
 			//index: INDEX EQUALS INDEXVALUE; 
 			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
@@ -320,9 +313,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			taxiway_teeOffset: TEEOFFSET floatingPointValue DOUBLE_QUOTES;/*0.1-50.0*/
 
 	/*--------------------------------------TAXINAME-------------------------------*/
-	taxiName: OpenTaxiName taxiNameAttributes SLASH_CLOSE;
+	taxiName: OpenTaxiName taxiNameAttributes* SLASH_CLOSE;
 
-		taxiNameAttributes: taxiNameIndex taxiNameName;
+		taxiNameAttributes: taxiNameIndex | taxiNameName;
 
 			taxiNameIndex: INDEX unsignedIntegerValue DOUBLE_QUOTES;/*0-255*/
 			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES;
@@ -363,9 +356,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			taxiway_name: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES;
 
 
-	jetway: OpenJetway jetwayAttributes CLOSE jetwayElements CloseJetway;
+	jetway: OpenJetway jetwayAttributes* CLOSE jetwayElements CloseJetway;
 
-		jetwayAttributes: gateName parkingNumber;
+		jetwayAttributes: gateName | parkingNumber;
 
 			gateName: GATENAME GATENAME_WORDS DOUBLE_QUOTES;
 
@@ -375,13 +368,13 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 	aprons: StartAprons apron* CloseAprons;
 
-		apron: OpenApron apronAttributes CLOSE vertex* EndApron;
+		apron: OpenApron apronAttributes* CLOSE vertex* EndApron;
 
-			apronAttributes: surface drawSurface drawDetail;
+			apronAttributes: surface | drawSurface | drawDetail;
 
 			vertex: OpenVertex vertexAttributes SLASH_CLOSE;
 
-				vertexAttributes: (latitude longitude) | (biasX biasY);
+				vertexAttributes: (latitude | longitude) | (biasX | biasY);
 
 	apronEdgeLights: StartApronEdgeLights apronEdgeLightsElements EndApronEdgeLights;
 
@@ -412,10 +405,10 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 		blastFenceElements: vertex vertex vertex* ;
 
 
-	waypoint: OpenWaypoint waypointAttributes CLOSE waypointElements EndWaypoint;
+	waypoint: OpenWaypoint waypointAttributes* CLOSE waypointElements EndWaypoint;
 
-		waypointAttributes: latitude longitude type waypointType magvar
-			waypointRegion waypointIdent;
+		waypointAttributes: latitude | longitude | type | waypointType | magvar
+							| waypointRegion | waypointIdent;
 
 			waypointType: WAYPOINTTYPE WAYPOINTTYPE_WORDS DOUBLE_QUOTES;
 
@@ -425,18 +418,18 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 		waypointElements: route* ;
 
-			route: OpenRoute routeAttributes CLOSE routeElements EndRoute;
+			route: OpenRoute routeAttributes* CLOSE routeElements EndRoute;
 
-				routeAttributes: routeType name ;
+				routeAttributes: routeType | name ;
 
 					routeType: ROUTETYPE ROUTETYPE_WORDS DOUBLE_QUOTES ; 
 
 				routeElements: previous* next* ;
 
-					previous: OpenPrevious previousAttributes SLASH_CLOSE;
+					previous: OpenPrevious previousAttributes* SLASH_CLOSE;
 
-						previousAttributes: waypointType waypointRegion waypointIdent altitudeMinimum;
+						previousAttributes: waypointType | waypointRegion | waypointIdent | altitudeMinimum;
 
 							altitudeMinimum: ALTITUDEMINIMUM floatingPointValue DOUBLE_QUOTES;
 
-					next: OpenNext previousAttributes SLASH_CLOSE;
+					next: OpenNext previousAttributes* SLASH_CLOSE;
