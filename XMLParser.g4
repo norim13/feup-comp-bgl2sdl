@@ -9,7 +9,18 @@ document    :  airport;
 /////////////////////////////////////////////////////////////////////
 
 type: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
-heading: HEADING floatingPointValue DOUBLE_QUOTES; 
+
+heading returns[float value]: HEADING floatingPointValue DOUBLE_QUOTES{
+	if ($floatingPointValue.value < 0 || $floatingPointValue.value > 360){
+		String err = "Invalid heading... Must be between 0 and 360... ";
+		err = err + "input: " + $floatingPointValue.value;
+		notifyErrorListeners( err );
+		$value = -1;
+	}
+	else $value = $floatingPointValue.value;
+		
+} ;
+
 length: LENGTH floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
 width: WIDTH floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
 designator: DESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
@@ -33,20 +44,17 @@ units_all: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
 							&& !$SINGLE_LETTER_UPPER.text.equals("F")
 							&& !$SINGLE_LETTER_UPPER.text.equals("N")){
-							System.out.println("1");
 							notifyErrorListeners( "Invalid units... Use only M, F or N." );
             			}
 					};
 units_meters: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M")){
-							System.out.println("2");
 							notifyErrorListeners( "Invalid units... Use only M." );
             			}
 					};
 units_meters_feet: SINGLE_LETTER_UPPER {
 						if (!$SINGLE_LETTER_UPPER.text.equals("M") 
 							&& !$SINGLE_LETTER_UPPER.text.equals("F")){
-							System.out.println("3");
 							notifyErrorListeners( "Invalid units... Use only M or F." );
             			}
 					};					
@@ -54,22 +62,33 @@ units_meters_feet: SINGLE_LETTER_UPPER {
 
 /////////////////////////////////////////////////////////////////////
 
-unsignedIntegerValue: UnsignedIntegerValue;
+integerValue returns[int value]: IntegerValue {$value = Integer.parseInt($IntegerValue.text);};
 
-integerValue: IntegerValue | UnsignedIntegerValue;
 
-unsignedFloatValue: UnsignedFloatValue | UnsignedIntegerValue;
 
-floatingPointValue: FloatingPointValue | UnsignedFloatValue | IntegerValue | UnsignedIntegerValue ;
+floatingPointValue returns[float value]: FloatingPointValue {
+												$value = Float.parseFloat($FloatingPointValue.text);
+											};
 
 /////////////////////////////////////////////////////////////////////
 
-stringLettersMixedCase: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS | SINGLE_LETTER_UPPER;
+stringLettersMixedCase returns[String value]: 
+	STRING_LETTERS_LOWERCASE {$value = $STRING_LETTERS_LOWERCASE.text;}| 
+	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;}| 
+	STRING_LETTERS {$value = $STRING_LETTERS.text;}| 
+	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
 
-stringLettersUpperCase: STRING_LETTERS_UPPERCASE | SINGLE_LETTER_UPPER;
+stringLettersUpperCase returns[String value]: 
+	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;} | 
+	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
 
-stringLettersNumbers: STRING_LETTERS_LOWERCASE | STRING_LETTERS_UPPERCASE | STRING_LETTERS 
- 		| STRING_LETTERS_NUMBERS | INT_NUMBER | SINGLE_LETTER_UPPER;
+stringLettersNumbers returns[String value]:  
+	STRING_LETTERS_LOWERCASE {$value = $STRING_LETTERS_LOWERCASE.text;}| 
+	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;}| 
+	STRING_LETTERS {$value = $STRING_LETTERS.text;}| 
+	STRING_LETTERS_NUMBERS {$value = $STRING_LETTERS_NUMBERS.text;}| 
+	INT_NUMBER {$value = $INT_NUMBER.text;}| 
+	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
 
 
 /////////////////////////////////////////////////////////////////////
@@ -93,29 +112,102 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 		| airportTestRadius
 		| trafficScalar;
 
-		region: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ; 
+		region returns[String value]: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+			if ($stringLettersMixedCase.value.length() > 48){
+				notifyErrorListeners("Region too long... Must have a maximum of 48 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersMixedCase.value;
+		} ; 
 
-		country: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+		country returns[String value]: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+			if ($stringLettersMixedCase.value.length() > 48){
+				notifyErrorListeners("Country too long... Must have a maximum of 48 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersMixedCase.value;
+		} ; 
 
-		state: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+		state returns[String value]: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+			if ($stringLettersMixedCase.value.length() > 48){
+				notifyErrorListeners("State too long... Must have a maximum of 48 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersMixedCase.value;
+		} ;  
 
-		city: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+		city returns[String value]: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+			if ($stringLettersMixedCase.value.length() > 48){
+				notifyErrorListeners("City too long... Must have a maximum of 48 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersMixedCase.value;
+		} ;  
 
-		name: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES; 
+		name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+			if ($stringLettersMixedCase.value.length() > 48){
+				notifyErrorListeners("Name too long... Must have a maximum of 48 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersMixedCase.value;
+		} ; 
 
-		latitude: LAT floatingPointValue DOUBLE_QUOTES ;
+		latitude returns[float lat]: LAT floatingPointValue DOUBLE_QUOTES 
+						{
+							if ($floatingPointValue.value < -90 || $floatingPointValue.value > 90){
+								String err = "Invalid latitude... Must be between -90 and 90... ";
+								err = err + "input: " + $floatingPointValue.value;
+								notifyErrorListeners( err );
+							}
+							$lat = $floatingPointValue.value;
+								
+						};
 
-		longitude: LON floatingPointValue DOUBLE_QUOTES; 
+		longitude returns[float lon]: LON floatingPointValue DOUBLE_QUOTES
+				{
+					if ($floatingPointValue.value < -180 || $floatingPointValue.value > 180){
+						String err = "Invalid longitude... Must be between -180 and 180... ";
+						err = err + "input: " + $floatingPointValue.value;
+						notifyErrorListeners( err );
+					}
+					$lon = $floatingPointValue.value;
+						
+				};
 
 		altitude: ALT floatingPointValue units_meters_feet?/*(Meters | Feet)?*/ DOUBLE_QUOTES;
 
-		magvar:  MAGVAR floatingPointValue DOUBLE_QUOTES ;
+		magvar returns[float value]:  MAGVAR floatingPointValue DOUBLE_QUOTES{
+					if ($floatingPointValue.value < -360 || $floatingPointValue.value > 360){
+						String err = "Invalid magvar... Must be between -360 and 360... ";
+						err = err + "input: " + $floatingPointValue.value;
+						notifyErrorListeners( err );
+						$value = 0;
+					}
+					else $value = $floatingPointValue.value;
+						
+				};
 
-		ident: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES ; 
+		ident returns[String value]: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES {
+			if ($stringLettersUpperCase.value.length() > 4){
+				notifyErrorListeners("Ident too long... Must have a maximum of 4 chars!");
+				$value = "invalid_value";
+			}
+			else $value = $stringLettersUpperCase.value;
+		} ;
+
 
 		airportTestRadius: AIRPORTTESTRADIUS integerValue units_all /*(Meters | Feet |NauticalMiles)*/ DOUBLE_QUOTES ; 
 
-		trafficScalar: TRAFFICSCALAR floatingPointValue DOUBLE_QUOTES ; 
+		trafficScalar returns[float value]: TRAFFICSCALAR floatingPointValue DOUBLE_QUOTES{
+					if ($floatingPointValue.value < 0.01 || $floatingPointValue.value > 1){
+						String err = "Invalid trafficScalar... Must be between -0.01 and 1... ";
+						err = err + "input: " + $floatingPointValue.value;
+						notifyErrorListeners( err );
+						$value = -1;
+					}
+					else $value = $floatingPointValue.value;
+						
+				};
 
 
 ////////////////////////////////////////////////////////////////
@@ -130,9 +222,22 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 				fuel: OpenFuel fuelAttributes* SLASH_CLOSE;
 
-					fuelAttributes: /*typefuel*/ type | availabilityFuel;
+					fuelAttributes: typefuel /*type*/ | availabilityFuel;
 				
 						/*typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;*/
+						typefuel returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+							String[] types = {"73", "87", "100", "130", "145", "MOGAS", "JET", "JETA", "JETA1", "JETAP", "JETB", "JET4", "JET5", "UNKNOWN"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersNumbers.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid fuel type... Input: "+$stringLettersNumbers.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersNumbers.value;
+						};
 
 						availabilityFuel: AVAILABILITY AVAILABILITY_WORDS DOUBLE_QUOTES ;
 	
@@ -150,15 +255,39 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 		
 	deleteStart: OpenDeleteStart deleteStartAttributes* SLASH_CLOSE;
 		
-		deleteStartAttributes: /*typeDeleteStart*/type | number | designator;
+		deleteStartAttributes: typeDeleteStart/*type*/ | number | designator;
 
-			/*typeDeleteStart: TYPE EQUALS DOUBLE_QUOTES TYPEDELETESTART DOUBLE_QUOTES;*/
+			typeDeleteStart returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+				String[] types = {"RUNWAY", "HELIPAD", "WATER"};
+				int i = 0;
+				for (i = 0;  i < types.length; i++){
+					if ($stringLettersMixedCase.value.equals(types[i]))
+						break;
+				}
+				if (i == types.length){
+					notifyErrorListeners("Invalid delete start type... Input: "+$stringLettersMixedCase.value);
+					$value = "invalid_value";
+				}
+				else $value = $stringLettersMixedCase.value;
+			};
 	
 	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes* SLASH_CLOSE;
 		
-		deleteFrequencyAttributes: frequency /*typeDeleteFrequency*/ | type;
+		deleteFrequencyAttributes: frequency | typeDeleteFrequency/* | type*/;
 		
-			/*typeDeleteFrequency: TYPE EQUALS DOUBLE_QUOTES TYPEDELETEFREQUENCY DOUBLE_QUOTES;*/
+			typeDeleteFrequency returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+				String[] types = {"APPROACH", "ASOS", "ATIS", "AWOS", "CENTER", "CLEARANCE", "CLEARANCE_PRE_TAXI", "CTAF", "DEPARTURE", "FSS", "GROUND", "MULTICOM", "REMOTE_CLEARANCE_DELIVERY", "TOWER", "UNICOM"};
+				int i = 0;
+				for (i = 0;  i < types.length; i++){
+					if ($stringLettersNumbers.value.equals(types[i]))
+						break;
+				}
+				if (i == types.length){
+					notifyErrorListeners("Invalid delete frequency type... Input: "+$stringLettersNumbers.value);
+					$value = "invalid_value";
+				}
+				else $value = $stringLettersNumbers.value;
+			};
 		
 	tower: OpenTower towerAttributes* ( SLASH_CLOSE | (CLOSE EndTower) );
 
@@ -245,7 +374,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 					approachLightsAttributes: end | system | strobes | reil | touchdown | endLights;
 
 						system: SYSTEM SYSTEM_OPTIONS DOUBLE_QUOTES;
-						strobes: STROBES unsignedIntegerValue DOUBLE_QUOTES;
+						strobes: STROBES integerValue DOUBLE_QUOTES;
 						reil: REIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						endLights: ENDLIGHTS EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES; 
 
@@ -254,15 +383,30 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 					vasiAttributes: end | type | side | biasX | biasZ | spacing | pitch;
 
 						side: SIDE LEFT_RIGHT DOUBLE_QUOTES;
-						spacing: SPACING unsignedFloatValue units_all? DOUBLE_QUOTES;
-						pitch: PITCH floatingPointValue DOUBLE_QUOTES;/*0.0-9.9*/
+						
+						spacing returns[float value]: SPACING floatingPointValue units_all? DOUBLE_QUOTES{
+							if ($floatingPointValue.value < 0){
+								notifyErrorListeners("Invalid spacing... Must be positive... input: " + $floatingPointValue.value);
+								$value = -1;
+							}
+							else $value = $floatingPointValue.value;	
+						}; // units default: meters
+
+						pitch returns[float value]: PITCH floatingPointValue DOUBLE_QUOTES{
+							if ($floatingPointValue.value < 0 || $floatingPointValue.value > 9.9){
+								notifyErrorListeners("Invalid pitch... Must be between 0.0 and 9.9... input: " + $floatingPointValue.value);
+								$value = -1;
+							}
+							else $value = $floatingPointValue.value;	
+						};/*0.0-9.9*/
+
 
 				ils: OpenIls ilsAttributes* ilsElements CLOSE CloseIls;
 
 					ilsAttributes: latitude | longitude | altitude | heading | frequency 
 									| end | range | magvar | ident | width | name | backCourse; 
 					
-						range: RANGE unsignedFloatValue DOUBLE_QUOTES;
+						range: RANGE floatingPointValue DOUBLE_QUOTES;
 
 						backCourse: BACKCOURSE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
@@ -291,7 +435,17 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 		taxiwayPointAttributes: taxiway_index |/*taxiwaypoint_type*/type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
 
-			taxiway_index: INDEX unsignedIntegerValue DOUBLE_QUOTES; /*0-3999*/
+			taxiway_index returns[int index]: INDEX integerValue DOUBLE_QUOTES
+									{
+										if ($integerValue.value < 0 || $integerValue.value > 3999){
+											String err = "Invalid index... Must be between 0 and 3999... ";
+											err = err + "input: " + $integerValue.value;
+											notifyErrorListeners(err);
+											$index = -1; // ???
+										}
+										else $index = $integerValue.value;
+
+									}; /*0-3999*/
 			/*taxiwaypoint_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPOINTTYPE DOUBLE_QUOTES; */
 			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
 
@@ -317,7 +471,18 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 		taxiNameAttributes: taxiNameIndex | taxiNameName;
 
-			taxiNameIndex: INDEX unsignedIntegerValue DOUBLE_QUOTES;/*0-255*/
+			taxiNameIndex returns[int index]: INDEX integerValue DOUBLE_QUOTES
+							{
+								if ($integerValue.value < 0 || $integerValue.value > 255){
+									String err = "Invalid index... Must be between 0 and 255... ";
+									err = err + "input: " + $integerValue.value;
+									notifyErrorListeners(err);
+									$index = -1; // ???
+								}
+								else $index = $integerValue.value;
+
+							};/*0-255*/
+
 			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES;
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
@@ -362,7 +527,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 			gateName: GATENAME GATENAME_WORDS DOUBLE_QUOTES;
 
-			parkingNumber: PARKINGNUMBER UnsignedIntegerValue DOUBLE_QUOTES;
+			parkingNumber: PARKINGNUMBER integerValue DOUBLE_QUOTES;
 
 		jetwayElements: ;
 
