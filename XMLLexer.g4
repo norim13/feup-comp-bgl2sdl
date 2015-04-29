@@ -68,13 +68,14 @@ BIASY: 'biasY="'-> pushMode(FLOAT_MODE);
 BIASZ: 'biasZ="'-> pushMode(FLOAT_MODE);
 
 ALTITUDEMINIMUM: 'altitudeMinimum="' -> pushMode(FLOAT_MODE) ;
+RADIUS: 'radius="' -> pushMode(FLOAT_MODE);
 
 /////////////////////INTEGERS///////////////////////
 STROBES: 'strobes="' -> pushMode(INTEGER_MODE);
 INDEX: 'index="' -> pushMode(INTEGER_MODE);
 START: 'start="' -> pushMode(INTEGER_MODE);
 AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
-RADIUS: 'radius="' -> pushMode(INTEGER_MODE);
+
 PARKINGNUMBER: 'parkingNumber="' -> pushMode(INTEGER_MODE);
 
 
@@ -340,13 +341,10 @@ mode AIRLINECODES_MODE;
 AIRLINECODESVALUES: ( [A-Z]+(','[A-Z]+)* ) -> popMode ;
 
 mode INTEGER_MODE;
-UnsignedIntegerValue: ([0-9] | ([1-9][0-9]* (DOT '0')?) ) ->popMode;
-IntegerValue: ('+' | '-' )? UnsignedIntegerValue ->popMode;
+IntegerValue: ('+' | '-' )? ([0-9] | ([1-9][0-9]* (DOT '0')?) ) ->popMode;
 
 mode FLOAT_MODE;
-UnsignedFloatValue: UnsignedIntegerValue2 (DOT [0-9]+)? -> popMode;
-FloatingPointValue: IntegerValue (DOT [0-9]+)? ->popMode;
-UnsignedIntegerValue2: [0-9] | ([1-9][0-9]*);
+FloatingPointValue: ('+' | '-' )? [0-9]+ (DOT [0-9]+)? ->popMode;
 
 mode GATENAME_MODE;
 GATENAME_WORDS:
