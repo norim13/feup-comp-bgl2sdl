@@ -380,7 +380,22 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 				vasi: OpenVasi vasiAttributes* SLASH_CLOSE;
 
-					vasiAttributes: end | type | side | biasX | biasZ | spacing | pitch;
+					vasiAttributes: end | typevasi | side | biasX | biasZ | spacing | pitch;
+
+						typevasi returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+							String[] types = {"PAPI2", "PAPI4",	"PVASI", "TRICOLOR", "TVASI", "VASI21", "VASI22", "VASI23", "VASI31", 
+							"VASI32", "VASI33","BALL","APAP","PANELS"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersNumbers.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid vasi type... Input: "+$stringLettersNumbers.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersNumbers.value;
+						};
 
 						side: SIDE LEFT_RIGHT DOUBLE_QUOTES;
 						
@@ -404,8 +419,16 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 				ils: OpenIls ilsAttributes* ilsElements CLOSE CloseIls;
 
 					ilsAttributes: latitude | longitude | altitude | heading | frequency 
-									| end | range | magvar | ident | width | name | backCourse; 
+									| end | range | magvar | ident | width | ils_name | backCourse; 
 					
+						ils_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+							if ($stringLettersMixedCase.value.length() > 48){
+								notifyErrorListeners("Ils name too long... Must have a maximum of 48 chars!");
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersMixedCase.value;
+						} ; 
+
 						range: RANGE floatingPointValue DOUBLE_QUOTES;
 
 						backCourse: BACKCOURSE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
@@ -433,7 +456,21 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 /* -------------------TAXIWAYPOINT -----------------------------------------------------------------*/
 	taxiwayPoint: OpenTaxiwayPoint taxiwayPointAttributes* SLASH_CLOSE; 
 
-		taxiwayPointAttributes: taxiway_index |/*taxiwaypoint_type*/type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
+		taxiwayPointAttributes: taxiway_index | taxiwaypoint_type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
+
+		taxiwaypoint_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+							String[] types = {"NORMAL", "HOLD_SHORT", "ILS_HOLD_SHORT", "HOLD_SHORT_NO_DRAW", "ILS_HOLD_SHORT_NO_DRAW"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersNumbers.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid taxiway point type... Input: "+$stringLettersNumbers.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersNumbers.value;
+						};
 
 			taxiway_index returns[int index]: INDEX integerValue DOUBLE_QUOTES
 									{
@@ -446,7 +483,6 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 										else $index = $integerValue.value;
 
 									}; /*0-3999*/
-			/*taxiwaypoint_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPOINTTYPE DOUBLE_QUOTES; */
 			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
 
 	/*-------------------------------TaxiwayParking-----------------------------------------------------*/
@@ -459,8 +495,36 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			//index: INDEX EQUALS INDEXVALUE; 
 			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
 			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
-			/*taxiwayparking_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPARKINGTYPE DOUBLE_QUOTES;*/
-			taxiwayparking_name: NAME EQUALS DOUBLE_QUOTES /*NAMETAXIWAYPARKING*/stringLettersUpperCase DOUBLE_QUOTES;
+			taxiwayparking_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+							String[] types = {"NONE", "DOCK_GA", "FUEL", "GATE_HEAVY", "GATE_MEDIUM", "GATE_SMALL", "RAMP_CARGO", 
+											"RAMP_GA", "RAMP_GA_LARGE", "RAMP_GA_MEDIUM", "RAMP_GA_SMALL", "RAMP_MIL_CARGO", "RAMP_MIL_COMBAT", "VEHICLE"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersNumbers.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid taxiway parking type... Input: "+$stringLettersNumbers.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersNumbers.value;
+						};
+			taxiwayparking_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES{
+							String[] types = {"PARKING", "DOCK", "GATE", "GATE_A", "GATE_B", "GATE_C", "GATE_D", "GATE_E", "GATE_F", "GATE_G", 
+							"GATE_H", "GATE_I", "GATE_J", "GATE_K", "GATE_L", "GATE_M", "GATE_N", "GATE_O", "GATE_P", "GATE_Q", "GATE_R", "GATE_S", 
+							"GATE_T", "GATE_U", "GATE_V", "GATE_W", "GATE_X", "GATE_Y", "GATE_Z", "NONE", "N_PARKING", "NE_PARKING", "NW_PARKING", 
+							"SE_PARKING", "S_PARKING", "SW_PARKING", "W_PARKING", "E_PARKING"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersUpperCase.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid taxiway parking name... Input: "+$stringLettersUpperCase.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersUpperCase.value;
+						};
 			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999*/
 			taxiway_airlineCodes: AIRLINECODES AIRLINECODESVALUES DOUBLE_QUOTES;
 			taxiway_pushBack: PUSHBACK PUSHBACKVALUES DOUBLE_QUOTES;
@@ -483,16 +547,35 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 							};/*0-255*/
 
-			taxiNameName: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES;
+			taxiNameName returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES{
+				if($stringLettersNumbers.text == null) $value = "";
+				else if($stringLettersNumbers.value.length() > 8) {
+					notifyErrorListeners("TaxiName name too long... Must have a maximum of 8 chars!");
+					$value = "invalid_value";
+				}
+				else $value = $stringLettersNumbers.value;
+			};
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
 	taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes* SLASH_CLOSE;
 
 		taxiwayPathAttributes: type | taxiway_start | taxiway_end | width | taxiway_weightLimit | surface | drawSurface 
 							| drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
-							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiway_name;
+							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiwaypath_name;
 
-			/*taxiwaypath_type: TYPE EQUALS DOUBLE_QUOTES TAXIWAYPATHTYPE DOUBLE_QUOTES;*/
+			taxiwaypath_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+							String[] types = {"RUNWAY", "PARKING", "TAXI", "PATH", "CLOSED", "VEHICLE"};
+							int i = 0;
+							for (i = 0;  i < types.length; i++){
+								if ($stringLettersNumbers.value.equals(types[i]))
+									break;
+							}
+							if (i == types.length){
+								notifyErrorListeners("Invalid taxiway path type... Input: "+$stringLettersNumbers.value);
+								$value = "invalid_value";
+							}
+							else $value = $stringLettersNumbers.value;
+						};
 			
 			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999*/
 			
@@ -518,7 +601,16 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			
 			taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
-			taxiway_name: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES;
+			taxiwaypath_name returns[int value]: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES {
+					int i = Integer.parseInt($INT_NUMBER.text);
+						if (i < 0 || i > 255){
+							String err = "Invalid taxiway path name... Must be between 0 and 255... ";
+							err = err + "input: " + i;
+							notifyErrorListeners( err );
+							$value = -1;
+						}
+						else $value = i;
+					};
 
 
 	jetway: OpenJetway jetwayAttributes* CLOSE jetwayElements CloseJetway;
@@ -585,9 +677,17 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 			route: OpenRoute routeAttributes* CLOSE routeElements EndRoute;
 
-				routeAttributes: routeType | name ;
+				routeAttributes: routeType | route_name ;
 
 					routeType: ROUTETYPE ROUTETYPE_WORDS DOUBLE_QUOTES ; 
+
+					route_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+						if ($stringLettersMixedCase.value.length() > 8){
+							notifyErrorListeners("Route name too long... Must have a maximum of 8 chars!");
+							$value = "invalid_value";
+						}
+						else $value = $stringLettersMixedCase.value;
+					};
 
 				routeElements: previous* next* ;
 
