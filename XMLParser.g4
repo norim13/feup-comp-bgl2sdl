@@ -8,7 +8,7 @@ document    :  airport;
 ///////////////////////// SOME COMMON ATTRIBUTES ////////////////////
 /////////////////////////////////////////////////////////////////////
 
-type: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES;
+type: TYPE stringLettersMixedCase DOUBLE_QUOTES;
 
 heading returns[float value]: HEADING floatingPointValue DOUBLE_QUOTES{
 	if ($floatingPointValue.value < 0 || $floatingPointValue.value > 360){
@@ -37,7 +37,7 @@ biasZ: BIASZ floatingPointValue units_all? DOUBLE_QUOTES;
 //////////////////////////// SOME DATA TYPES ////////////////////////
 /////////////////////////////////////////////////////////////////////
 yes_no: YES_NO ;
-bool: BOOLEAN ;
+bool: BOOLEAN | BOOLEAN2;
 yes_no_bool: YES_NO | BOOLEAN;
 
 units_all: SINGLE_LETTER_UPPER {
@@ -73,46 +73,72 @@ floatingPointValue returns[float value]: FloatingPointValue {
 /////////////////////////////////////////////////////////////////////
 
 stringLettersMixedCase returns[String value]: 
-	STRING_LETTERS_LOWERCASE {$value = $STRING_LETTERS_LOWERCASE.text;}| 
-	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;}| 
-	STRING_LETTERS {$value = $STRING_LETTERS.text;}| 
-	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
+	STRING_LETTERS_MIXED {$value = $STRING_LETTERS_MIXED.text;};
 
 stringLettersUpperCase returns[String value]: 
-	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;} | 
-	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
-
-stringLettersNumbers returns[String value]:  
-	STRING_LETTERS_LOWERCASE {$value = $STRING_LETTERS_LOWERCASE.text;}| 
-	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;}| 
-	STRING_LETTERS {$value = $STRING_LETTERS.text;}| 
-	STRING_LETTERS_NUMBERS {$value = $STRING_LETTERS_NUMBERS.text;}| 
-	INT_NUMBER {$value = $INT_NUMBER.text;}| 
-	SINGLE_LETTER_UPPER {$value = $SINGLE_LETTER_UPPER.text;};
+	STRING_LETTERS_UPPERCASE {$value = $STRING_LETTERS_UPPERCASE.text;};
 
 
 /////////////////////////////////////////////////////////////////////
 //////////////////////////// ELEMENTS IN XML ////////////////////////
 /////////////////////////////////////////////////////////////////////
 
+//bools = {region, country, state, city, name, latitude, longitude, altitude, magvar, ident, airportTestRadius, trafficScalar}
+airport locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false}]: 
+	OpenAirport airportAttributes[$bools]* CLOSE  
+		{
+			if (!$bools[5])
+				notifyErrorListeners("Missing latitude attribute in Airport Element");
+			if(!$bools[6])
+				notifyErrorListeners("Missing longitude attribute in Airport Element");
+			if(!$bools[7])
+				notifyErrorListeners("Missing altitude attribute in Airport Element");
+			if(!$bools[9])
+				notifyErrorListeners("Missing ident attribute in Airport Element");
+			if(!$bools[11])
+				notifyErrorListeners("Missing trafficScalar attribute in Airport Element");
+		}
+		airportElements EndAirport ; 
 
-airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport; 
+	airportAttributes [boolean[] bools]: 
+		region  {if ($bools[0] == true) 
+					notifyErrorListeners("Multiple region attribute at airport");
+					else $bools[0] = true;}
+		| country {if ($bools[1] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[1] = true;}
+		| state{if ($bools[2] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[2] = true;}
+		| city {if ($bools[3] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[3] = true;}
+		| name {if ($bools[4] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[4] = true;}
+		| latitude {if ($bools[5] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[5] = true;}
+		| longitude {if ($bools[6] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[6] = true;}
+		| altitude {if ($bools[7] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[7] = true;}
+		| magvar {if ($bools[8] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[8] = true;}
+		| ident {if ($bools[9] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[9] = true;}
+		| airportTestRadius {if ($bools[10] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[10] = true;}
+		| trafficScalar {if ($bools[11] == true) 
+					notifyErrorListeners("Multiple country attribute at airport");
+					else $bools[11] = true;};
 
-	airportAttributes: 
-		region  
-		| country
-		| state
-		| city 
-		| name
-		| latitude 
-		| longitude 
-		| altitude 
-		| magvar 
-		| ident
-		| airportTestRadius
-		| trafficScalar;
-
-		region returns[String value]: REGION EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+		region returns[String value]: REGION stringLettersMixedCase DOUBLE_QUOTES{
 			if ($stringLettersMixedCase.value.length() > 48){
 				notifyErrorListeners("Region too long... Must have a maximum of 48 chars!");
 				$value = "invalid_value";
@@ -120,7 +146,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			else $value = $stringLettersMixedCase.value;
 		} ; 
 
-		country returns[String value]: COUNTRY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+		country returns[String value]: COUNTRY stringLettersMixedCase DOUBLE_QUOTES{
 			if ($stringLettersMixedCase.value.length() > 48){
 				notifyErrorListeners("Country too long... Must have a maximum of 48 chars!");
 				$value = "invalid_value";
@@ -128,7 +154,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			else $value = $stringLettersMixedCase.value;
 		} ; 
 
-		state returns[String value]: STATE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+		state returns[String value]: STATE stringLettersMixedCase DOUBLE_QUOTES{
 			if ($stringLettersMixedCase.value.length() > 48){
 				notifyErrorListeners("State too long... Must have a maximum of 48 chars!");
 				$value = "invalid_value";
@@ -136,7 +162,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			else $value = $stringLettersMixedCase.value;
 		} ;  
 
-		city returns[String value]: CITY EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+		city returns[String value]: CITY stringLettersMixedCase DOUBLE_QUOTES{
 			if ($stringLettersMixedCase.value.length() > 48){
 				notifyErrorListeners("City too long... Must have a maximum of 48 chars!");
 				$value = "invalid_value";
@@ -144,7 +170,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			else $value = $stringLettersMixedCase.value;
 		} ;  
 
-		name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+		name returns[String value]: NAME stringLettersMixedCase DOUBLE_QUOTES{
 			if ($stringLettersMixedCase.value.length() > 48){
 				notifyErrorListeners("Name too long... Must have a maximum of 48 chars!");
 				$value = "invalid_value";
@@ -187,7 +213,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 						
 				};
 
-		ident returns[String value]: IDENT EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES {
+		ident returns[String value]: IDENT stringLettersUpperCase DOUBLE_QUOTES {
 			if ($stringLettersUpperCase.value.length() > 4){
 				notifyErrorListeners("Ident too long... Must have a maximum of 4 chars!");
 				$value = "invalid_value";
@@ -220,23 +246,40 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 			servicesElements: fuel*;
 
-				fuel: OpenFuel fuelAttributes* SLASH_CLOSE;
+				//bools = {typeFuel, availabilityFuel}
+				fuel locals[boolean[] bools = {false, false}]: 
+					OpenFuel fuelAttributes[$bools]* SLASH_CLOSE
+					{
+						if (!$bools[0])
+							notifyErrorListeners("Missing type attribute in Fuel Element");
+						if(!$bools[1])
+							notifyErrorListeners("Missing availability attribute in Fuel Element");
+					};
 
-					fuelAttributes: typefuel /*type*/ | availabilityFuel;
+					fuelAttributes[boolean[] bools]: 
+						typefuel{
+							if ($bools[0] == true) 
+								notifyErrorListeners("Multiple type attribute in Fuel Element");
+							else $bools[0] = true;}
+
+						| availabilityFuel{
+							if ($bools[1] == true) 
+								notifyErrorListeners("Multiple availability attribute in Fuel Element");
+							else $bools[1] = true;};
 				
 						/*typefuel: TYPE EQUALS DOUBLE_QUOTES TYPESFUEL_WORDS DOUBLE_QUOTES;*/
-						typefuel returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+						typefuel returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"73", "87", "100", "130", "145", "MOGAS", "JET", "JETA", "JETA1", "JETAP", "JETB", "JET4", "JET5", "UNKNOWN"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersNumbers.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid fuel type... Input: "+$stringLettersNumbers.value);
+								notifyErrorListeners("Invalid fuel type... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersNumbers.value;
+							else $value = $stringLettersMixedCase.value;
 						};
 
 						availabilityFuel: AVAILABILITY AVAILABILITY_WORDS DOUBLE_QUOTES ;
@@ -249,15 +292,47 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 	
 		deleteAirportAttributes: DELETEAIRPORTATRIBUTES EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
-	deleteRunway: OpenDeleteRunway deleteRunwayAttributes* SLASH_CLOSE;
+	deleteRunway locals[boolean[] bools = {false, false, false}]: 
+		OpenDeleteRunway deleteRunwayAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing surface attribute in DeleteRunway element");
+				if(!$bools[1])
+					notifyErrorListeners("Missing number attribute in DeleteRunway element");
+			}
+			SLASH_CLOSE;
 	
-		deleteRunwayAttributes: surface | number | designator;
+		deleteRunwayAttributes [boolean[] bools]: 
+			surface {if ($bools[0] == true) 
+						notifyErrorListeners("Multiple surface attribute in DeleteRunway element");
+					else $bools[0] = true;}
+			| number {if ($bools[1] == true) 
+						notifyErrorListeners("Multiple number attribute in DeleteRunway element");
+					else $bools[1] = true;}
+			| designator {if ($bools[2] == true) 
+							notifyErrorListeners("Multiple designator attribute in DeleteRunway element");
+						else $bools[2] = true;};
 		
-	deleteStart: OpenDeleteStart deleteStartAttributes* SLASH_CLOSE;
+	deleteStart locals[boolean[] bools = {false, false, false}]: 
+		OpenDeleteStart deleteStartAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing surface attribute in DeleteRunway element");
+				if(!$bools[1])
+					notifyErrorListeners("Missing number attribute in DeleteRunway element");
+			}SLASH_CLOSE;
 		
-		deleteStartAttributes: typeDeleteStart/*type*/ | number | designator;
+		deleteStartAttributes [boolean[] bools]: 
+			typeDeleteStart {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple type attribute in DeleteStart element");
+							else $bools[0] = true;}
+			| number {if ($bools[1] == true) 
+						notifyErrorListeners("Multiple number attribute in DeleteStart element");
+					else $bools[1] = true;}
+			| designator {if ($bools[2] == true) 
+							notifyErrorListeners("Multiple designator attribute in DeleteStart element");
+						else $bools[2] = true;};
 
-			typeDeleteStart returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+
+			typeDeleteStart returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 				String[] types = {"RUNWAY", "HELIPAD", "WATER"};
 				int i = 0;
 				for (i = 0;  i < types.length; i++){
@@ -271,35 +346,139 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 				else $value = $stringLettersMixedCase.value;
 			};
 	
-	deleteFrequency: OpenDeleteFrequency deleteFrequencyAttributes* SLASH_CLOSE;
+	deleteFrequency locals[boolean[] bools = {false, false}]: 
+		OpenDeleteFrequency deleteFrequencyAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing frequency attribute in DeleteFrequency element");
+				if(!$bools[1])
+					notifyErrorListeners("Missing type attribute in DeleteFrequency element");
+			}SLASH_CLOSE;
 		
-		deleteFrequencyAttributes: frequency | typeDeleteFrequency/* | type*/;
+		deleteFrequencyAttributes [boolean[] bools]: 
+			frequency {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple frequency attribute in DeleteFrequency element");
+							else $bools[0] = true;}
+			| typeDeleteFrequency {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple type attribute in DeleteFrequency element");
+							else $bools[1] = true;};
 		
-			typeDeleteFrequency returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
-				String[] types = {"APPROACH", "ASOS", "ATIS", "AWOS", "CENTER", "CLEARANCE", "CLEARANCE_PRE_TAXI", "CTAF", "DEPARTURE", "FSS", "GROUND", "MULTICOM", "REMOTE_CLEARANCE_DELIVERY", "TOWER", "UNICOM"};
+			typeDeleteFrequency returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
+				String[] types = {"APPROACH", "ASOS", "ATIS", "AWOS", "CENTER", "CLEARANCE", "CLEARANCE_PRE_TAXI", 
+					"CTAF", "DEPARTURE", "FSS", "GROUND", "MULTICOM", "REMOTE_CLEARANCE_DELIVERY", "TOWER", "UNICOM"};
 				int i = 0;
 				for (i = 0;  i < types.length; i++){
-					if ($stringLettersNumbers.value.equals(types[i]))
+					if ($stringLettersMixedCase.value.equals(types[i]))
 						break;
 				}
 				if (i == types.length){
-					notifyErrorListeners("Invalid delete frequency type... Input: "+$stringLettersNumbers.value);
+					notifyErrorListeners("Invalid delete frequency type... Input: "+$stringLettersMixedCase.value);
 					$value = "invalid_value";
 				}
-				else $value = $stringLettersNumbers.value;
+				else $value = $stringLettersMixedCase.value;
 			};
 		
-	tower: OpenTower towerAttributes* ( SLASH_CLOSE | (CLOSE EndTower) );
+	tower locals[boolean[] bools = {false, false, false}]: 
+		OpenTower towerAttributes[$bools]* ( SLASH_CLOSE | (CLOSE EndTower) );
 
-		towerAttributes: latitude | longitude | altitude  ;
+		towerAttributes [boolean[] bools]: 
+			latitude {if ($bools[0] == true) 
+						notifyErrorListeners("Multiple latitude attribute in Tower element");
+					else $bools[0] = true;}
+			| longitude {if ($bools[1] == true) 
+							notifyErrorListeners("Multiple longitude attribute in Tower element");
+						else $bools[1] = true;}
+			| altitude {if ($bools[2] == true) 
+							notifyErrorListeners("Multiple altitude attribute in Tower element");
+						else $bools[2] = true;} ;
 
-	runway: OpenRunway runwayAttributes* CLOSE runwayElements EndRunway;
+	runway locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,false,false,false}]: 
+		OpenRunway runwayAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing latitude attribute in Runway element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing longitude attribute in Runway element");
+				if (!$bools[2])
+					notifyErrorListeners("Missing altitude attribute in Runway element");
+				if (!$bools[3])
+					notifyErrorListeners("Missing surface attribute in Runway element");
+				if (!$bools[4])
+					notifyErrorListeners("Missing heading attribute in Runway element");
+				if (!$bools[5])
+					notifyErrorListeners("Missing surface attribute in Runway element");
+				if (!$bools[6])
+					notifyErrorListeners("Missing length attribute in Runway element");
+				if (!$bools[7])
+					notifyErrorListeners("Missing number attribute in Runway element");
+				if (!$bools[8] && !$bools[9])
+					notifyErrorListeners("Missing designator or primaryDesignator attribute in Runway element");
+				if ($bools[8] && $bools[9])
+					notifyErrorListeners("Only one from designator and primaryDesignator should be set in Runway element.");
+				if ($bools[9] && $bools[10])
+					notifyErrorListeners("Only one from primaryDesignator and secondaryDesignator should be set in Runway element.");
 
-		runwayAttributes:  latitude | longitude | altitude | surface | heading	/*heading -> 0 a 360*/
-							| length | width | number | designator | primaryDesignator
-							| secondaryDesignator | patternAltitude | primaryTakeoff
-							| primaryLanding | primaryPattern | secondaryTakeoff | secondaryLanding | secondaryPattern
-							| primaryMarkingBias | secondaryMarkingBias; 
+			}CLOSE runwayElements EndRunway;
+
+		runwayAttributes[boolean[] bools]:  
+			  latitude {if ($bools[0] == true) 
+						notifyErrorListeners("Multiple latitude attribute in Runway element");
+					else $bools[0] = true;}
+			| longitude {if ($bools[1] == true) 
+						notifyErrorListeners("Multiple longitude attribute in Runway element");
+					else $bools[1] = true;}
+			| altitude {if ($bools[2] == true) 
+						notifyErrorListeners("Multiple altitude attribute in Runway element");
+					else $bools[2] = true;}
+			| surface {if ($bools[3] == true) 
+						notifyErrorListeners("Multiple surface attribute in Runway element");
+					else $bools[3] = true;}
+			| heading {if ($bools[4] == true) 
+						notifyErrorListeners("Multiple heading attribute in Runway element");
+					else $bools[4] = true;}
+			| length {if ($bools[5] == true) 
+						notifyErrorListeners("Multiple length attribute in Runway element");
+					else $bools[5] = true;}
+			| width {if ($bools[6] == true) 
+						notifyErrorListeners("Multiple width attribute in Runway element");
+					else $bools[6] = true;}
+			| number {if ($bools[7] == true) 
+						notifyErrorListeners("Multiple number attribute in Runway element");
+					else $bools[7] = true;}
+			| designator {if ($bools[8] == true) 
+						notifyErrorListeners("Multiple designator attribute in Runway element");
+					else $bools[8] = true;}
+			| primaryDesignator {if ($bools[9] == true) 
+						notifyErrorListeners("Multiple primaryDesignator attribute in Runway element");
+					else $bools[9] = true;}
+			| secondaryDesignator {if ($bools[10] == true) 
+						notifyErrorListeners("Multiple secondaryDesignator attribute in Runway element");
+					else $bools[10] = true;}
+			| patternAltitude {if ($bools[11] == true) 
+						notifyErrorListeners("Multiple patternAltitude attribute in Runway element");
+					else $bools[11] = true;}
+			| primaryTakeoff {if ($bools[12] == true) 
+						notifyErrorListeners("Multiple primaryTakeoff attribute in Runway element");
+					else $bools[12] = true;}
+			| primaryLanding {if ($bools[13] == true) 
+						notifyErrorListeners("Multiple primaryLanding attribute in Runway element");
+					else $bools[13] = true;}
+			| primaryPattern {if ($bools[14] == true) 
+						notifyErrorListeners("Multiple primaryPattern attribute in Runway element");
+					else $bools[14] = true;}
+			| secondaryTakeoff {if ($bools[15] == true) 
+						notifyErrorListeners("Multiple secondaryTakeoff attribute in Runway element");
+					else $bools[15] = true;}
+			| secondaryLanding {if ($bools[16] == true) 
+						notifyErrorListeners("Multiple secondaryLanding attribute in Runway element");
+					else $bools[16] = true;}
+			| secondaryPattern {if ($bools[17] == true) 
+						notifyErrorListeners("Multiple secondaryPattern attribute in Runway element");
+					else $bools[17] = true;}
+			| primaryMarkingBias {if ($bools[18] == true) 
+						notifyErrorListeners("Multiple primaryMarkingBias attribute in Runway element");
+					else $bools[18] = true;}
+			| secondaryMarkingBias {if ($bools[19] == true) 
+						notifyErrorListeners("Multiple secondaryMarkingBias attribute in Runway element");
+					else $bools[19] = true;}; 
 
 			primaryDesignator: PRIMARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
@@ -336,7 +515,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 						fixedDistance: FIXEDDISTANCE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						touchdown: TOUCHDOWN EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						dashes: DASHES EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
-						identMarkings: IDENT EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						identMarkings: IDENT bool DOUBLE_QUOTES;
 						precision: PRECISION EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						edgePavement: EDGEPAVEMENT EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						singleEnd: SINGLEEND EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
@@ -345,56 +524,186 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 						primaryStol: PRIMARYSTOL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						secondaryStol: SECONDARYSTOL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
-				lights: OpenLight lightAttributes* SLASH_CLOSE;
+				lights locals[boolean[] bools = {false,false,false}]: 
+					OpenLight lightAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing center attribute in Light element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing edge attribute in Light element");
+							if (!$bools[2])
+								notifyErrorListeners("Missing centerRed attribute in Light element");
+						} SLASH_CLOSE;
 
-					lightAttributes: center | edge | centerRed;
+					lightAttributes [boolean[] bools]: 
+						center {if ($bools[0] == true) 
+									notifyErrorListeners("Multiple center attribute in Light element");
+								else $bools[0] = true;}
+						| edge {if ($bools[1] == true) 
+									notifyErrorListeners("Multiple edge attribute in Light element");
+								else $bools[1] = true;}
+						| centerRed {if ($bools[2] == true) 
+									notifyErrorListeners("Multiple centerRed attribute in Light element");
+								else $bools[2] = true;};
 
 						center: CENTER LEVELS DOUBLE_QUOTES ;
 						edge: EDGE LEVELS DOUBLE_QUOTES;
 						centerRed: CENTER_RED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
 
-				offsetThreshold: OpenOffsetThreshold offsetThresholdAttributes* SLASH_CLOSE;
+				offsetThreshold locals[boolean[] bools = {false, false, false, false}]:
+					OpenOffsetThreshold offsetThresholdAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing end attribute in OffsetThreshold element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing length attribute in OffsetThreshold element");
+						}SLASH_CLOSE;
 
-					offsetThresholdAttributes: end | length | width | surface;
+					offsetThresholdAttributes [boolean[] bools]: 
+						end {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple end attribute in OffsetThreshold element");
+							else $bools[0] = true;}
+						| length {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple length attribute in OffsetThreshold element");
+							else $bools[1] = true;}
+						| width {if ($bools[2] == true) 
+								notifyErrorListeners("Multiple width attribute in OffsetThreshold element");
+							else $bools[2] = true;}
+						| surface {if ($bools[3] == true) 
+								notifyErrorListeners("Multiple surface attribute in OffsetThreshold element");
+							else $bools[3] = true;};
 
 						end: END PRIORITY DOUBLE_QUOTES;
 
 
-				blastPad: OpenBlastPad blastPadAttributes* SLASH_CLOSE;
+				blastPad locals[boolean[] bools = {false, false, false, false}]:
+					OpenBlastPad blastPadAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing end attribute in BlastPad element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing length attribute in BlastPad element");
+						}SLASH_CLOSE;
 
-					blastPadAttributes: end | length | width | surface;
+					blastPadAttributes  [boolean[] bools]: 
+						end {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple end attribute in BlastPad element");
+							else $bools[0] = true;}
+						| length {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple length attribute in BlastPad element");
+							else $bools[1] = true;}
+						| width {if ($bools[2] == true) 
+								notifyErrorListeners("Multiple width attribute in BlastPad element");
+							else $bools[2] = true;}
+						| surface {if ($bools[3] == true) 
+								notifyErrorListeners("Multiple surface attribute in BlastPad element");
+							else $bools[3] = true;};
 
-				overrun: OpenOverrun overrunAttributes* SLASH_CLOSE;
+				overrun locals[boolean[] bools = {false, false, false, false}]:
+					 OpenOverrun overrunAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing end attribute in Overrun element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing length attribute in Overrun element");
+						} SLASH_CLOSE;
 
-					overrunAttributes: end | length | width | surface;
+					overrunAttributes  [boolean[] bools]: 
+						end {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple end attribute in Overrun element");
+							else $bools[0] = true;}
+						| length {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple length attribute in Overrun element");
+							else $bools[1] = true;}
+						| width {if ($bools[2] == true) 
+								notifyErrorListeners("Multiple width attribute in Overrun element");
+							else $bools[2] = true;}
+						| surface {if ($bools[3] == true) 
+								notifyErrorListeners("Multiple surface attribute in Overrun element");
+							else $bools[3] = true;};
 
-				approachLights: OpenApproachLights approachLightsAttributes* SLASH_CLOSE;
+				approachLights locals[boolean[] bools = {false, false, false, false, false, false}]:
+					OpenApproachLights approachLightsAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing end attribute in ApproachLights element");
+						}SLASH_CLOSE;
 
-					approachLightsAttributes: end | system | strobes | reil | touchdown | endLights;
+					approachLightsAttributes [boolean[] bools]: 
+						end {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple end attribute in ApproachLights element");
+							else $bools[0] = true;}
+						| system {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple system attribute in ApproachLights element");
+							else $bools[1] = true;}
+						| strobes {if ($bools[2] == true) 
+								notifyErrorListeners("Multiple strobes attribute in ApproachLights element");
+							else $bools[2] = true;}
+						| reil {if ($bools[3] == true) 
+								notifyErrorListeners("Multiple reil attribute in ApproachLights element");
+							else $bools[3] = true;}
+						| touchdown {if ($bools[4] == true) 
+								notifyErrorListeners("Multiple touchdown attribute in ApproachLights element");
+							else $bools[4] = true;}
+						| endLights {if ($bools[5] == true) 
+								notifyErrorListeners("Multiple endLights attribute in ApproachLights element");
+							else $bools[5] = true;};
 
 						system: SYSTEM SYSTEM_OPTIONS DOUBLE_QUOTES;
 						strobes: STROBES integerValue DOUBLE_QUOTES;
 						reil: REIL EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						endLights: ENDLIGHTS EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES; 
 
-				vasi: OpenVasi vasiAttributes* SLASH_CLOSE;
+				vasi locals[boolean[] bools = {false, false, false, false, false, false, false}]: 
+					OpenVasi vasiAttributes[$bools]*{
+							if (!$bools[0])
+								notifyErrorListeners("Missing end attribute in Vasi element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing type attribute in Vasi element");
+							if (!$bools[2])
+								notifyErrorListeners("Missing side attribute in Vasi element");
+							if (!$bools[3])
+								notifyErrorListeners("Missing biasX attribute in Vasi element");
+							if (!$bools[4])
+								notifyErrorListeners("Missing biasZ attribute in Vasi element");
+							if (!$bools[5])
+								notifyErrorListeners("Missing spacing attribute in Vasi element");
+							if (!$bools[6])
+								notifyErrorListeners("Missing length attribute in Vasi element");
+						} SLASH_CLOSE;
 
-					vasiAttributes: end | typevasi | side | biasX | biasZ | spacing | pitch;
+					vasiAttributes [boolean[] bools]: 
+						end {if ($bools[0] == true) 
+								notifyErrorListeners("Multiple end attribute in Vasi element");
+							else $bools[0] = true;}
+						| typevasi {if ($bools[1] == true) 
+								notifyErrorListeners("Multiple type attribute in Vasi element");
+							else $bools[1] = true;}
+						| side {if ($bools[2] == true) 
+								notifyErrorListeners("Multiple side attribute in Vasi element");
+							else $bools[2] = true;}
+						| biasX {if ($bools[3] == true) 
+								notifyErrorListeners("Multiple biasX attribute in Vasi element");
+							else $bools[3] = true;}
+						| biasZ {if ($bools[4] == true) 
+								notifyErrorListeners("Multiple biasZ attribute in Vasi element");
+							else $bools[4] = true;}
+						| spacing {if ($bools[5] == true) 
+								notifyErrorListeners("Multiple spacing attribute in Vasi element");
+							else $bools[5] = true;}
+						| pitch {if ($bools[6] == true) 
+								notifyErrorListeners("Multiple pitch attribute in Vasi element");
+							else $bools[6] = true;};
 
-						typevasi returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+						typevasi returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"PAPI2", "PAPI4",	"PVASI", "TRICOLOR", "TVASI", "VASI21", "VASI22", "VASI23", "VASI31", 
 							"VASI32", "VASI33","BALL","APAP","PANELS"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersNumbers.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid vasi type... Input: "+$stringLettersNumbers.value);
+								notifyErrorListeners("Invalid vasi type... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersNumbers.value;
+							else $value = $stringLettersMixedCase.value;
 						};
 
 						side: SIDE LEFT_RIGHT DOUBLE_QUOTES;
@@ -421,7 +730,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 					ilsAttributes: latitude | longitude | altitude | heading | frequency 
 									| end | range | magvar | ident | width | ils_name | backCourse; 
 					
-						ils_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+						ils_name returns[String value]: NAME stringLettersMixedCase DOUBLE_QUOTES{
 							if ($stringLettersMixedCase.value.length() > 48){
 								notifyErrorListeners("Ils name too long... Must have a maximum of 48 chars!");
 								$value = "invalid_value";
@@ -458,18 +767,18 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 		taxiwayPointAttributes: taxiway_index | taxiwaypoint_type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
 
-		taxiwaypoint_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+		taxiwaypoint_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"NORMAL", "HOLD_SHORT", "ILS_HOLD_SHORT", "HOLD_SHORT_NO_DRAW", "ILS_HOLD_SHORT_NO_DRAW"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersNumbers.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway point type... Input: "+$stringLettersNumbers.value);
+								notifyErrorListeners("Invalid taxiway point type... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersNumbers.value;
+							else $value = $stringLettersMixedCase.value;
 						};
 
 			taxiway_index returns[int index]: INDEX integerValue DOUBLE_QUOTES
@@ -495,35 +804,35 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			//index: INDEX EQUALS INDEXVALUE; 
 			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
 			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
-			taxiwayparking_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+			taxiwayparking_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"NONE", "DOCK_GA", "FUEL", "GATE_HEAVY", "GATE_MEDIUM", "GATE_SMALL", "RAMP_CARGO", 
 											"RAMP_GA", "RAMP_GA_LARGE", "RAMP_GA_MEDIUM", "RAMP_GA_SMALL", "RAMP_MIL_CARGO", "RAMP_MIL_COMBAT", "VEHICLE"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersNumbers.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway parking type... Input: "+$stringLettersNumbers.value);
+								notifyErrorListeners("Invalid taxiway parking type... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersNumbers.value;
+							else $value = $stringLettersMixedCase.value;
 						};
-			taxiwayparking_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersUpperCase DOUBLE_QUOTES{
+			taxiwayparking_name returns[String value]: NAME stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"PARKING", "DOCK", "GATE", "GATE_A", "GATE_B", "GATE_C", "GATE_D", "GATE_E", "GATE_F", "GATE_G", 
 							"GATE_H", "GATE_I", "GATE_J", "GATE_K", "GATE_L", "GATE_M", "GATE_N", "GATE_O", "GATE_P", "GATE_Q", "GATE_R", "GATE_S", 
 							"GATE_T", "GATE_U", "GATE_V", "GATE_W", "GATE_X", "GATE_Y", "GATE_Z", "NONE", "N_PARKING", "NE_PARKING", "NW_PARKING", 
 							"SE_PARKING", "S_PARKING", "SW_PARKING", "W_PARKING", "E_PARKING"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersUpperCase.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway parking name... Input: "+$stringLettersUpperCase.value);
+								notifyErrorListeners("Invalid taxiway parking name... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersUpperCase.value;
+							else $value = $stringLettersMixedCase.value;
 						};
 			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999*/
 			taxiway_airlineCodes: AIRLINECODES AIRLINECODESVALUES DOUBLE_QUOTES;
@@ -547,13 +856,13 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 							};/*0-255*/
 
-			taxiNameName returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersNumbers? DOUBLE_QUOTES{
-				if($stringLettersNumbers.text == null) $value = "";
-				else if($stringLettersNumbers.value.length() > 8) {
+			taxiNameName returns[String value]: NAME stringLettersMixedCase? DOUBLE_QUOTES{
+				if($stringLettersMixedCase.text == null) $value = "";
+				else if($stringLettersMixedCase.value.length() > 8) {
 					notifyErrorListeners("TaxiName name too long... Must have a maximum of 8 chars!");
 					$value = "invalid_value";
 				}
-				else $value = $stringLettersNumbers.value;
+				else $value = $stringLettersMixedCase.value;
 			};
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
@@ -563,18 +872,18 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 							| drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
 							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiwaypath_name;
 
-			taxiwaypath_type returns[String value]: TYPE EQUALS DOUBLE_QUOTES stringLettersNumbers DOUBLE_QUOTES{
+			taxiwaypath_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"RUNWAY", "PARKING", "TAXI", "PATH", "CLOSED", "VEHICLE"};
 							int i = 0;
 							for (i = 0;  i < types.length; i++){
-								if ($stringLettersNumbers.value.equals(types[i]))
+								if ($stringLettersMixedCase.value.equals(types[i]))
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway path type... Input: "+$stringLettersNumbers.value);
+								notifyErrorListeners("Invalid taxiway path type... Input: "+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
-							else $value = $stringLettersNumbers.value;
+							else $value = $stringLettersMixedCase.value;
 						};
 			
 			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999*/
@@ -601,8 +910,8 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 			
 			taxiway_rightEdgeLighted: RIGHTEDGELIGHTED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 			
-			taxiwaypath_name returns[int value]: NAME EQUALS DOUBLE_QUOTES INT_NUMBER DOUBLE_QUOTES {
-					int i = Integer.parseInt($INT_NUMBER.text);
+			taxiwaypath_name returns[int value]: NAME stringLettersMixedCase DOUBLE_QUOTES {
+					int i = Integer.parseInt($stringLettersMixedCase.value);
 						if (i < 0 || i > 255){
 							String err = "Invalid taxiway path name... Must be between 0 and 255... ";
 							err = err + "input: " + i;
@@ -669,9 +978,9 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 			waypointType: WAYPOINTTYPE WAYPOINTTYPE_WORDS DOUBLE_QUOTES;
 
-			waypointRegion: WAYPOINTREGION DOUBLE_QUOTES EQUALS stringLettersNumbers DOUBLE_QUOTES;
+			waypointRegion: WAYPOINTREGION stringLettersMixedCase DOUBLE_QUOTES;
 
-			waypointIdent: WAYPOINTIDENT DOUBLE_QUOTES EQUALS stringLettersNumbers DOUBLE_QUOTES;
+			waypointIdent: WAYPOINTIDENT stringLettersMixedCase DOUBLE_QUOTES;
 
 		waypointElements: route* ;
 
@@ -681,7 +990,7 @@ airport: OpenAirport airportAttributes* CLOSE  airportElements EndAirport;
 
 					routeType: ROUTETYPE ROUTETYPE_WORDS DOUBLE_QUOTES ; 
 
-					route_name returns[String value]: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES{
+					route_name returns[String value]: NAME stringLettersMixedCase DOUBLE_QUOTES{
 						if ($stringLettersMixedCase.value.length() > 8){
 							notifyErrorListeners("Route name too long... Must have a maximum of 8 chars!");
 							$value = "invalid_value";

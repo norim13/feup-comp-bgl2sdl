@@ -1,7 +1,7 @@
 
 lexer grammar XMLLexer;
 
-COMMENT     :   '<!--' .*? '-->' ;
+COMMENT     :   '<!--' .*? '-->' -> skip;
 
 OPEN        :   '<'   ;
 CLOSE       :   '>' ;
@@ -11,7 +11,7 @@ HIFEN		:   '-' ;
 EQUALS      :   '=' ;
 DOUBLE_QUOTES: '"' ;
 DOT: '.' ;
-WS			: 	[ \t\n\r]+ 			-> skip ;
+WS			: 	[ \t\n\r]+ -> skip;
 
 
 //////////////////////////////////////////////////////////////////
@@ -78,7 +78,20 @@ AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
 
 PARKINGNUMBER: 'parkingNumber="' -> pushMode(INTEGER_MODE);
 
+////////////////STRING MIXED + NUMBERS + WS ///////
 
+NAME: 'name="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+REGION: 'region="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+COUNTRY: 'country="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+STATE: 'state="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+CITY: 'city="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+TYPE: 'type="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+
+WAYPOINTREGION: 'waypointRegion="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+WAYPOINTIDENT: 'waypointIdent="' -> pushMode(STRING_LETTERS_MIXEDCASE);
+
+
+IDENT: 'ident="' -> pushMode(STRING_LETTERS_UPPERCASE_MODE);
 //////////////////////////////////////////////////////////////////
 /////////////////////////// ELEMENTS /////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -144,13 +157,7 @@ CloseBlastFence: '</BlastFence>';
 //////////////////////////// ATRIBUTE NAMES //////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-NAME: 'name';
-REGION: 'region';
-COUNTRY: 'country';
-STATE: 'state';
-CITY: 'city';
-IDENT: 'ident' ;
-TYPE: 'type' ;
+
 
 
 PRIMARYTAKEOFF: 'primaryTakeoff' ;
@@ -183,8 +190,6 @@ CENTERLINELIGHTED: 'centerLineLighted';
 LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
 
-WAYPOINTREGION: 'waypointRegion';
-WAYPOINTIDENT: 'waypointIdent' ;
 
  DELETEAIRPORTATRIBUTES: 
 'deleteAllApproaches'		|
@@ -215,10 +220,6 @@ BOOLEAN: 'TRUE' | 'FALSE' ;
 
 INT_NUMBER: DIGIT+; 
 SINGLE_LETTER_UPPER: UPPER_CASE_LETTER;
-STRING_LETTERS_UPPERCASE : [A-Z ]+ ;
-STRING_LETTERS_LOWERCASE : [a-z ]+ ;
-STRING_LETTERS : [A-Za-z ]+  ;
-STRING_LETTERS_NUMBERS: (DIGIT | UPPER_CASE_LETTER | LOWER_CASE_LETTER | '_')+  ;
 
 
 fragment DIGIT: [0-9] ;
@@ -226,11 +227,15 @@ fragment UPPER_CASE_LETTER: [A-Z] ;
 fragment LOWER_CASE_LETTER: [a-z] ;
 
 
-
 //////////////////////////////////////////////////////////////////////
 ///////////////////////////////  MODES  //////////////////////////////
 //////////////////////////////////////////////////////////////////////
+mode STRING_LETTERS_MIXEDCASE;
+STRING_LETTERS_MIXED: [ 0-9A-Za-z'_']* -> popMode;
 
+mode STRING_LETTERS_UPPERCASE_MODE;
+BOOLEAN2: ('TRUE' | 'FALSE') -> popMode;
+STRING_LETTERS_UPPERCASE : [A-Z ]+ -> popMode;
 
 mode AVAILABILITY_MODE;
 AVAILABILITY_WORDS: ('UNKNOWN' | 'PRIOR_REQUEST' | 'YES' | 'NO') -> popMode;

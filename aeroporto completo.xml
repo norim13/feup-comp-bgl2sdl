@@ -4,18 +4,16 @@
       state="Florida"
       city="Miami"
       name="Pan American Field"
-      lat="250.805166810751"
-      lon="-180.2753333747387"
+      lat="50.805166810751"
+      lon="-80.2753333747387"
       alt="2.438M"
       magvar="4.90000009536743"
       ident="KMIA"
       >
       <Services>
+         <Fuel type="130" availability="YES" <!-- availability="YES"--> />
          <Fuel
-            type="130"
-            availability="YES"/>
-         <Fuel
-            type="JETAA"
+            type="JETA"
             availability="YES"/>
       </Services>
       <DeleteAirport
@@ -237,7 +235,7 @@
          type="RUNWAY"
          lat="25.8030505478382"
          lon="-80.2732653915882"
-         alt="2.438G"
+         alt="2.438M"
          heading="311"
          number="EAST"
          designator="NONE"/>
@@ -357,7 +355,7 @@
          pushBack="NONE"/>
       <TaxiName
          index="0"
-         name=""/>
+         name="" />
       <TaxiName
          index="1"
          name="L"/>
