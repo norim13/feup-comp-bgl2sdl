@@ -20,15 +20,15 @@ public class BailErrorStrategy extends DefaultErrorStrategy {
 	@Override
 	public Token recoverInline(Parser recognizer) throws RecognitionException {
 		//recognizer.notifyErrorListeners("errororororororo2");
-		//throw new RuntimeException(new InputMismatchException(recognizer));
-		return null;
+		throw new RuntimeException(new InputMismatchException(recognizer));
+		//return null;
 		
 	}
 
 	/** Make sure we don't attempt to recover from problems in subrules. */
 	@Override
 	public void sync(Parser recognizer) {
-		recognizer.notifyErrorListeners("errororororororo1");
+		//recognizer.notifyErrorListeners("errororororororo1");
 	}
 
 	@Override
