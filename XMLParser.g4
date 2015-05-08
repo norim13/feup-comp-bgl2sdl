@@ -725,10 +725,64 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 						};/*0.0-9.9*/
 
 
-				ils: OpenIls ilsAttributes* ilsElements CLOSE CloseIls;
+				ils locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false}]: 
+					OpenIls ilsAttributes[$bools]* {
+							if (!$bools[0])
+								notifyErrorListeners("Missing latitude attribute in Ils element");
+							if (!$bools[1])
+								notifyErrorListeners("Missing longitude attribute in Ils element");
+							if (!$bools[2])
+								notifyErrorListeners("Missing altitude attribute in Ils element");
+							if (!$bools[3])
+								notifyErrorListeners("Missing heading attribute in Ils element");
+							if (!$bools[4])
+								notifyErrorListeners("Missing frequency attribute in Ils element");
+							if (!$bools[5])
+								notifyErrorListeners("Missing end attribute in Ils element");
+							if (!$bools[7])
+								notifyErrorListeners("Missing magvar attribute in Ils element");
+							if (!$bools[8])
+								notifyErrorListeners("Missing ident attribute in Ils element");
 
-					ilsAttributes: latitude | longitude | altitude | heading | frequency 
-									| end | range | magvar | ident | width | ils_name | backCourse; 
+						}CLOSE ilsElements  CloseIls;
+
+					ilsAttributes [boolean[] bools]: 
+						latitude {if ($bools[0] == true) 
+									notifyErrorListeners("Multiple latitude attribute in Ils element");
+								else $bools[0] = true;}
+						| longitude {if ($bools[1] == true) 
+									notifyErrorListeners("Multiple longitude attribute in Ils element");
+								else $bools[1] = true;}
+						| altitude {if ($bools[2] == true) 
+									notifyErrorListeners("Multiple altitude attribute in Ils element");
+								else $bools[2] = true;}
+						| heading {if ($bools[3] == true) 
+									notifyErrorListeners("Multiple heading attribute in Ils element");
+								else $bools[3] = true;}
+						| frequency {if ($bools[4] == true) 
+									notifyErrorListeners("Multiple frequency attribute in Ils element");
+								else $bools[4] = true;}
+						| end {if ($bools[5] == true) 
+									notifyErrorListeners("Multiple end attribute in Ils element");
+								else $bools[5] = true;}
+						| range {if ($bools[6] == true) 
+									notifyErrorListeners("Multiple range attribute in Ils element");
+								else $bools[6] = true;}
+						| magvar {if ($bools[7] == true) 
+									notifyErrorListeners("Multiple magvar attribute in Ils element");
+								else $bools[7] = true;}
+						| ident {if ($bools[8] == true) 
+									notifyErrorListeners("Multiple ident attribute in Ils element");
+								else $bools[8] = true;}
+						| width {if ($bools[9] == true) 
+									notifyErrorListeners("Multiple width attribute in Ils element");
+								else $bools[9] = true;}
+						| ils_name {if ($bools[10] == true) 
+									notifyErrorListeners("Multiple name attribute in Ils element");
+								else $bools[10] = true;}
+						| backCourse {if ($bools[11] == true) 
+									notifyErrorListeners("Multiple backCourse attribute in Ils element");
+								else $bools[11] = true;}; 
 					
 						ils_name returns[String value]: NAME stringLettersMixedCase DOUBLE_QUOTES{
 							if ($stringLettersMixedCase.value.length() > 48){
@@ -750,22 +804,119 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 		
 
 
-	start: OpenStart startAttributes* SLASH_CLOSE;
+	start locals[boolean[] bools = {false, false, false, false, false, false, false}]: 
+		OpenStart startAttributes[$bools]* {
+				if (!$bools[1])
+					notifyErrorListeners("Missing latitude attribute in Start element");
+				if (!$bools[2])
+					notifyErrorListeners("Missing longitude attribute in Start element");
+				if (!$bools[3])
+					notifyErrorListeners("Missing altitude attribute in Start element");
+				if (!$bools[4])
+					notifyErrorListeners("Missing heading attribute in Start element");
 
-		startAttributes: type | latitude | longitude | altitude | heading | number | designator;
+			}SLASH_CLOSE;
 
-	com: OpenCom comAttributes* SLASH_CLOSE;
+		startAttributes [boolean[] bools]: 
+			type {if ($bools[0] == true) 
+					notifyErrorListeners("Multiple type attribute in Start element");
+				else $bools[0] = true;}
+			| latitude {if ($bools[1] == true) 
+					notifyErrorListeners("Multiple latitude attribute in Start element");
+				else $bools[1] = true;}
+			| longitude {if ($bools[2] == true) 
+					notifyErrorListeners("Multiple longitude attribute in Start element");
+				else $bools[2] = true;}
+			| altitude {if ($bools[3] == true) 
+					notifyErrorListeners("Multiple altitude attribute in Start element");
+				else $bools[3] = true;}
+			| heading {if ($bools[4] == true) 
+					notifyErrorListeners("Multiple heading attribute in Start element");
+				else $bools[4] = true;}
+			| number {if ($bools[5] == true) 
+					notifyErrorListeners("Multiple number attribute in Start element");
+				else $bools[5] = true;}
+			| designator {if ($bools[6] == true) 
+					notifyErrorListeners("Multiple designator attribute in Start element");
+				else $bools[6] = true;};
 
-		comAttributes: frequency | type | /*nameCom*/name ;
+	com locals[boolean[] bools = {false, false, false}]: 
+		OpenCom comAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing frequency attribute in Com element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing type attribute in Com element");
+				if (!$bools[2])
+					notifyErrorListeners("Missing name attribute in Com element");
+			}SLASH_CLOSE;
+
+		comAttributes [boolean[] bools]: 
+			frequency {if ($bools[0] == true) 
+					notifyErrorListeners("Multiple frequency attribute in Com element");
+				else $bools[0] = true;}
+			| type {if ($bools[1] == true) 
+					notifyErrorListeners("Multiple type attribute in Com element");
+				else $bools[1] = true;}
+			| name {if ($bools[2] == true) 
+					notifyErrorListeners("Multiple name attribute in Com element");
+				else $bools[2] = true;};
 
 			/*nameCom: NAME EQUALS DOUBLE_QUOTES stringLettersMixedCase DOUBLE_QUOTES ;*/
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /* -------------------TAXIWAYPOINT -----------------------------------------------------------------*/
-	taxiwayPoint: OpenTaxiwayPoint taxiwayPointAttributes* SLASH_CLOSE; 
+	taxiwayPoint locals[boolean[] bools = {false, false, false, false, false, false, false}]: 
+		OpenTaxiwayPoint taxiwayPointAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing index attribute in TaxiwayPoint element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing type attribute in TaxiwayPoint element");
+				if (($bools[3] || $bools[4]) && ($bools[5] || $bools[6]))
+					notifyErrorListeners("Choose between latitude/longitude and biasX/biasY attributes in TaxiwayPoint element");
+				else{
+					if (!$bools[5] && !$bools[6]){ //latitude and longitude chosen
+						if (!$bools[3])
+							notifyErrorListeners("Missing latitude attribute in TaxiwayPoint element");
+						if (!$bools[4])
+							notifyErrorListeners("Missing longitude attribute in TaxiwayPoint element");
+					}
+					else if (!!$bools[5] && !$bools[6]){
+						if (!$bools[5])
+							notifyErrorListeners("Missing biasX attribute in TaxiwayPoint element");
+						if (!$bools[6])
+							notifyErrorListeners("Missing biasY attribute in TaxiwayPoint element");
+					}
+					else{
+						notifyErrorListeners("Missing latitude/longitude or biasX/biasY attributes in TaxiwayPoint element");
+					}
+				}
 
-		taxiwayPointAttributes: taxiway_index | taxiwaypoint_type | taxiway_orientation | ((latitude longitude) | (biasX biasY));
+			}SLASH_CLOSE; 
+
+		taxiwayPointAttributes [boolean[] bools]: 
+			taxiway_index {if ($bools[0] == true) 
+							notifyErrorListeners("Multiple index attribute in TaxiwayPoint element");
+						else $bools[0] = true;}
+			| taxiwaypoint_type {if ($bools[1] == true) 
+							notifyErrorListeners("Multiple type attribute in TaxiwayPoint element");
+						else $bools[1] = true;}
+			| taxiway_orientation {if ($bools[2] == true) 
+							notifyErrorListeners("Multiple orientation attribute in TaxiwayPoint element");
+						else $bools[2] = true;}
+			| latitude {if ($bools[3] == true) 
+							notifyErrorListeners("Multiple latitude attribute in TaxiwayPoint element");
+						else $bools[3] = true;}
+			| longitude {if ($bools[4] == true) 
+							notifyErrorListeners("Multiple longitude attribute in TaxiwayPoint element");
+						else $bools[4] = true;}
+			| biasX {if ($bools[5] == true) 
+							notifyErrorListeners("Multiple biasX attribute in TaxiwayPoint element");
+						else $bools[5] = true;}
+			| biasY {if ($bools[6] == true) 
+							notifyErrorListeners("Multiple biasY attribute in TaxiwayPoint element");
+						else $bools[6] = true;};
+
 
 		taxiwaypoint_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"NORMAL", "HOLD_SHORT", "ILS_HOLD_SHORT", "HOLD_SHORT_NO_DRAW", "ILS_HOLD_SHORT_NO_DRAW"};
@@ -795,14 +946,86 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
 
 	/*-------------------------------TaxiwayParking-----------------------------------------------------*/
-	taxiwayParking: OpenTaxiwayParking taxiwayParkingAttributes* SLASH_CLOSE; 
+	taxiwayParking locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false, false}]: 
+		OpenTaxiwayParking taxiwayParkingAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing index attribute in TaxiwayParking element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing type attribute in TaxiwayParking element");
+				if (($bools[1] || $bools[2]) && ($bools[3] || $bools[4]))
+					notifyErrorListeners("Choose between latitude/longitude and biasX/biasY attributes in TaxiwayParking element");
+				else{
+					if (!$bools[3] && !$bools[4]){ //latitude and longitude chosen
+						if (!$bools[1])
+							notifyErrorListeners("Missing latitude attribute in TaxiwayParking element");
+						if (!$bools[2])
+							notifyErrorListeners("Missing longitude attribute in TaxiwayParking element");
+					}
+					else if (!!$bools[3] && !$bools[4]){
+						if (!$bools[3])
+							notifyErrorListeners("Missing biasX attribute in TaxiwayParking element");
+						if (!$bools[4])
+							notifyErrorListeners("Missing biasY attribute in TaxiwayParking element");
+					}
+					else{
+						notifyErrorListeners("Missing latitude/longitude or biasX/biasY attributes in TaxiwayParking element");
+					}
+				}
+				if (!$bools[5])
+					notifyErrorListeners("Missing heading attribute in TaxiwayParking element");
+				if (!$bools[6])
+					notifyErrorListeners("Missing radius attribute in TaxiwayParking element");
+				if (!$bools[7])
+					notifyErrorListeners("Missing type attribute in TaxiwayParking element");
+				if (!$bools[8])
+					notifyErrorListeners("Missing name attribute in TaxiwayParking element");
+				if (!$bools[9])
+					notifyErrorListeners("Missing number attribute in TaxiwayParking element");
+				if (!$bools[11])
+					notifyErrorListeners("Missing pushBack attribute in TaxiwayParking element");
 
-		taxiwayParkingAttributes: taxiway_index | ((latitude longitude) | (biasX biasY)) | heading 
-									| taxiway_radius /*taxiwayparking_type*/ | type | taxiwayparking_name 
-									| taxiway_number | taxiway_airlineCodes | taxiway_pushBack | taxiway_teeOffset+;
+			}SLASH_CLOSE; 
 
-			//index: INDEX EQUALS INDEXVALUE; 
-			/*taxiway_heading: HEADING floatingPointValue DOUBLE_QUOTES;*/ /*0.0-360.0*/
+		taxiwayParkingAttributes [boolean[] bools]: 
+			taxiway_index {if ($bools[0] == true) 
+							notifyErrorListeners("Multiple index attribute in TaxiwayParking element");
+						else $bools[0] = true;}
+			| latitude {if ($bools[1] == true) 
+							notifyErrorListeners("Multiple latitude attribute in TaxiwayParking element");
+						else $bools[1] = true;}
+			| longitude {if ($bools[2] == true) 
+							notifyErrorListeners("Multiple longitude attribute in TaxiwayParking element");
+						else $bools[2] = true;}
+			| biasX {if ($bools[3] == true) 
+							notifyErrorListeners("Multiple biasX attribute in TaxiwayParking element");
+						else $bools[3] = true;}
+			| biasY {if ($bools[4] == true) 
+							notifyErrorListeners("Multiple biasY attribute in TaxiwayParking element");
+						else $bools[4] = true;}
+			| heading {if ($bools[5] == true) 
+							notifyErrorListeners("Multiple heading attribute in TaxiwayParking element");
+						else $bools[5] = true;}
+			| taxiway_radius {if ($bools[6] == true) 
+							notifyErrorListeners("Multiple radius attribute in TaxiwayParking element");
+						else $bools[6] = true;}
+			| taxiwayparking_type {if ($bools[7] == true) 
+							notifyErrorListeners("Multiple type attribute in TaxiwayParking element");
+						else $bools[7] = true;}
+			| taxiwayparking_name {if ($bools[8] == true) 
+							notifyErrorListeners("Multiple name attribute in TaxiwayParking element");
+						else $bools[8] = true;}
+			| taxiway_number {if ($bools[9] == true) 
+							notifyErrorListeners("Multiple number attribute in TaxiwayParking element");
+						else $bools[9] = true;}
+			| taxiway_airlineCodes {if ($bools[10] == true) 
+							notifyErrorListeners("Multiple airlineCodes attribute in TaxiwayParking element");
+						else $bools[10] = true;}
+			| taxiway_pushBack {if ($bools[11] == true) 
+							notifyErrorListeners("Multiple pushBack attribute in TaxiwayParking element");
+						else $bools[11] = true;}
+			| taxiway_teeOffset+; //pode ter vários offsets
+
+
 			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
 			taxiwayparking_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"NONE", "DOCK_GA", "FUEL", "GATE_HEAVY", "GATE_MEDIUM", "GATE_SMALL", "RAMP_CARGO", 
@@ -840,9 +1063,21 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 			taxiway_teeOffset: TEEOFFSET floatingPointValue DOUBLE_QUOTES;/*0.1-50.0*/
 
 	/*--------------------------------------TAXINAME-------------------------------*/
-	taxiName: OpenTaxiName taxiNameAttributes* SLASH_CLOSE;
+	taxiName locals[boolean[] bools = {false, false}]: 
+		OpenTaxiName taxiNameAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing index attribute in TaxiName element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing name attribute in TaxiName element");
+			} SLASH_CLOSE;
 
-		taxiNameAttributes: taxiNameIndex | taxiNameName;
+		taxiNameAttributes [boolean[] bools]: 
+			taxiNameIndex {if ($bools[0] == true) 
+							notifyErrorListeners("Multiple index attribute in TaxiName element");
+						else $bools[0] = true;}
+			| taxiNameName {if ($bools[1] == true) 
+							notifyErrorListeners("Multiple name attribute in TaxiName element");
+						else $bools[1] = true;};
 
 			taxiNameIndex returns[int index]: INDEX integerValue DOUBLE_QUOTES
 							{
@@ -866,11 +1101,84 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 			};
 
 	/*-----------------------------------------------------TAXIWAYPATH-----------------------------------------*/
-	taxiwayPath: OpenTaxiwayPath taxiwayPathAttributes* SLASH_CLOSE;
+	taxiwayPath locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}]: 
+		OpenTaxiwayPath taxiwayPathAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing type attribute in TaxiwayPath element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing start attribute in TaxiwayPath element");
+				if (!$bools[2])
+					notifyErrorListeners("Missing end attribute in TaxiwayPath element");
+				if (!$bools[3])
+					notifyErrorListeners("Missing width attribute in TaxiwayPath element");
+				if (!$bools[4])
+					notifyErrorListeners("Missing weightLimit attribute in TaxiwayPath element");
+				if (!$bools[5])
+					notifyErrorListeners("Missing surface attribute in TaxiwayPath element");
+				/*if (!$bools[6])
+					notifyErrorListeners("Missing drawSurface attribute in TaxiwayPath element");
+				if (!$bools[7])
+					notifyErrorListeners("Missing drawDetail attribute in TaxiwayPath element");*/
+				/*if (!$bools[14])
+					notifyErrorListeners("Missing number attribute in TaxiwayPath element");
+				if (!$bools[15])
+					notifyErrorListeners("Missing designator attribute in TaxiwayPath element");
+				if (!$bools[16])
+					notifyErrorListeners("Missing name attribute in TaxiwayPath element");*/
+			}SLASH_CLOSE;
 
-		taxiwayPathAttributes: type | taxiway_start | taxiway_end | width | taxiway_weightLimit | surface | drawSurface 
-							| drawDetail | taxiway_centerLine | taxiway_centerLineLighted | taxiway_leftEdge | taxiway_leftEdgeLighted 
-							| taxiway_rightEdge | taxiway_rightEdgeLighted | taxiway_number | designator | taxiwaypath_name;
+		taxiwayPathAttributes [boolean[] bools]: 
+			type {if ($bools[0] == true) 
+					notifyErrorListeners("Multiple type attribute in TaxiwayPath element");
+				else $bools[0] = true;}
+			| taxiway_start {if ($bools[1] == true) 
+					notifyErrorListeners("Multiple start attribute in TaxiwayPath element");
+				else $bools[1] = true;}
+			| taxiway_end {if ($bools[2] == true) 
+					notifyErrorListeners("Multiple end attribute in TaxiwayPath element");
+				else $bools[2] = true;}
+			| width {if ($bools[3] == true) 
+					notifyErrorListeners("Multiple width attribute in TaxiwayPath element");
+				else $bools[3] = true;}
+			| taxiway_weightLimit {if ($bools[4] == true) 
+					notifyErrorListeners("Multiple weightLimit attribute in TaxiwayPath element");
+				else $bools[4] = true;}
+			| surface {if ($bools[5] == true) 
+					notifyErrorListeners("Multiple surface attribute in TaxiwayPath element");
+				else $bools[5] = true;}
+			| drawSurface {if ($bools[6] == true) 
+					notifyErrorListeners("Multiple drawSurface attribute in TaxiwayPath element");
+				else $bools[6] = true;}
+			| drawDetail {if ($bools[7] == true) 
+					notifyErrorListeners("Multiple drawDetail attribute in TaxiwayPath element");
+				else $bools[7] = true;}
+			| taxiway_centerLine {if ($bools[8] == true) 
+					notifyErrorListeners("Multiple centerLine attribute in TaxiwayPath element");
+				else $bools[8] = true;}
+			| taxiway_centerLineLighted {if ($bools[9] == true) 
+					notifyErrorListeners("Multiple centerLineLighted attribute in TaxiwayPath element");
+				else $bools[9] = true;}
+			| taxiway_leftEdge {if ($bools[10] == true) 
+					notifyErrorListeners("Multiple leftEdge attribute in TaxiwayPath element");
+				else $bools[10] = true;}
+			| taxiway_leftEdgeLighted {if ($bools[11] == true) 
+					notifyErrorListeners("Multiple leftEdgeLighted attribute in TaxiwayPath element");
+				else $bools[11] = true;}
+			| taxiway_rightEdge {if ($bools[12] == true) 
+					notifyErrorListeners("Multiple rightEdge attribute in TaxiwayPath element");
+				else $bools[12] = true;}
+			| taxiway_rightEdgeLighted {if ($bools[13] == true) 
+					notifyErrorListeners("Multiple rightEdgeLighted attribute in TaxiwayPath element");
+				else $bools[13] = true;}
+			| taxiway_number {if ($bools[14] == true) 
+					notifyErrorListeners("Multiple number attribute in TaxiwayPath element");
+				else $bools[14] = true;}
+			| designator {if ($bools[15] == true) 
+					notifyErrorListeners("Multiple designator attribute in TaxiwayPath element");
+				else $bools[15] = true;}
+			| taxiwaypath_name {if ($bools[16] == true) 
+					notifyErrorListeners("Multiple name attribute in TaxiwayPath element");
+				else $bools[16] = true;};
 
 			taxiwaypath_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
 							String[] types = {"RUNWAY", "PARKING", "TAXI", "PATH", "CLOSED", "VEHICLE"};
@@ -922,9 +1230,21 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					};
 
 
-	jetway: OpenJetway jetwayAttributes* CLOSE jetwayElements CloseJetway;
+	jetway locals[boolean[] bools = {false, false}]: 
+		OpenJetway jetwayAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing gateName attribute in Jetway element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing parkingNumber attribute in Jetway element");
+			}CLOSE jetwayElements CloseJetway;
 
-		jetwayAttributes: gateName | parkingNumber;
+		jetwayAttributes [boolean[] bools]: 
+			gateName {if ($bools[0]) 
+					notifyErrorListeners("Multiple gateName attribute in Jetway element");
+				else $bools[0] = true;}
+			| parkingNumber {if ($bools[1]) 
+					notifyErrorListeners("Multiple parkingNumber attribute in Jetway element");
+				else $bools[1] = true;};
 
 			gateName: GATENAME GATENAME_WORDS DOUBLE_QUOTES;
 
@@ -971,10 +1291,41 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 		blastFenceElements: vertex vertex vertex* ;
 
 
-	waypoint: OpenWaypoint waypointAttributes* CLOSE waypointElements EndWaypoint;
+	waypoint locals[boolean[] bools = {false, false, false, false, false, false}]: 
+		OpenWaypoint waypointAttributes[$bools]* {
+				if (!$bools[0])
+					notifyErrorListeners("Missing latitude attribute in Waypoint element");
+				if (!$bools[1])
+					notifyErrorListeners("Missing longitude attribute in Waypoint element");
+				if (!$bools[2])
+					notifyErrorListeners("Missing waypointType attribute in Waypoint element");
+				if (!$bools[3])
+					notifyErrorListeners("Missing magvar attribute in Waypoint element");
+				if (!$bools[4])
+					notifyErrorListeners("Missing waypointRegion attribute in Waypoint element");
+				if (!$bools[5])
+					notifyErrorListeners("Missing waypointIdent attribute in Waypoint element");
+			}CLOSE waypointElements EndWaypoint;
 
-		waypointAttributes: latitude | longitude | type | waypointType | magvar
-							| waypointRegion | waypointIdent;
+		waypointAttributes [boolean[] bools]: 
+			latitude {if ($bools[0]) 
+					notifyErrorListeners("Multiple latitude attribute in Waypoint element");
+				else $bools[0] = true;}
+			| longitude {if ($bools[1]) 
+					notifyErrorListeners("Multiple longitude attribute in Waypoint element");
+				else $bools[1] = true;}
+			| waypointType {if ($bools[2]) 
+					notifyErrorListeners("Multiple waypointType attribute in Waypoint element");
+				else $bools[2] = true;}
+			| magvar {if ($bools[3]) 
+					notifyErrorListeners("Multiple magvar attribute in Waypoint element");
+				else $bools[3] = true;}
+			| waypointRegion {if ($bools[4]) 
+					notifyErrorListeners("Multiple waypointRegion attribute in Waypoint element");
+				else $bools[4] = true;}
+			| waypointIdent {if ($bools[5]) 
+					notifyErrorListeners("Multiple waypointIdent attribute in Waypoint element");
+				else $bools[5] = true;};
 
 			waypointType: WAYPOINTTYPE WAYPOINTTYPE_WORDS DOUBLE_QUOTES;
 
