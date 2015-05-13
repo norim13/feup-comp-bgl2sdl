@@ -1,7 +1,7 @@
 
 lexer grammar XMLLexer;
 
-COMMENT     :   '<!--' .*? '-->' -> skip;
+COMMENT     :   ('<!--' .*? '-->' | '<?' .*? '?>') -> skip;
 
 OPEN        :   '<'   ;
 CLOSE       :   '>' ;
@@ -78,6 +78,11 @@ AIRPORTTESTRADIUS : 'airportTestRadius="' -> pushMode(INTEGER_MODE);
 
 PARKINGNUMBER: 'parkingNumber="' -> pushMode(INTEGER_MODE);
 
+RED: 'red="' -> pushMode(INTEGER_MODE);
+GREEN: 'green="' -> pushMode(INTEGER_MODE);
+BLUE: 'blue="' -> pushMode(INTEGER_MODE);
+
+
 ////////////////STRING MIXED + NUMBERS + WS ///////
 
 NAME: 'name="' -> pushMode(STRING_LETTERS_MIXEDCASE);
@@ -91,7 +96,7 @@ WAYPOINTREGION: 'waypointRegion="' -> pushMode(STRING_LETTERS_MIXEDCASE);
 WAYPOINTIDENT: 'waypointIdent="' -> pushMode(STRING_LETTERS_MIXEDCASE);
 
 
-IDENT: 'ident="' -> pushMode(STRING_LETTERS_UPPERCASE_MODE);
+IDENT: 'ident="' -> pushMode(STRING_LETTERS_MIXEDCASE);
 //////////////////////////////////////////////////////////////////
 /////////////////////////// ELEMENTS /////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -139,7 +144,8 @@ OpenBoundaryFence: '<BoundaryFence';
 OpenBlastFence: '<BlastFence';
 
 OpenHelipad: '<Helipad' ;
-
+OpenGlideSlope: '<GlideSlope' ;
+OpendDme: '<Dme';
 
 /* End Elements */
 EndAirport: '</Airport>';
@@ -173,6 +179,14 @@ REIL: 'reil';
 ENDLIGHTS: 'endLights';
 BACKCOURSE: 'backCourse';
 
+ALTERNATETHRESHOLD: 'alternateThreshold';
+ALTERNATETOUCHDOWN: 'alternateTouchdown';
+ALTERNATEFIXEDDISTANCE: 'alternateFixedDistance';
+ALTERNATEPRECISION: 'alternatePrecision';
+LEADINGZEROIDENT: 'leadingZeroIdent';
+NOTHRESHOLDENDARROWS: 'noThresholdEndArrows';
+
+
 EDGES:'edges';
 THRESHOLD:'threshold';
 FIXEDDISTANCE:'fixedDistance';
@@ -193,6 +207,8 @@ CENTERLINELIGHTED: 'centerLineLighted';
 LEFTEDGELIGHTED: 'leftEdgeLighted';
 RIGHTEDGELIGHTED: 'rightEdgeLighted';
 
+TRANSPARENT: 'transparent';
+CLOSED: 'closed';
 
  DELETEAIRPORTATRIBUTES: 
 'deleteAllApproaches'		|
@@ -234,10 +250,11 @@ fragment LOWER_CASE_LETTER: [a-z] ;
 ///////////////////////////////  MODES  //////////////////////////////
 //////////////////////////////////////////////////////////////////////
 mode STRING_LETTERS_MIXEDCASE;
-STRING_LETTERS_MIXED: [ 0-9A-Za-z'_']* -> popMode;
+BOOLEAN2: ('TRUE' | 'FALSE') -> popMode;
+STRING_LETTERS_MIXED: [ 0-9A-Za-z'_''/']* -> popMode;
 
 mode STRING_LETTERS_UPPERCASE_MODE;
-BOOLEAN2: ('TRUE' | 'FALSE') -> popMode;
+
 STRING_LETTERS_UPPERCASE : [A-Z ]+ -> popMode;
 
 mode AVAILABILITY_MODE;

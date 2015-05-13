@@ -2,7 +2,20 @@ parser grammar XMLParser;
 
 options { tokenVocab=XMLLexer; }
 
-document    :  airport;
+@members {
+	java.util.ArrayList<Integer> taxiwaypoint_indexes = new java.util.ArrayList<Integer>();
+	java.util.ArrayList<Integer> taxiwayparking_indexes = new java.util.ArrayList<Integer>();
+
+	public boolean taxiway_index_is_defined(int variable) {
+		int index = taxiwaypoint_indexes.indexOf(variable);
+		if (index > -1)
+			return true;
+		index = taxiwayparking_indexes.indexOf(variable);
+		return index > -1;
+	}		
+}
+
+document    :  airport*;
 
 /////////////////////////////////////////////////////////////////////
 ///////////////////////// SOME COMMON ATTRIBUTES ////////////////////
@@ -213,12 +226,12 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 						
 				};
 
-		ident returns[String value]: IDENT stringLettersUpperCase DOUBLE_QUOTES {
-			if ($stringLettersUpperCase.value.length() > 4){
+		ident returns[String value]: IDENT stringLettersMixedCase DOUBLE_QUOTES {
+			if ($stringLettersMixedCase.value.length() > 4){
 				notifyErrorListeners("Ident too long... Must have a maximum of 4 chars!");
 				$value = "invalid_value";
 			}
-			else $value = $stringLettersUpperCase.value;
+			else $value = $stringLettersMixedCase.value;
 		} ;
 
 
@@ -478,7 +491,8 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					else $bools[18] = true;}
 			| secondaryMarkingBias {if ($bools[19] == true) 
 						notifyErrorListeners("Multiple secondaryMarkingBias attribute in Runway element");
-					else $bools[19] = true;}; 
+					else $bools[19] = true;
+				}; 
 
 			primaryDesignator: PRIMARYDESIGNATOR DESIGNATORVALUES DOUBLE_QUOTES; 
 
@@ -506,10 +520,19 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 
 				markings: OpenMarkings markingAttributes* SLASH_CLOSE;
 
-					markingAttributes: edges | threshold | fixedDistance | touchdown | dashes
+					markingAttributes: alternateThreshold | alternateTouchdown | alternateFixedDistance 
+						| alternatePrecision | leadingZeroIdent | noThresholdEndArrows
+						| edges | threshold | fixedDistance | touchdown | dashes
 						| identMarkings | precision | edgePavement | singleEnd | primaryClosed		
 						| secondaryClosed | primaryStol | secondaryStol;
 
+
+						alternateThreshold: ALTERNATETHRESHOLD EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						alternateTouchdown: ALTERNATETOUCHDOWN EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						alternateFixedDistance: ALTERNATEFIXEDDISTANCE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						alternatePrecision: ALTERNATEPRECISION EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						leadingZeroIdent: LEADINGZEROIDENT EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+						noThresholdEndArrows: NOTHRESHOLDENDARROWS EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						edges: EDGES EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						threshold: THRESHOLD EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 						fixedDistance: FIXEDDISTANCE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
@@ -792,11 +815,19 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 							else $value = $stringLettersMixedCase.value;
 						} ; 
 
-						range: RANGE floatingPointValue DOUBLE_QUOTES;
+						range: RANGE floatingPointValue units_all? DOUBLE_QUOTES;
 
 						backCourse: BACKCOURSE EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
 
-					ilsElements: ; 
+					ilsElements: glideSlope* dme*; 
+
+						glideSlope:  OpenGlideSlope glideSlopeAttributes* SLASH_CLOSE;
+
+							glideSlopeAttributes: latitude | longitude | altitude | pitch | range ;
+
+						dme:  OpendDme dmeAttributes* SLASH_CLOSE;
+
+							dmeAttributes: latitude | longitude | altitude | range;
 
 
 
@@ -840,57 +871,115 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					notifyErrorListeners("Multiple designator attribute in Start element");
 				else $bools[6] = true;};
 
-	helipad locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false}]: 
+	helipad locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false, false, false}]: 
 		OpenHelipad helipadAttributes[$bools]* {
-			if (!$bools[5])
+			if (!$bools[1])
 				notifyErrorListeners("Missing latitude attribute in Helipad Element");
-			if(!$bools[6])
+			if(!$bools[2])
 				notifyErrorListeners("Missing longitude attribute in Helipad Element");
-			if(!$bools[7])
+			if(!$bools[3])
 				notifyErrorListeners("Missing altitude attribute in Helipad Element");
-			if(!$bools[9])
-				notifyErrorListeners("Missing ident attribute in Helipad Element");
-			if(!$bools[11])
-				notifyErrorListeners("Missing trafficScalar attribute in Helipad Element");
+			if(!$bools[4])
+				notifyErrorListeners("Missing surface attribute in Helipad Element");
+			if(!$bools[5])
+				notifyErrorListeners("Missing heading attribute in Helipad Element");
+			if(!$bools[6])
+				notifyErrorListeners("Missing length attribute in Helipad Element");
+			if (!$bools[7])
+				notifyErrorListeners("Missing width attribute in Helipad Element");
+			if (!$bools[8])
+				notifyErrorListeners("Missing type attribute in Helipad Element");
 		}SLASH_CLOSE ;
 
 		helipadAttributes [boolean[] bools]: 
-			region  {if ($bools[0] == true) 
-						notifyErrorListeners("Multiple region attribute in Helipad Element");
-						else $bools[0] = true;}
-			| country {if ($bools[1] == true) 
-						notifyErrorListeners("Multiple country attribute in Helipad Element");
-						else $bools[1] = true;}
-			| state{if ($bools[2] == true) 
-						notifyErrorListeners("Multiple state attribute in Helipad Element");
-						else $bools[2] = true;}
-			| city {if ($bools[3] == true) 
-						notifyErrorListeners("Multiple city attribute in Helipad Element");
-						else $bools[3] = true;}
-			| name {if ($bools[4] == true) 
-						notifyErrorListeners("Multiple name attribute in Helipad Element");
-						else $bools[4] = true;}
-			| latitude {if ($bools[5] == true) 
+			latitude {if ($bools[1] == true) 
 						notifyErrorListeners("Multiple latitude attribute in Helipad Element");
-						else $bools[5] = true;}
-			| longitude {if ($bools[6] == true) 
+						else $bools[1] = true;}
+			| longitude {if ($bools[2] == true) 
 						notifyErrorListeners("Multiple longitude attribute in Helipad Element");
-						else $bools[6] = true;}
-			| altitude {if ($bools[7] == true) 
+						else $bools[2] = true;}
+			| altitude {if ($bools[3] == true) 
 						notifyErrorListeners("Multiple altitude attribute in Helipad Element");
+						else $bools[3] = true;}
+			| surface {if ($bools[4] == true) 
+						notifyErrorListeners("Multiple surface attribute in Helipad Element");
+						else $bools[4] = true;}
+			| heading {if ($bools[5] == true) 
+							notifyErrorListeners("Multiple heading attribute in Helipad element");
+						else $bools[5] = true;}
+			| length {if ($bools[6] == true) 
+							notifyErrorListeners("Multiple length attribute in Helipad element");
+						else $bools[6] = true;}
+			| width {if ($bools[7] == true) 
+							notifyErrorListeners("Multiple width attribute in Helipad element");
 						else $bools[7] = true;}
-			| magvar {if ($bools[8] == true) 
-						notifyErrorListeners("Multiple magvar attribute in Helipad Element");
+			| helipad_type {if ($bools[8] == true) 
+							notifyErrorListeners("Multiple type attribute in Helipad element");
 						else $bools[8] = true;}
-			| ident {if ($bools[9] == true) 
-						notifyErrorListeners("Multiple ident attribute in Helipad Element");
+			| closed {if ($bools[9] == true) 
+							notifyErrorListeners("Multiple closed attribute in Helipad element");
 						else $bools[9] = true;}
-			| airportTestRadius {if ($bools[10] == true) 
-						notifyErrorListeners("Multiple airportTestRadius attribute in Helipad Element");
+			| transparent {if ($bools[10] == true) 
+							notifyErrorListeners("Multiple transparent attribute in Helipad element");
 						else $bools[10] = true;}
-			| trafficScalar {if ($bools[11] == true) 
-						notifyErrorListeners("Multiple trafficScalar attribute in Helipad Element");
-						else $bools[11] = true;};
+			| red {if ($bools[11] == true) 
+							notifyErrorListeners("Multiple red attribute in Helipad element");
+						else $bools[11] = true;}
+			| green {if ($bools[12] == true) 
+							notifyErrorListeners("Multiple green attribute in Helipad element");
+						else $bools[12] = true;}
+			| blue {if ($bools[13] == true) 
+							notifyErrorListeners("Multiple blue attribute in Helipad element");
+						else $bools[13] = true;}; 
+
+			helipad_type returns[String value]: 
+				TYPE stringLettersMixedCase DOUBLE_QUOTES{
+					String[] types = {"NONE", "CIRCLE", "H", "MEDICAL", "SQUARE"};
+					int i = 0;
+					for (i = 0;  i < types.length; i++){
+						if ($stringLettersMixedCase.value.equals(types[i]))
+							break;
+					}
+					if (i == types.length){
+						notifyErrorListeners("Invalid Helipad type... Input:"+$stringLettersMixedCase.value);
+						$value = "invalid_value";
+					}
+					else $value = $stringLettersMixedCase.value;
+				};
+
+			closed: CLOSED EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+
+			transparent: TRANSPARENT EQUALS DOUBLE_QUOTES bool DOUBLE_QUOTES;
+
+			red returns[int value]: RED integerValue DOUBLE_QUOTES{
+				if ($integerValue.value < 0 || $integerValue.value > 255){
+					String err = "Invalid red... Must be between 0 and 255... ";
+					err = err + "input:" + $integerValue.value;
+					notifyErrorListeners(err);
+					$value = -1; // ???
+				}
+				else $value = $integerValue.value;
+			};/*0-255*/
+
+			green returns[int value]: GREEN integerValue DOUBLE_QUOTES{
+				if ($integerValue.value < 0 || $integerValue.value > 255){
+					String err = "Invalid green... Must be between 0 and 255... ";
+					err = err + "input:" + $integerValue.value;
+					notifyErrorListeners(err);
+					$value = -1; // ???
+				}
+				else $value = $integerValue.value;
+			};/*0-255*/
+
+			blue returns[int value]: BLUE integerValue DOUBLE_QUOTES{
+				if ($integerValue.value < 0 || $integerValue.value > 255){
+					String err = "Invalid blue... Must be between 0 and 255... ";
+					err = err + "input:" + $integerValue.value;
+					notifyErrorListeners(err);
+					$value = -1; // ???
+				}
+				else $value = $integerValue.value;
+			};/*0-255*/
 
 	com locals[boolean[] bools = {false, false, false}]: 
 		OpenCom comAttributes[$bools]* {
@@ -992,7 +1081,10 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 											notifyErrorListeners(err);
 											$index = -1; // ???
 										}
-										else $index = $integerValue.value;
+										else{
+											$index = $integerValue.value;
+											taxiwaypoint_indexes.add($index);
+										}
 
 									}; /*0-3999*/
 			taxiway_orientation: ORIENTATION ORIENTATIONTYPE DOUBLE_QUOTES; 
@@ -1039,7 +1131,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 			}SLASH_CLOSE; 
 
 		taxiwayParkingAttributes [boolean[] bools]: 
-			taxiway_index {if ($bools[0] == true) 
+			taxiwayparking_index {if ($bools[0] == true) 
 							notifyErrorListeners("Multiple index attribute in TaxiwayParking element");
 						else $bools[0] = true;}
 			| latitude {if ($bools[1] == true) 
@@ -1077,6 +1169,21 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 						else $bools[11] = true;}
 			| taxiway_teeOffset+; //pode ter vários offsets
 
+
+			taxiwayparking_index returns[int index]: INDEX integerValue DOUBLE_QUOTES
+					{
+						if ($integerValue.value < 0 || $integerValue.value > 3999){
+							String err = "Invalid index... Must be between 0 and 3999... ";
+							err = err + "input:" + $integerValue.value;
+							notifyErrorListeners(err);
+							$index = -1; // ???
+						}
+						else {
+							$index = $integerValue.value;
+							taxiwayparking_indexes.add($index);
+						}
+
+					}; /*0-3999*/
 
 			taxiway_radius: RADIUS floatingPointValue units_all? DOUBLE_QUOTES;
 			taxiwayparking_type returns[String value]: TYPE stringLettersMixedCase DOUBLE_QUOTES{
@@ -1246,9 +1353,35 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 							else $value = $stringLettersMixedCase.value;
 						};
 			
-			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999 TODO*/
-			
-			taxiway_end: END INT_NUMBER2 DOUBLE_QUOTES; /*0-3999 TODO*/
+			taxiway_start returns[int value]: START integerValue DOUBLE_QUOTES{
+					if ($integerValue.value < 0 || $integerValue.value > 3999){
+						String err = "Invalid index... Must be between 0 and 3999... ";
+						err = err + "input:" + $integerValue.value;
+						notifyErrorListeners(err);
+						$value = -1; // ???
+					}
+					else if (!taxiway_index_is_defined($integerValue.value)){
+						notifyErrorListeners("No taxiway point with index "+$integerValue.value);
+						$value = -1; // ???
+					}
+					else $value = $integerValue.value;
+
+				};/*0-3999*/
+		
+			taxiway_end returns[int value]: END INT_NUMBER2 DOUBLE_QUOTES{
+					int temp = Integer.parseInt($INT_NUMBER2.text);
+					if (temp < 0 || temp > 3999){
+						String err = "Invalid index... Must be between 0 and 3999... ";
+						err = err + "input:" + temp;
+						notifyErrorListeners(err);
+						$value = -1; // ???
+					}
+					else if (!taxiway_index_is_defined(temp)){
+						notifyErrorListeners("No taxiway point with index "+temp);
+						$value = -1; // ???
+					}
+					else $value = temp;
+				}; /*0-3999*/
 			
 			/*taxiway_width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;*/
 			
@@ -1310,9 +1443,9 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 
 			apronAttributes: surface | drawSurface | drawDetail;
 
-			vertex: OpenVertex vertexAttributes SLASH_CLOSE;
+			vertex: OpenVertex vertexAttributes* SLASH_CLOSE;
 
-				vertexAttributes: (latitude | longitude) | (biasX | biasY);
+				vertexAttributes: latitude | longitude | biasX | biasY;
 
 	apronEdgeLights: StartApronEdgeLights apronEdgeLightsElements EndApronEdgeLights;
 
@@ -1325,7 +1458,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 		taxiwaySignAttributes: latitude longitude heading; */
 
 
-	boundaryFence : OpenBoundaryFence boundaryFenceAttributes* SLASH_CLOSE boundaryFenceElements*;
+	boundaryFence : OpenBoundaryFence boundaryFenceAttributes* CLOSE boundaryFenceElements* CloseBoundaryFence;
 
 		boundaryFenceAttributes: instanceId | profile  ;
 		  
@@ -1336,7 +1469,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 		boundaryFenceElements: vertex vertex vertex* ;
 
 
-	blastFence : OpenBlastFence blastFenceAttributes* SLASH_CLOSE blastFenceElements*;
+	blastFence : OpenBlastFence blastFenceAttributes* SLASH_CLOSE blastFenceElements* CloseBlastFence;
 
 		blastFenceAttributes: instanceId | profile  ;
 
