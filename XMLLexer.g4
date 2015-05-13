@@ -138,6 +138,9 @@ OpenRoute: '<Route' ;
 OpenBoundaryFence: '<BoundaryFence';
 OpenBlastFence: '<BlastFence';
 
+OpenHelipad: '<Helipad' ;
+
+
 /* End Elements */
 EndAirport: '</Airport>';
 EndServices: '</Services>' ;

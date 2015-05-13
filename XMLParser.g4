@@ -108,34 +108,34 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					notifyErrorListeners("Multiple country attribute at airport");
 					else $bools[1] = true;}
 		| state{if ($bools[2] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple state attribute at airport");
 					else $bools[2] = true;}
 		| city {if ($bools[3] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple city attribute at airport");
 					else $bools[3] = true;}
 		| name {if ($bools[4] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple name attribute at airport");
 					else $bools[4] = true;}
 		| latitude {if ($bools[5] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple latitude attribute at airport");
 					else $bools[5] = true;}
 		| longitude {if ($bools[6] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple longitude attribute at airport");
 					else $bools[6] = true;}
 		| altitude {if ($bools[7] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple altitude attribute at airport");
 					else $bools[7] = true;}
 		| magvar {if ($bools[8] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple magvar attribute at airport");
 					else $bools[8] = true;}
 		| ident {if ($bools[9] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple ident attribute at airport");
 					else $bools[9] = true;}
 		| airportTestRadius {if ($bools[10] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple airportTestRadius attribute at airport");
 					else $bools[10] = true;}
 		| trafficScalar {if ($bools[11] == true) 
-					notifyErrorListeners("Multiple country attribute at airport");
+					notifyErrorListeners("Multiple trafficScalar attribute at airport");
 					else $bools[11] = true;};
 
 		region returns[String value]: REGION stringLettersMixedCase DOUBLE_QUOTES{
@@ -238,7 +238,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 
 ////////////////////////////////////////////////////////////////
 
-	airportElements: services* deleteAirport* deletes tower* runway* start* com* 
+	airportElements: services* deleteAirport* deletes tower* runway* start* helipad* com* 
 		taxiwayPoint* taxiwayParking* taxiName* taxiwayPath* jetway*
 		aprons* apronEdgeLights* boundaryFence* blastFence* waypoint*;
 
@@ -700,7 +700,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid vasi type... Input: "+$stringLettersMixedCase.value);
+								notifyErrorListeners("Invalid vasi type... Input:" +$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
 							else $value = $stringLettersMixedCase.value;
@@ -710,7 +710,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 						
 						spacing returns[float value]: SPACING floatingPointValue units_all? DOUBLE_QUOTES{
 							if ($floatingPointValue.value < 0){
-								notifyErrorListeners("Invalid spacing... Must be positive... input: " + $floatingPointValue.value);
+								notifyErrorListeners("Invalid spacing... Must be positive... input:" + $floatingPointValue.value);
 								$value = -1;
 							}
 							else $value = $floatingPointValue.value;	
@@ -718,7 +718,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 
 						pitch returns[float value]: PITCH floatingPointValue DOUBLE_QUOTES{
 							if ($floatingPointValue.value < 0 || $floatingPointValue.value > 9.9){
-								notifyErrorListeners("Invalid pitch... Must be between 0.0 and 9.9... input: " + $floatingPointValue.value);
+								notifyErrorListeners("Invalid pitch... Must be between 0.0 and 9.9... input:" + $floatingPointValue.value);
 								$value = -1;
 							}
 							else $value = $floatingPointValue.value;	
@@ -840,6 +840,58 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					notifyErrorListeners("Multiple designator attribute in Start element");
 				else $bools[6] = true;};
 
+	helipad locals[boolean[] bools = {false, false, false, false, false, false, false, false, false, false, false, false}]: 
+		OpenHelipad helipadAttributes[$bools]* {
+			if (!$bools[5])
+				notifyErrorListeners("Missing latitude attribute in Helipad Element");
+			if(!$bools[6])
+				notifyErrorListeners("Missing longitude attribute in Helipad Element");
+			if(!$bools[7])
+				notifyErrorListeners("Missing altitude attribute in Helipad Element");
+			if(!$bools[9])
+				notifyErrorListeners("Missing ident attribute in Helipad Element");
+			if(!$bools[11])
+				notifyErrorListeners("Missing trafficScalar attribute in Helipad Element");
+		}SLASH_CLOSE ;
+
+		helipadAttributes [boolean[] bools]: 
+			region  {if ($bools[0] == true) 
+						notifyErrorListeners("Multiple region attribute in Helipad Element");
+						else $bools[0] = true;}
+			| country {if ($bools[1] == true) 
+						notifyErrorListeners("Multiple country attribute in Helipad Element");
+						else $bools[1] = true;}
+			| state{if ($bools[2] == true) 
+						notifyErrorListeners("Multiple state attribute in Helipad Element");
+						else $bools[2] = true;}
+			| city {if ($bools[3] == true) 
+						notifyErrorListeners("Multiple city attribute in Helipad Element");
+						else $bools[3] = true;}
+			| name {if ($bools[4] == true) 
+						notifyErrorListeners("Multiple name attribute in Helipad Element");
+						else $bools[4] = true;}
+			| latitude {if ($bools[5] == true) 
+						notifyErrorListeners("Multiple latitude attribute in Helipad Element");
+						else $bools[5] = true;}
+			| longitude {if ($bools[6] == true) 
+						notifyErrorListeners("Multiple longitude attribute in Helipad Element");
+						else $bools[6] = true;}
+			| altitude {if ($bools[7] == true) 
+						notifyErrorListeners("Multiple altitude attribute in Helipad Element");
+						else $bools[7] = true;}
+			| magvar {if ($bools[8] == true) 
+						notifyErrorListeners("Multiple magvar attribute in Helipad Element");
+						else $bools[8] = true;}
+			| ident {if ($bools[9] == true) 
+						notifyErrorListeners("Multiple ident attribute in Helipad Element");
+						else $bools[9] = true;}
+			| airportTestRadius {if ($bools[10] == true) 
+						notifyErrorListeners("Multiple airportTestRadius attribute in Helipad Element");
+						else $bools[10] = true;}
+			| trafficScalar {if ($bools[11] == true) 
+						notifyErrorListeners("Multiple trafficScalar attribute in Helipad Element");
+						else $bools[11] = true;};
+
 	com locals[boolean[] bools = {false, false, false}]: 
 		OpenCom comAttributes[$bools]* {
 				if (!$bools[0])
@@ -926,7 +978,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway point type... Input: "+$stringLettersMixedCase.value);
+								notifyErrorListeners("Invalid taxiway point type... Input:"+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
 							else $value = $stringLettersMixedCase.value;
@@ -936,7 +988,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									{
 										if ($integerValue.value < 0 || $integerValue.value > 3999){
 											String err = "Invalid index... Must be between 0 and 3999... ";
-											err = err + "input: " + $integerValue.value;
+											err = err + "input:" + $integerValue.value;
 											notifyErrorListeners(err);
 											$index = -1; // ???
 										}
@@ -1036,7 +1088,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway parking type... Input: "+$stringLettersMixedCase.value);
+								notifyErrorListeners("Invalid taxiway parking type... Input:"+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
 							else $value = $stringLettersMixedCase.value;
@@ -1052,7 +1104,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway parking name... Input: "+$stringLettersMixedCase.value);
+								notifyErrorListeners("Invalid taxiway parking name... Input:"+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
 							else $value = $stringLettersMixedCase.value;
@@ -1083,7 +1135,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 							{
 								if ($integerValue.value < 0 || $integerValue.value > 255){
 									String err = "Invalid index... Must be between 0 and 255... ";
-									err = err + "input: " + $integerValue.value;
+									err = err + "input:" + $integerValue.value;
 									notifyErrorListeners(err);
 									$index = -1; // ???
 								}
@@ -1188,7 +1240,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 									break;
 							}
 							if (i == types.length){
-								notifyErrorListeners("Invalid taxiway path type... Input: "+$stringLettersMixedCase.value);
+								notifyErrorListeners("Invalid taxiway path type... Input:"+$stringLettersMixedCase.value);
 								$value = "invalid_value";
 							}
 							else $value = $stringLettersMixedCase.value;
@@ -1222,7 +1274,7 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 					int i = Integer.parseInt($stringLettersMixedCase.value);
 						if (i < 0 || i > 255){
 							String err = "Invalid taxiway path name... Must be between 0 and 255... ";
-							err = err + "input: " + i;
+							err = err + "input:" + i;
 							notifyErrorListeners( err );
 							$value = -1;
 						}
