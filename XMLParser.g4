@@ -1109,10 +1109,10 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 							}
 							else $value = $stringLettersMixedCase.value;
 						};
-			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999*/
+			taxiway_number: NUMBER NUMBER_VALUES DOUBLE_QUOTES;/*0-3999 TODO*/
 			taxiway_airlineCodes: AIRLINECODES AIRLINECODESVALUES DOUBLE_QUOTES;
 			taxiway_pushBack: PUSHBACK PUSHBACKVALUES DOUBLE_QUOTES;
-			taxiway_teeOffset: TEEOFFSET floatingPointValue DOUBLE_QUOTES;/*0.1-50.0*/
+			taxiway_teeOffset: TEEOFFSET floatingPointValue DOUBLE_QUOTES;/*0.1-50.0 TODO*/
 
 	/*--------------------------------------TAXINAME-------------------------------*/
 	taxiName locals[boolean[] bools = {false, false}]: 
@@ -1246,9 +1246,9 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 							else $value = $stringLettersMixedCase.value;
 						};
 			
-			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999*/
+			taxiway_start: START integerValue DOUBLE_QUOTES; /*0-3999 TODO*/
 			
-			taxiway_end: END INT_NUMBER2 DOUBLE_QUOTES; /*0-3999*/
+			taxiway_end: END INT_NUMBER2 DOUBLE_QUOTES; /*0-3999 TODO*/
 			
 			/*taxiway_width: WIDTH EQUALS DOUBLE_QUOTES floatingPointValue DOUBLE_QUOTES;*/
 			
