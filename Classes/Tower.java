@@ -7,10 +7,10 @@ public class Tower {
 	public Coordinate coordinate;
 
 	public Tower() {
-		id="u01";
-		designation="Tower";
-		radius="2.55";
-		height="129";
+		id="XXX Id XXX";
+		designation="XXX Designation XXX";
+		radius="XXX Radius XXX";
+		height="XXX Height XXX";
 		coordinate= new Coordinate();
 	}
 
