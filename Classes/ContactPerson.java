@@ -41,6 +41,6 @@ public class ContactPerson {
 			"<email>"+email+"</email>"+
 		"</contactPerson>";
 		
-		return null;
+		return ret;
 	}
 }
