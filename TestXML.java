@@ -79,8 +79,9 @@ class TestXML{
 
 	
 	private static Airport parseAirport(ParseTree child) {
-		System.out.println("EFGefgnewfç3o8hf2o38fg3q\n\n\n\n");
+		
 		Airport a = new Airport();
+		
 		for (int i = 0; i < child.getChildCount(); i++){
 			ParseTree current = child.getChild(i);
 			System.out.println("Parsing: "+current.getText());
@@ -119,15 +120,10 @@ class TestXML{
 					System.out.println(altitude);
 					a.getLocation().getCoordinates().setAltitude(altitude);
 					break;	
-				
 				}
-			}
-			
-				
+			}				
 		}
-		
 		return a;
-		
 	}
 
 
