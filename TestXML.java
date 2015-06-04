@@ -109,17 +109,23 @@ class TestXML{
 					break;
 				case("lon"):
 					a.getLocation().getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
-				i += 2;
 					break;
 				case("alt"):
 					System.out.println("Parsing altitude...");
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
-						altitude += current.getChild(0).getChild(2).getText();
+						System.out.println("units: "+current.getChild(0).getChild(2).getText());
+						a.getLocation().getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					System.out.println(altitude);
 					a.getLocation().getCoordinates().setAltitude(altitude);
 					break;	
+				case("ident"):
+					a.setICAO(current.getChild(0).getChild(1).getText());
+					break;
+				case("magvar"):
+					a.setMagvar(current.getChild(0).getChild(1).getText());
+					break;
 				}
 			}				
 		}
