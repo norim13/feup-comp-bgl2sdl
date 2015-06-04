@@ -1,0 +1,1 @@
+javac *.java  && java TestXML "aeroporto completo.xml"

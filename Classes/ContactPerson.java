@@ -23,23 +23,23 @@ public class ContactPerson {
 		email = "XXX email XXX";
 	}
 	
-	public String toSDL(){
+	public String toSDL(String offset){
 		String ret = 
-		"<contactPerson>"+
-			"<name>"+name+"</name>"+
-			"<title>"+title+"</title>"+
-			"<institution>"+institution+"</institution>"+
-			"<position>"+position+"</position>"+
-			"<address>"+address+"</address>"+
-			"<zipCode>"+zipCode+"</zipCode>"+
-			"<city>"+city+"</city>"+
-			"<stateDistrictRegion>"+stateDistrictRegion+"</stateDistrictRegion>"+
-			"<country>"+country+"</country>"+
-			"<telephone>"+telephone+"</telephone>"+
-			"<cellphone>"+cellphone+"</cellphone>"+
-			"<fax>"+fax+"</fax>"+
-			"<email>"+email+"</email>"+
-		"</contactPerson>";
+		offset+"<contactPerson>\n"+
+			offset+"	<name>"+name+"</name>\n"+
+			offset+"	<title>"+title+"</title>\n"+
+			offset+"	<institution>"+institution+"</institution>\n"+
+			offset+"	<position>"+position+"</position>\n"+
+			offset+"	<address>"+address+"</address>\n"+
+			offset+"	<zipCode>"+zipCode+"</zipCode>\n"+
+			offset+"	<city>"+city+"</city>\n"+
+			offset+"	<stateDistrictRegion>"+stateDistrictRegion+"</stateDistrictRegion>\n"+
+			offset+"	<country>"+country+"</country>\n"+
+			offset+"	<telephone>"+telephone+"</telephone>\n"+
+			offset+"	<cellphone>"+cellphone+"</cellphone>\n"+
+			offset+"	<fax>"+fax+"</fax>\n"+
+			offset+"	<email>"+email+"</email>\n"+
+		offset+"</contactPerson>\n";
 		
 		return ret;
 	}
