@@ -8,7 +8,7 @@ public class Parking {
 	public TaxiwayPoint connectsTo;
 	
 	
-	public ContactPerson() {
+	public Parking() {
 		parkingType = "XXX Parking Type XXX";
 		id = "XXX id XXX";
 		designation = "XXX Designation XXX";
@@ -18,16 +18,16 @@ public class Parking {
 		connectsTo = new TaxiwayPoint();
 	}
 	
-	public String toSDL(){
+	public String toSDL(String offset){
 		String ret = 
 			"<parking parkingType=\"" + parkingType + "\"id=\"" + id + "\" > "+
 				"<designation>" + designation + "</designation>"+
 				"<description>" + description + "</description>"+
-				"<airlines />"
-				coordinates.toSDL() + 
+				"<airlines />" + 
+				coordinates.toSDL(offset+"	") + 
 				radius.toSDL()+
 				"<connectsToTaxiway xway=\""+connectsTo.getId()+"\">"+
-					connectsTo.getCoordinates().toSDL()+
+					connectsTo.getCoordinates().toSDL(offset+"	")+
 				"</connectsTo>"+
 			"</parking>";
 		

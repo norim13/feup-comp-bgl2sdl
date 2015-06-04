@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.ArrayList;
+
 public class Point {
 
 	public Coordinates coordinates;
@@ -13,10 +15,10 @@ public class Point {
 		start_or_end = s;
 	}
 	
-	public String toSDL(){
+	public String toSDL(String offset){
 		String ret = 
 		"<"+start_or_end+"point>"+
-			coordinates.toSDL()+connectsToToSDL()+			
+			coordinates.toSDL(offset+"	")+connectsToToSDL()+			
 		"</"+start_or_end+"point>";
 		
 		return ret;
@@ -34,6 +36,6 @@ public class Point {
 	}
 
 	public void addConnectsTo(String idr) {
-		connectsTo.add("<xway idr=\""+idr+"\"/>")
+		connectsTo.add("<xway idr=\""+idr+"\"/>");
 	}
 }
