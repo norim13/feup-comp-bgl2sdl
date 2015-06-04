@@ -2,7 +2,11 @@ package classes;
 
 public class Airport {
 
-	public String   name, ident, ICAO, IATA, region;
+	public String   name, ident, ICAO, IATA, region, magvar;
+	public void setMagvar(String magvar) {
+		this.magvar = magvar;
+	}
+
 	public String getRegion() {
 		return region;
 	}
@@ -54,7 +58,6 @@ public class Airport {
 	public ContactPerson contactPerson;
 	public int id;
 	public Location location;
-	public float magvar;
 	
 
 	public String getName() {
@@ -74,12 +77,8 @@ public class Airport {
 	}
 
 
-	public float getMagvar() {
+	public String getMagvar() {
 		return magvar;
-	}
-
-	public void setMagvar(float magvar) {
-		this.magvar = magvar;
 	}
 
 	

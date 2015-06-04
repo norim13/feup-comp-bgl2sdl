@@ -35,25 +35,62 @@ public class Coordinates {
 		this.measured = measured;
 	}
 
-	public String measured;
+	public String measured, altUnits;
 	
 	
 	public Coordinates() {
 		latitude = "XXX";
 		longitude = "XXX";
 		altitude = "XXX";
-		measured = "XXX";
+		measured = "amsl";
+		altUnits = null;
 
 	}
 	
+	public String getAltUnits() {
+		return altUnits;
+	}
+
+	public void setAltUnits(String altU) {
+		switch(altU){
+		case "M": this.altUnits = "Meter"; break;
+		case "N": this.altUnits = "Nautical Mile"; break;
+		case "F": this.altUnits = "Foot"; break;
+		}		
+		System.out.println("set units: "+this.altUnits);
+	}
+
 	public String toSDL(String offset){
 		String ret = 
 		offset+"<coordinates>\n"+
 			offset+"	<latitude>"+latitude+"</latitude>\n"+
 			offset+"	<longitude>"+longitude+"</longitude>\n"+
-			offset+"	<altitude measured=\""+measured+"\">"+altitude+"<altitude>\n"+
+			offset+"	<altitude measured=\""+measured+"\""+
+				(altUnits.equals(null)? "" : ("lengthUnit=\""+altUnits+"\""))
+						+ ">"+altitude+"<altitude>\n"+
 		offset+"</coordinates>\n";
 		
 		return ret;
 	}
 }
+
+
+/**
+<xs:attributeGroup name="lengthUnitGroup">
+<xs:attribute name="lengthUnit" use="required">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:enumeration value="Nautical Mile"/>
+<xs:enumeration value="Mile (Statute)"/>
+<xs:enumeration value="Kilometer"/>
+<xs:enumeration value="Inch"/>
+<xs:enumeration value="Centimeter"/>
+<xs:enumeration value="Meter"/>
+<xs:enumeration value="Foot"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+</xs:attributeGroup>
+
+
+*/
