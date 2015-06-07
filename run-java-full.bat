@@ -1,1 +1,0 @@
-javac *.java  && java TestXML "sa-carneiro.xml"

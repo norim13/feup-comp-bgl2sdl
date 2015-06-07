@@ -1,1 +1,0 @@
-antlr4 XMLLexer.g4 && antlr4 XMLParser.g4 && javac *.java && grun XML document -gui "aeroporto completo.xml"

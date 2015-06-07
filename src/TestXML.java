@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
 
+import g4.XMLLexer;
+import g4.XMLParser;
+
 class TestXML{
 
 	@SuppressWarnings("resource")
@@ -48,7 +51,6 @@ class TestXML{
 		parser.removeErrorListeners();
 		ErrorListener errList = new ErrorListener(frame);
 		parser.addErrorListener(errList);
-		//parser.setErrorHandler(new BailErrorStrategy());
 		
 		ParseTree tree = parser.document();
 
