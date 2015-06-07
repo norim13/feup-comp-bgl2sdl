@@ -2,9 +2,12 @@ package classes;
 
 public class TaxiwayPath {
 
-	public String type, start, end, widthUnits, width, number, name;
+	public String type, start, end, widthUnits, width, number, name, surface;
+
+	
 
 	public TaxiwayPath(){
+		surface="XXXXX";
 		type="XXXX";
 		start="XX";
 		end="XX";
@@ -77,6 +80,14 @@ public class TaxiwayPath {
 		this.number = number;
 	}
 	
-	
+	public String getSurface() {
+		return surface;
+	}
+
+
+	public void setSurface(String surface) {
+		this.surface = surface;
+	}
+
 	
 }

@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.gui.TreeViewer;
 import classes.Airport;
 import classes.Runway;
 import classes.Start;
+import classes.Taxiway;
 import classes.TaxiwayParking;
 import classes.TaxiwayPath;
 import classes.TaxiwayPoint;
@@ -21,6 +22,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.IOException;
 
 class TestXML{
@@ -53,7 +56,7 @@ class TestXML{
 		for (int i = 0; i < tree.getChildCount(); i++){
 			//bases.add(new Airport());
 			bases.add(parseAirport(tree.getChild(i)));
-			//System.out.println(bases.get(i).toSDL(""));
+			System.out.println(bases.get(i).toSDL(""));
 		}
 		
 		new java.util.Scanner(System.in).nextLine();
@@ -93,6 +96,8 @@ class TestXML{
 		ArrayList<TaxiwayPoint> taxiwayPoints = new ArrayList<TaxiwayPoint>();
 		ArrayList<TaxiwayParking> taxiwayParkings = new ArrayList<TaxiwayParking>();
 		ArrayList<TaxiwayPath> taxiwayPaths = new ArrayList<TaxiwayPath>();
+		
+		ArrayList<Taxiway> finalTaxiways = new ArrayList<Taxiway>(); 
 		
 		for (int i = 0; i < child.getChildCount(); i++){
 			ParseTree current = child.getChild(i);
@@ -225,24 +230,10 @@ class TestXML{
 			}
 		}
 		
-		ArrayList<ArrayList<TaxiwayPointParking>> paths = generatePaths(taxiwayPoints, taxiwayParkings,taxiwayPaths);
+			
+		finalTaxiways = generatePaths(taxiwayPoints, taxiwayParkings,taxiwayPaths);
 		
-		for (ArrayList<TaxiwayPointParking> path : paths){
-			System.out.println(" #### PATH: ####");
-			for(TaxiwayPointParking t2 : path)
-				System.out.print(t2.getIndex() + " -> ");
-			System.out.println("\n");
-		}
-		
-		for (Runway r : a.getRunways()){
-			for(Start s : starts){
-				if (s.getNumber().equals(r.getNumber())){
-					//ir buscar o path que começa neste start, e atraves dos 
-					//taxipoints de inicio e fim, fazer set do inicio e fim da runway
-				}
-			}
-		}
-		
+		a.setTaxiways(finalTaxiways);
 		
 		return a;
 	}
@@ -458,6 +449,9 @@ class TestXML{
 				case("name"):
 					tp.setName(current.getChild(0).getChild(1).getText());
 					break;
+				case("surface"):
+					tp.setSurface(current.getChild(0).getChild(1).getText());
+					break;
 				}
 			}
 			else{
@@ -468,14 +462,18 @@ class TestXML{
 	}
 
  	
- 	public static ArrayList<ArrayList<TaxiwayPointParking>> generatePaths(ArrayList<TaxiwayPoint> taxiwayPoints, ArrayList<TaxiwayParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
-		ArrayList<ArrayList<TaxiwayPointParking>> ret = new ArrayList<ArrayList<TaxiwayPointParking>>();
+ 	public static ArrayList<Taxiway> generatePaths(ArrayList<TaxiwayPoint> taxiwayPoints, ArrayList<TaxiwayParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
+		ArrayList<Taxiway> ret = new ArrayList<Taxiway>();
 		
 		ArrayList<TaxiwayPath> taxiwayPathsCopy = new ArrayList<TaxiwayPath>(taxiwayPaths);
 		while(!taxiwayPathsCopy.isEmpty()){
 			//System.out.println("paths size: "+taxiwayPathsCopy.size());
 			
+			Taxiway taxiway = new Taxiway(); //taxiway to add to return array
 			TaxiwayPath temp = taxiwayPathsCopy.remove(0);
+			taxiway.setSurface(temp.getSurface());
+			taxiway.setWidth(temp.getWidth());
+			taxiway.setWidthUnits(temp.getWidthUnits());
 			
 			// get all taxiwaypaths with this name or number
 			ArrayList<TaxiwayPath> currentPath = new ArrayList<TaxiwayPath>();
@@ -530,8 +528,15 @@ class TestXML{
 				}
 			}
 			
-			ret.add(pointsSequence);
+			//print generated path//////////
+			System.out.println(" #### PATH: ####");
+			for(TaxiwayPointParking t2 : pointsSequence)
+				System.out.print(t2.getIndex() + " -> ");
+			System.out.println("\n");
+			//////////////////////////////
 			
+			taxiway.setPath(pointsSequence);
+			ret.add(taxiway);			
 		}
 
 		
