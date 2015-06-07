@@ -3,6 +3,7 @@ package classes;
 public class Coordinates {
 
 	public String latitude, longitude, altitude;
+	
 	public String getLatitude() {
 		return latitude;
 	}
@@ -57,7 +58,6 @@ public class Coordinates {
 		case "N": this.altUnits = "Nautical Mile"; break;
 		case "F": this.altUnits = "Foot"; break;
 		}		
-		System.out.println("set units: "+this.altUnits);
 	}
 
 	public String toSDL(String offset){
@@ -66,7 +66,7 @@ public class Coordinates {
 			offset+"	<latitude>"+latitude+"</latitude>\n"+
 			offset+"	<longitude>"+longitude+"</longitude>\n"+
 			offset+"	<altitude measured=\""+measured+"\""+
-				(altUnits.equals(null)? "" : ("lengthUnit=\""+altUnits+"\""))
+				(altUnits == null? "" : (" lengthUnit=\""+altUnits+"\""))
 						+ ">"+altitude+"<altitude>\n"+
 		offset+"</coordinates>\n";
 		

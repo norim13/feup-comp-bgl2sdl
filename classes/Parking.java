@@ -26,7 +26,7 @@ public class Parking {
 				"<airlines />" + 
 				coordinates.toSDL(offset+"	") + 
 				radius.toSDL()+
-				"<connectsToTaxiway xway=\""+connectsTo.getId()+"\">"+
+				"<connectsToTaxiway xway=\""+connectsTo.getIndex()+"\">"+
 					connectsTo.getCoordinates().toSDL(offset+"	")+
 				"</connectsTo>"+
 			"</parking>";

@@ -1,8 +1,20 @@
 package classes;
 
+import java.util.ArrayList;
+
 public class Airport {
 
 	public String   name, ident, ICAO, IATA, region, magvar;
+	
+	public ContactPerson contactPerson;
+	public int id;
+	public Location location;
+	private ArrayList<Runway> runways;
+	
+	public ArrayList<Runway> getRunways() {
+		return runways;
+	}
+
 	public void setMagvar(String magvar) {
 		this.magvar = magvar;
 	}
@@ -55,9 +67,6 @@ public class Airport {
 		this.location = location;
 	}
 
-	public ContactPerson contactPerson;
-	public int id;
-	public Location location;
 	
 
 	public String getName() {
@@ -81,7 +90,9 @@ public class Airport {
 		return magvar;
 	}
 
-	
+	public void addRunway(Runway rw){
+		this.runways.add(rw);
+	}
 	
 	public Airport() {
 		name="xxxxxxxxxxxxx";
@@ -90,6 +101,8 @@ public class Airport {
 		IATA="XXXXX";
 		this.contactPerson = new ContactPerson();
 		this.location = new Location();
+		
+		this.runways = new ArrayList<Runway>();
 	}
 	
 	public String toSDL(String offset){
@@ -110,8 +123,25 @@ public class Airport {
 						offset+"		<ICAO>"+ICAO+"</ICAO>\n"+
 						offset+"		<IATA>"+IATA+"</IATA>\n"+
 						offset+"		<magVar>"+magvar+"</magVar>\n"+
+						
+						offset+"		<runways>\n"+
+							printRunways(offset+"			")+
+						offset+"		</runways>\n"+			
+					
 					offset+"	</airport>\n"+
 				offset+"</baseOfOperations>\n";
 		return msg;
 	}
+	
+	
+	public String printRunways(String offset){
+		String msg = "";
+		for(Runway r : runways){
+			msg += r.toSDL(offset);
+		}
+		return msg;
+	}
+	
+	
+	
 }
