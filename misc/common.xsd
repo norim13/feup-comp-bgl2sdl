@@ -1,0 +1,852 @@
+<!--
+ edited with XMLSpy v2008 (http://www.altova.com) by FEUP (FEUP) 
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified">
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="title" type="xs:string"/>
+	<xs:element name="telephone" type="xs:string"/>
+	<xs:element name="zipCode" type="xs:string"/>
+	<xs:element name="institution" type="xs:string"/>
+	<xs:element name="fax" type="xs:string"/>
+	<xs:element name="email" type="xs:string"/>
+	<xs:element name="country" type="xs:string"/>
+	<xs:element name="city" type="xs:string"/>
+	<xs:element name="cellphone" type="xs:string"/>
+	<xs:element name="address" type="xs:string"/>
+	<xs:element name="position" type="xs:string"/>
+	<xs:element name="purposes" type="xs:string"/>
+	<xs:element name="stateDistrictRegion" type="xs:string"/>
+	<xs:element name="denomination" type="xs:string"/>
+	<xs:element name="longitude" type="xs:string"/>
+	<xs:element name="latitude" type="xs:string"/>
+	<xs:element name="additionalInformation">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="name" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="contactPerson">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="name"/>
+				<xs:element ref="title"/>
+				<xs:element ref="institution"/>
+				<xs:element ref="position"/>
+				<xs:element ref="address"/>
+				<xs:element ref="zipCode"/>
+				<xs:element ref="city"/>
+				<xs:element ref="stateDistrictRegion"/>
+				<xs:element ref="country"/>
+				<xs:element ref="telephone"/>
+				<xs:element ref="cellphone"/>
+				<xs:element ref="fax"/>
+				<xs:element ref="email"/>
+				<xs:element ref="additionalInformation" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="minAlt">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+					<xs:attributeGroup ref="measuredGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maxAlt">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+					<xs:attributeGroup ref="measuredGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="vertex">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="latitude"/>
+				<xs:element ref="longitude"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="length">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="height">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="width">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="radius">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="quantity">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="volumeUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="coordinates">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="latitude"/>
+				<xs:element ref="longitude"/>
+				<xs:element ref="altitude"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="polygon">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="minAlt"/>
+				<xs:element ref="maxAlt"/>
+				<xs:element ref="vertex" minOccurs="3" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="area">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="denomination"/>
+				<xs:element ref="medium"/>
+				<xs:element ref="availability"/>
+				<xs:choice>
+					<xs:element ref="polygon"/>
+					<xs:element ref="circle"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="idGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="medium">
+		<xs:complexType>
+			<xs:attributeGroup ref="mobilityGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="altitude">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+					<xs:attributeGroup ref="measuredGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="designation" type="xs:string"/>
+	<xs:element name="description" type="xs:string"/>
+	<xs:element name="history" type="xs:string"/>
+	<xs:element name="mobility">
+		<xs:complexType>
+			<xs:attributeGroup ref="mobilityGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="location">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="address"/>
+				<xs:element ref="zipCode"/>
+				<xs:element ref="city"/>
+				<xs:element ref="stateDistrictRegion"/>
+				<xs:element ref="country"/>
+				<xs:element ref="coordinates"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="heading">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="headingTypeGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="headingTypeGroup">
+		<xs:attribute name="headingType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="True"/>
+					<xs:enumeration value="Magnetic"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="idGroup">
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="angleUnitGroup">
+		<xs:attribute name="angleUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Degrees"/>
+					<xs:enumeration value="Radians"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="areaUnitGroup">
+		<xs:attribute name="areaUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Square Foot"/>
+					<xs:enumeration value="Square Kilometer"/>
+					<xs:enumeration value="Square Meter"/>
+					<xs:enumeration value="Square Mile"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="frequencyUnitGroup">
+		<xs:attribute name="frequencyUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Hertz"/>
+					<xs:enumeration value="KiloHertz"/>
+					<xs:enumeration value="MegaHertz"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="weight">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="massUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="massUnitGroup">
+		<xs:attribute name="massUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Ounce"/>
+					<xs:enumeration value="Pound"/>
+					<xs:enumeration value="Gram"/>
+					<xs:enumeration value="Kilogram"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="velocityUnitGroup">
+		<xs:attribute name="velocityUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Mile (Statute) per Hour"/>
+					<xs:enumeration value="Nautical Mile per Hour (Knot)"/>
+					<xs:enumeration value="Inch per Second"/>
+					<xs:enumeration value="Meter per Second"/>
+					<xs:enumeration value="Kilometer per Hour"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="volumeUnitGroup">
+		<xs:attribute name="volumeUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Gallon"/>
+					<xs:enumeration value="Litre"/>
+					<xs:enumeration value="Cubic Mile (Statute)"/>
+					<xs:enumeration value="Cubic Nautical Mile"/>
+					<xs:enumeration value="Cubic Kilometer"/>
+					<xs:enumeration value="Cubic Meter"/>
+					<xs:enumeration value="Cubic Foot"/>
+					<xs:enumeration value="Cubic Inch"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="distLocationPlacingGroup">
+		<xs:attribute name="placing" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="fixed"/>
+					<xs:enumeration value="random"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="measuredGroup">
+		<xs:attribute name="measured" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="amsl"/>
+					<xs:enumeration value="agl"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lengthUnitGroup">
+		<xs:attribute name="lengthUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Nautical Mile"/>
+					<xs:enumeration value="Mile (Statute)"/>
+					<xs:enumeration value="Kilometer"/>
+					<xs:enumeration value="Inch"/>
+					<xs:enumeration value="Centimeter"/>
+					<xs:enumeration value="Meter"/>
+					<xs:enumeration value="Foot"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="timeUnitGroup">
+		<xs:attribute name="timeUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Second"/>
+					<xs:enumeration value="Minute"/>
+					<xs:enumeration value="Hour"/>
+					<xs:enumeration value="Day"/>
+					<xs:enumeration value="Week"/>
+					<xs:enumeration value="Month"/>
+					<xs:enumeration value="Year"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="fuelTypeGroup">
+		<xs:attribute name="fuelType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Avgas"/>
+					<xs:enumeration value="Jet A"/>
+					<xs:enumeration value="Jet A-1"/>
+					<xs:enumeration value="Jet B"/>
+					<xs:enumeration value="JP-1"/>
+					<xs:enumeration value="JP-4"/>
+					<xs:enumeration value="JP-5"/>
+					<xs:enumeration value="JP-6"/>
+					<xs:enumeration value="JP-7"/>
+					<xs:enumeration value="JP-8"/>
+					<xs:enumeration value="JPTS"/>
+					<xs:enumeration value="AV073"/>
+					<xs:enumeration value="AV087"/>
+					<xs:enumeration value="AV100"/>
+					<xs:enumeration value="AV130"/>
+					<xs:enumeration value="AV145"/>
+					<xs:enumeration value="Gasoline"/>
+					<xs:enumeration value="Diesel"/>
+					<xs:enumeration value="Kerosene"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="mobilityGroup">
+		<xs:attribute name="water" type="xs:boolean" use="required"/>
+		<xs:attribute name="underwater" type="xs:boolean" use="required"/>
+		<xs:attribute name="land" type="xs:boolean" use="required"/>
+		<xs:attribute name="air" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="volumeFlowUnitGroup">
+		<xs:attributeGroup ref="volumeUnitGroup"/>
+		<xs:attributeGroup ref="timeUnitGroup"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="densityUnitGroup">
+		<xs:attributeGroup ref="massUnitGroup"/>
+		<xs:attributeGroup ref="volumeUnitGroup"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="timeSlotRecurrenceGroup">
+		<xs:attribute name="every">
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+					<xs:maxInclusive value="365"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="repeat">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Day"/>
+					<xs:enumeration value="Week"/>
+					<xs:enumeration value="Month"/>
+					<xs:enumeration value="Year"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lightsCommonGroup">
+		<xs:attribute name="cabin" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lightsGroup">
+		<xs:attributeGroup ref="lightsCommonGroup"/>
+		<xs:attribute name="logo" type="xs:boolean" use="required"/>
+		<xs:attribute name="wing" type="xs:boolean" use="required"/>
+		<xs:attribute name="recognition" type="xs:boolean" use="required"/>
+		<xs:attribute name="panel" type="xs:boolean" use="required"/>
+		<xs:attribute name="strobe" type="xs:boolean" use="required"/>
+		<xs:attribute name="taxi" type="xs:boolean" use="required"/>
+		<xs:attribute name="landing" type="xs:boolean" use="required"/>
+		<xs:attribute name="beacon" type="xs:boolean" use="required"/>
+		<xs:attribute name="nav" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lightsCarGroup">
+		<xs:attributeGroup ref="lightsCommonGroup"/>
+		<xs:attribute name="frontLeft" type="xs:boolean" use="required"/>
+		<xs:attribute name="frontRight" type="xs:boolean" use="required"/>
+		<xs:attribute name="rearLeft" type="xs:boolean" use="required"/>
+		<xs:attribute name="rearRight" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lightsBoatsGroup">
+		<xs:attributeGroup ref="lightsCommonGroup"/>
+		<xs:attribute name="masthead" type="xs:boolean" use="required"/>
+		<xs:attribute name="stern" type="xs:boolean" use="required"/>
+		<xs:attribute name="sidelights" type="xs:boolean" use="required"/>
+		<xs:attribute name="towing" type="xs:boolean" use="required"/>
+		<xs:attribute name="allAround" type="xs:boolean" use="required"/>
+		<xs:attribute name="strobe" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="lightsSubmarineGroup">
+		<xs:attributeGroup ref="lightsCommonGroup"/>
+		<xs:attribute name="rudder" type="xs:boolean" use="required"/>
+		<xs:attribute name="port" type="xs:boolean" use="required"/>
+		<xs:attribute name="starboard" type="xs:boolean" use="required"/>
+		<xs:attribute name="bow" type="xs:boolean" use="required"/>
+		<xs:attribute name="strobe" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="shapeGroup">
+		<xs:attribute name="shape" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="sphere"/>
+					<xs:enumeration value="cilinder"/>
+					<xs:enumeration value="paralelogram"/>
+					<xs:enumeration value="custom"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="energyFlowUnitGroup">
+		<xs:attributeGroup ref="energyUnitGroup"/>
+		<xs:attributeGroup ref="timeUnitGroup"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="energyUnitGroup">
+		<xs:attribute name="energyUnit" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Ampere"/>
+					<xs:enumeration value="miliAmpere"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="dimensions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="width"/>
+				<xs:element ref="length"/>
+				<xs:element ref="height"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="availability">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="timeSlot" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="available" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="always"/>
+						<xs:enumeration value="periodic"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timeSlot">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="fromDate" minOccurs="0"/>
+				<xs:element ref="toDate" minOccurs="0"/>
+				<xs:element ref="startDate"/>
+				<xs:element ref="startTime"/>
+				<xs:element ref="endDate"/>
+				<xs:element ref="endTime"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="timeSlotRecurrenceGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timePoint">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="time"/>
+				<xs:element ref="after"/>
+			</xs:choice>
+			<xs:attribute name="countingFrom" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="simulationStart"/>
+						<xs:enumeration value="absolute"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timeInterval">
+		<xs:complexType>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element ref="startTime"/>
+					<xs:element ref="endTime"/>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element ref="startAfter"/>
+					<xs:element ref="endAfter"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:attribute name="countingFrom" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="simulationStart"/>
+						<xs:enumeration value="absolute"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dragCoefficient" type="xs:double"/>
+	<xs:attributeGroup name="engineTypeGroup">
+		<xs:attribute name="engineType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Piston"/>
+					<xs:enumeration value="Jet"/>
+					<xs:enumeration value="None"/>
+					<xs:enumeration value="Turbine"/>
+					<xs:enumeration value="TurboProp"/>
+					<xs:enumeration value="Other"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="maxDepth">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="maxVerticalVelocity">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="velocityUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="relativeLocation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="displacementX"/>
+				<xs:element ref="displacementY"/>
+				<xs:element ref="displacementZ"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="growthTypeGroup">
+		<xs:attribute name="growthType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="fixed"/>
+					<xs:enumeration value="grow"/>
+					<xs:enumeration value="shrink"/>
+					<xs:enumeration value="variable"/>
+					<xs:enumeration value="spread"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="disturbanceTypeGroup">
+		<xs:attribute name="disturbanceType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Fire"/>
+					<xs:enumeration value="Pollution"/>
+					<xs:enumeration value="Person"/>
+					<xs:enumeration value="Vehicle"/>
+					<xs:enumeration value="Hydrothermal vent"/>
+					<xs:enumeration value="Other"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="growthFunctionGroup">
+		<xs:attribute name="growthFunction" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="linear"/>
+					<xs:enumeration value="polynomial"/>
+					<xs:enumeration value="exponential"/>
+					<xs:enumeration value="logarithmic"/>
+					<xs:enumeration value="root"/>
+					<xs:enumeration value="sinusoid"/>
+					<xs:enumeration value="custom"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="functionVariableGroup">
+		<xs:attribute name="functionVariable">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="time"/>
+					<xs:enumeration value="distToCenter"/>
+					<xs:enumeration value="LatFromCenter"/>
+					<xs:enumeration value="LonFromCenter"/>
+					<xs:enumeration value="AltFromCenter"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="dispersionTypeGroup">
+		<xs:attribute name="dispersionType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="uniform"/>
+					<xs:enumeration value="linear"/>
+					<xs:enumeration value="polynomial"/>
+					<xs:enumeration value="exponential"/>
+					<xs:enumeration value="logarithmic"/>
+					<xs:enumeration value="root"/>
+					<xs:enumeration value="sinusoid"/>
+					<xs:enumeration value="custom model"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="dispersionModel">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="AERMOD"/>
+					<xs:enumeration value="CALPUFF"/>
+					<xs:enumeration value="BLP"/>
+					<xs:enumeration value="OCD"/>
+					<xs:enumeration value="POLGRAPH"/>
+					<xs:enumeration value="ADMS-3"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="sense">
+		<xs:complexType>
+			<xs:attributeGroup ref="sensorTypeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="sensorTypeGroup">
+		<xs:attribute name="sensorType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="temperature"/>
+					<xs:enumeration value="CO2"/>
+					<xs:enumeration value="CO"/>
+					<xs:enumeration value="Camera"/>
+					<xs:enumeration value="S"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:element name="fuelFlow">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="volumeFlowUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="energyFlow">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="energyFlowUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="quayTypeGroup">
+		<xs:attribute name="quayType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="pier"/>
+					<xs:enumeration value="jetty"/>
+					<xs:enumeration value="mole"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="mooringSideGroup">
+		<xs:attribute name="mooringSide" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="bow"/>
+					<xs:enumeration value="stern"/>
+					<xs:enumeration value="starboard"/>
+					<xs:enumeration value="port"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="targetActionGroup">
+		<xs:attribute name="targetAction" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Detect"/>
+					<xs:enumeration value="DetectOrigin"/>
+					<xs:enumeration value="DropOn"/>
+					<xs:enumeration value="Follow"/>
+					<xs:enumeration value="Transport"/>
+					<xs:enumeration value="Measure"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="boatTypeGroup">
+		<xs:attribute name="passengers" type="xs:boolean" use="required"/>
+		<xs:attribute name="rollOnRollOff" type="xs:boolean" use="required"/>
+		<xs:attribute name="fish" type="xs:boolean" use="required"/>
+		<xs:attribute name="recreation" type="xs:boolean" use="required"/>
+		<xs:attribute name="containers" type="xs:boolean" use="required"/>
+		<xs:attribute name="bulk" type="xs:boolean" use="required"/>
+		<xs:attribute name="bulkLiquid" type="xs:boolean" use="required"/>
+		<xs:attribute name="pipeline" type="xs:boolean" use="required"/>
+		<xs:attribute name="tug" type="xs:boolean" use="required"/>
+		<xs:attribute name="military" type="xs:boolean" use="required"/>
+		<xs:attribute name="scientific" type="xs:boolean" use="required"/>
+		<xs:attribute name="underwater" type="xs:boolean" use="required"/>
+	</xs:attributeGroup>
+	<xs:element name="time" type="xs:time"/>
+	<xs:element name="after" type="xs:duration"/>
+	<xs:element name="startTime" type="xs:time"/>
+	<xs:element name="endTime" type="xs:time"/>
+	<xs:element name="startAfter" type="xs:duration"/>
+	<xs:element name="endAfter" type="xs:duration"/>
+	<xs:element name="circle">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="minAlt"/>
+				<xs:element ref="maxAlt"/>
+				<xs:element ref="center"/>
+				<xs:element ref="radius"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="center">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="latitude"/>
+				<xs:element ref="longitude"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="displacementZ">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="displacementY">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="displacementX">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:double">
+					<xs:attributeGroup ref="lengthUnitGroup"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="cargo">
+		<xs:complexType>
+			<xs:attribute name="type" type="xs:string" use="required"/>
+			<xs:attribute name="quantity" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="surface">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="Concrete"/>
+				<xs:enumeration value="Grass"/>
+				<xs:enumeration value="Water"/>
+				<xs:enumeration value="Grass_bumpy"/>
+				<xs:enumeration value="Asphalt"/>
+				<xs:enumeration value="Short_grass"/>
+				<xs:enumeration value="Long_grass"/>
+				<xs:enumeration value="Hard_turf"/>
+				<xs:enumeration value="Snow"/>
+				<xs:enumeration value="Ice"/>
+				<xs:enumeration value="Urban"/>
+				<xs:enumeration value="Forest"/>
+				<xs:enumeration value="Dirt"/>
+				<xs:enumeration value="Coral"/>
+				<xs:enumeration value="Gravel"/>
+				<xs:enumeration value="Oil_treated"/>
+				<xs:enumeration value="Steel_mats"/>
+				<xs:enumeration value="Bituminus"/>
+				<xs:enumeration value="Brick"/>
+				<xs:enumeration value="Macadam"/>
+				<xs:enumeration value="Planks"/>
+				<xs:enumeration value="Sand"/>
+				<xs:enumeration value="Shale"/>
+				<xs:enumeration value="Tarmac"/>
+				<xs:enumeration value="Wood"/>
+				<xs:enumeration value="Cement"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="fromDate" type="xs:date"/>
+	<xs:element name="toDate" type="xs:date"/>
+	<xs:element name="startDate" type="xs:date"/>
+	<xs:element name="endDate" type="xs:date"/>
+</xs:schema>
