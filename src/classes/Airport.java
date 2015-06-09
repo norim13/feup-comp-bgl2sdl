@@ -11,6 +11,8 @@ public class Airport {
 	public Location location;
 	private ArrayList<Runway> runways;
 	private ArrayList<Taxiway> taxiways;
+
+	private ArrayList<Helipad> helipads;
 	
 	public ArrayList<Taxiway> getTaxiways() {
 		return taxiways;
@@ -113,6 +115,7 @@ public class Airport {
 		
 		this.runways = new ArrayList<Runway>();
 		this.taxiways = new ArrayList<Taxiway>();
+		this.helipads = new ArrayList<Helipad>(); 
 	}
 	
 	public String toSDL(String offset){
@@ -137,7 +140,11 @@ public class Airport {
 						offset+"		<runways>\n"+
 							printRunways(offset+"			")+
 						offset+"		</runways>\n"+			
-						//TODO helipads
+						
+						offset+"		<helipads>\n"+
+							printHelipads(offset+"			")+
+						offset+"		</helipads>\n"+
+						
 						offset+"		<taxiways>\n"+
 						printTaxiways(offset+"			")+
 					offset+"		</taxiways>\n"+
@@ -161,6 +168,19 @@ public class Airport {
 			msg += t.toSDL(offset);
 		}
 		return msg;
+	}
+	
+	public String printHelipads(String offset){
+		String msg = "";
+		for(Helipad t : helipads){
+			msg += t.toSDL(offset);
+		}
+		return msg;
+	}
+
+	public void setHelipads(ArrayList<Helipad> helipads) {
+		this.helipads = helipads;
+		
 	}
 	
 	
