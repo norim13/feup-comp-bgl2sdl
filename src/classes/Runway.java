@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.ArrayList;
+
 public class Runway {
 	
 	public Coordinates coordinates;
@@ -11,6 +13,8 @@ public class Runway {
 	public String baseEndHeading, reciprocalEndHeading;
 	 
 	public String number;
+	
+	public Taxiway path;
 	
 	
 	public Runway(){
@@ -33,6 +37,8 @@ public class Runway {
 		reciprocalEndHeading = "XXX";
 		
 		id = "XXXXX"; //TODO ID é "rAA-BB" -> AA é a designation de baseEnd e BB é a designation de reciprocalEnd
+		
+		path = new Taxiway();
 		
 		
 	}
@@ -63,9 +69,9 @@ public class Runway {
 						
 						offset+"	<baseEnd>\n"+
 							offset+"		<designation>"+baseEndDesignation+"</designation>\n"+
-							startBaseEnd.toSDL(offset+"		")+
+							path.generateStartpointSDL(offset+"		")+//startBaseEnd.toSDL(offset+"		")+
 							offset+"		<heading headingType=\"True\">"+baseEndHeading+"</heading>\n"+
-							endBaseEnd.toSDL(offset+"		")+
+							path.generateEndpointSDL(offset+"		")+//endBaseEnd.toSDL(offset+"		")+
 						offset+"	</baseEnd>\n"+
 						
 						offset+"	<reciprocalEnd>\n"+
@@ -135,5 +141,15 @@ public class Runway {
 
 	public String getLengthUnits() {
 		return lengthUnits;
+	}
+
+	public Taxiway getPath() {
+		return path;
+	}
+
+	public void setPath(Taxiway path) {
+		this.path = path;
+		this.setId(path.getId());
+		this.baseEndDesignation = path.getNumber();
 	}
 }

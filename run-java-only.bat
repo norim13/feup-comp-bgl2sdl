@@ -1,0 +1,1 @@
+javac -d bin -cp "lib\antlr-4.5-complete.jar;bin" src\classes\*.java && javac -d bin -cp "lib\antlr-4.5-complete.jar;bin" src\*.java &&  java -cp "bin\.;lib\antlr-4.5-complete.jar" TestXML "xmls\sa-carneiro.xml"

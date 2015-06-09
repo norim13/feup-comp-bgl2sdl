@@ -24,7 +24,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import g4.XMLLexer;
 import g4.XMLParser;
@@ -54,14 +62,27 @@ class TestXML{
 		
 		ParseTree tree = parser.document();
 
+		
+		
+		File folder = new File("output");
+		if(!folder.isDirectory())
+			folder.mkdir();
+		
+
+		FileWriter outputFile = new FileWriter("output\\conversion.xml", false);
+		
 		ArrayList<Airport> bases = new ArrayList<Airport>();
 		for (int i = 0; i < tree.getChildCount(); i++){
 			//bases.add(new Airport());
 			bases.add(parseAirport(tree.getChild(i)));
-			System.out.println(bases.get(i).toSDL(""));
+			String baseSDL = bases.get(i).toSDL("");
+			//System.out.println(baseSDL);
+			outputFile.write(baseSDL);
 		}
 		
-		new java.util.Scanner(System.in).nextLine();
+		outputFile.close();		
+		
+		//new java.util.Scanner(System.in).nextLine();
 				
 		//show AST in GUI
 		/*JPanel panel = new JPanel();
@@ -99,7 +120,6 @@ class TestXML{
 		ArrayList<TaxiwayParking> taxiwayParkings = new ArrayList<TaxiwayParking>();
 		ArrayList<TaxiwayPath> taxiwayPaths = new ArrayList<TaxiwayPath>();
 		
-		ArrayList<Taxiway> finalTaxiways = new ArrayList<Taxiway>(); 
 		
 		for (int i = 0; i < child.getChildCount(); i++){
 			ParseTree current = child.getChild(i);
@@ -226,16 +246,49 @@ class TestXML{
 		ArrayList<TaxiwayPath> parkingPaths = new ArrayList<TaxiwayPath>();
 		for ( int i = 0; i < taxiwayPaths.size(); i++){
 			String thisType = taxiwayPaths.get(i).getType();
-			if (!thisType.equals("TAXI") && !thisType.equals("RUNWAY")){
+			String thisName = (taxiwayPaths.get(i).getName() == null)? "notnull" : taxiwayPaths.get(i).getName();
+			if ((!thisType.equals("TAXI") && !thisType.equals("RUNWAY")) || thisName.equals("0")){
 				//System.out.println("removing: "+thisType);
 				parkingPaths.add(taxiwayPaths.remove(i--));
 			}
 		}
 		
 			
-		finalTaxiways = generatePaths(taxiwayPoints, taxiwayParkings,taxiwayPaths);
+		 ArrayList<ArrayList<Taxiway>> runwaysTaxiways = generatePaths(taxiwayPoints, taxiwayParkings,taxiwayPaths);
+		a.setTaxiways(runwaysTaxiways.get(1));
 		
-		a.setTaxiways(finalTaxiways);
+		ArrayList<Taxiway> runways = runwaysTaxiways.get(0);
+		ArrayList<Runway> currentRunways = a.getRunways();
+		
+		for(Runway r : currentRunways){
+			for(Taxiway t : runways){
+				if(t.getNumber().equals(r.getNumber()))
+					r.setPath(t);
+			}
+		}
+		
+		
+		//Fetch IATA online based on ICAO
+		String answer;
+		try {
+			answer = readURL(new URL("http://www.airport-data.com/api/ap_info.json?icao="+a.getICAO()));
+			if (answer == null)
+				throw new Exception();
+			int index_iata = answer.indexOf("iata");
+			if (index_iata < 0)
+				throw new Exception();
+			index_iata += 7;
+			
+			answer = answer.substring(index_iata);
+			int index_double_quotes = answer.indexOf("\"");
+			if (index_double_quotes < 0)
+				throw new Exception();
+			
+			answer = answer.substring(0, index_double_quotes);
+			
+			a.setIATA(answer);
+			
+		} catch (Exception ee){}
 		
 		return a;
 	}
@@ -464,8 +517,10 @@ class TestXML{
 	}
 
  	
- 	public static ArrayList<Taxiway> generatePaths(ArrayList<TaxiwayPoint> taxiwayPoints, ArrayList<TaxiwayParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
-		ArrayList<Taxiway> ret = new ArrayList<Taxiway>();
+ 	public static ArrayList<ArrayList<Taxiway>> generatePaths(ArrayList<TaxiwayPoint> taxiwayPoints, ArrayList<TaxiwayParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
+ 		ArrayList<ArrayList<Taxiway>> ret = new ArrayList<ArrayList<Taxiway>>();
+ 		ret.add(new ArrayList<Taxiway>());//runways [0]
+ 		ret.add(new ArrayList<Taxiway>());//taxiways [1]
 		
 		ArrayList<TaxiwayPath> taxiwayPathsCopy = new ArrayList<TaxiwayPath>(taxiwayPaths);
 		while(!taxiwayPathsCopy.isEmpty()){
@@ -476,6 +531,8 @@ class TestXML{
 			taxiway.setSurface(temp.getSurface());
 			taxiway.setWidth(temp.getWidth());
 			taxiway.setWidthUnits(temp.getWidthUnits());
+			taxiway.setType(temp.getType());
+			
 			
 			// get all taxiwaypaths with this name or number
 			ArrayList<TaxiwayPath> currentPath = new ArrayList<TaxiwayPath>();
@@ -485,7 +542,7 @@ class TestXML{
 				getTaxiwayPathsWithSameName(temp, taxiwayPathsCopy, currentPath);
 			else getTaxiwayPathsWithSameNumber(temp, taxiwayPathsCopy, currentPath);
 			
-			System.out.println("## Paths with same name/number: " + currentPath.size());
+			System.out.println("## Paths with same name/number ("+temp.getName()+"): " + currentPath.size());
 			
 			/*if (temp.getName()!=null)
 				System.out.println("## name: "+temp.getName());
@@ -532,13 +589,56 @@ class TestXML{
 			
 			//print generated path//////////
 			System.out.println(" #### PATH: ####");
+			
 			for(TaxiwayPointParking t2 : pointsSequence)
 				System.out.print(t2.getIndex() + " -> ");
 			System.out.println("\n");
 			//////////////////////////////
 			
+						
+			
+			
 			taxiway.setPath(pointsSequence);
-			ret.add(taxiway);			
+			System.out.println(taxiway.getId());
+			//set taxiway id, based on its type
+			switch(taxiway.getType()){
+			case("TAXI"):
+				
+				//we're adding "0" to numbers lower than 10. ex.: 8 -> 08
+				int num;
+				try{
+					num = Integer.parseInt(temp.getName());
+				}
+				catch(Exception e){
+					num = -1;
+				}
+				String newId = "";
+				if (num < 0)
+					newId = temp.getName();
+				else{
+					if (num < 10)
+						newId = "0" + num;
+					else newId = String.valueOf(num);
+				}
+				//////////////////////////////////////////
+				taxiway.setId("x"+newId);
+				break;
+				
+			case("RUNWAY"):
+				taxiway.setIdRunway();
+			ret.get(0).add(taxiway);
+				break;
+			}
+			
+			for(TaxiwayPointParking t2 : pointsSequence)
+				t2.addConnectedTaxiway(taxiway.getId());
+			
+			
+			switch(taxiway.getType()){
+			case("TAXI"): ret.get(1).add(taxiway); break;
+			case("RUNWAY"): taxiway.setNumber(temp.getNumber());ret.get(0).add(taxiway); break;
+			}
+						
 		}
 
 		
@@ -594,6 +694,26 @@ class TestXML{
 		
 	}
 	
+	
+private static String readURL(URL url) {		
+	String inputLine = "";
+	try{
+		URLConnection yc = url.openConnection();
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                yc.getInputStream()));
+        
+        String inputLineTemp;
+        while ((inputLineTemp = in.readLine()) != null)
+        	inputLine += inputLineTemp;
+        in.close();
+	}
+	catch(IOException e){
+		return null;
+	}
+    
+    return inputLine;
+}
 	
 	public static void main(String[] args)  throws IOException{
 		String fileName;
