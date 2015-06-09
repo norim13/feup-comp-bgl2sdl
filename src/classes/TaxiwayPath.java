@@ -11,7 +11,7 @@ public class TaxiwayPath {
 		type="XXXX";
 		start="XX";
 		end="XX";
-		widthUnits="Meters";
+		widthUnits="Meter";
 		width="XXX";
 		number=null;
 		name = null;

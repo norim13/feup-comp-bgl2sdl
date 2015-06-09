@@ -44,7 +44,7 @@ public class Coordinates {
 		longitude = "XXX";
 		altitude = "XXX";
 		measured = "amsl";
-		altUnits = null;
+		altUnits = "XX";
 
 	}
 	
@@ -57,7 +57,8 @@ public class Coordinates {
 		case "M": this.altUnits = "Meter"; break;
 		case "N": this.altUnits = "Nautical Mile"; break;
 		case "F": this.altUnits = "Foot"; break;
-		}		
+		}
+		
 	}
 
 	public String toSDL(String offset){
@@ -67,7 +68,7 @@ public class Coordinates {
 			offset+"	<longitude>"+longitude+"</longitude>\n"+
 			offset+"	<altitude measured=\""+measured+"\""+
 				(altUnits == null? "" : (" lengthUnit=\""+altUnits+"\""))
-						+ ">"+altitude+"<altitude>\n"+
+						+ ">"+altitude+"</altitude>\n"+
 		offset+"</coordinates>\n";
 		
 		return ret;
