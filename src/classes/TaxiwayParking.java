@@ -8,7 +8,7 @@ public class TaxiwayParking extends TaxiwayPointParking{
 	public TaxiwayParking(){
 		super();
 		radius = "XXXXX";
-		radiusUnits = "Meters";
+		radiusUnits = "Meter";
 	}
 	
 

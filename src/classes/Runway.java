@@ -21,9 +21,9 @@ public class Runway {
 		
 		coordinates = new Coordinates();
 		length = "XXXX";
-		lengthUnits="Meters";
+		lengthUnits="Meter";
 		width="XXXX";
-		widthUnits="Meters";
+		widthUnits="Meter";
 		surface="XXXXXXX";
 		
 		startBaseEnd = new StartEndPoint("start");

@@ -23,7 +23,7 @@ public class Taxiway{
 		designation = "XXXXX"; //TODO fetch this data in TaxiName
 		surface = "XXXXX";
 		width = "XXX";
-		widthUnits="Meters";
+		widthUnits="Meter";
 		type="XXXXXX";
 		id = "XXXX";
 		number = "XXXX";
