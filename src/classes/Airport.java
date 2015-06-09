@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Airport {
 
-	public String   name, ident, ICAO, IATA, region, magvar;
+	public String name, ident, ICAO, IATA, region, magvar;
 	
 	public ContactPerson contactPerson;
 	public int id;
@@ -13,6 +13,8 @@ public class Airport {
 	private ArrayList<Taxiway> taxiways;
 
 	private ArrayList<Helipad> helipads;
+
+	private ArrayList<Utility> utilities;
 	
 	public ArrayList<Taxiway> getTaxiways() {
 		return taxiways;
@@ -20,6 +22,14 @@ public class Airport {
 
 	public void setTaxiways(ArrayList<Taxiway> taxiways) {
 		this.taxiways = taxiways;
+	}
+
+	public ArrayList<Utility> getUtilities() {
+		return utilities;
+	}
+
+	public void setUtilities(ArrayList<Utility> utilities) {
+		this.utilities = utilities;
 	}
 
 	public ArrayList<Runway> getRunways() {
@@ -78,8 +88,6 @@ public class Airport {
 		this.location = location;
 	}
 
-	
-
 	public String getName() {
 		return name;
 	}
@@ -116,6 +124,7 @@ public class Airport {
 		this.runways = new ArrayList<Runway>();
 		this.taxiways = new ArrayList<Taxiway>();
 		this.helipads = new ArrayList<Helipad>(); 
+		this.utilities = new ArrayList<Utility>();
 	}
 	
 	public String toSDL(String offset){
@@ -147,7 +156,11 @@ public class Airport {
 						
 						offset+"		<taxiways>\n"+
 						printTaxiways(offset+"			")+
-					offset+"		</taxiways>\n"+
+						offset+"		</taxiways>\n"+
+
+						offset+"		<utilities>\n"+
+							printUtilities(offset+"			")+
+						offset+"		</utilities>\n"+
 					offset+"	</airport>\n"+
 				offset+"</baseOfOperations>\n";
 		return msg;
@@ -174,6 +187,14 @@ public class Airport {
 		String msg = "";
 		for(Helipad t : helipads){
 			msg += t.toSDL(offset);
+		}
+		return msg;
+	}
+
+	public String printUtilities(String offset){
+		String msg = "";
+		for(Utility u : utilities){
+			msg += u.toSDL(offset);
 		}
 		return msg;
 	}
