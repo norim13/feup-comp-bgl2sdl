@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.gui.TreeViewer;
 
 import classes.Airport;
+import classes.Helipad;
 import classes.Runway;
 import classes.Start;
 import classes.Taxiway;
@@ -119,7 +120,7 @@ class TestXML{
 		ArrayList<TaxiwayPoint> taxiwayPoints = new ArrayList<TaxiwayPoint>();
 		ArrayList<TaxiwayParking> taxiwayParkings = new ArrayList<TaxiwayParking>();
 		ArrayList<TaxiwayPath> taxiwayPaths = new ArrayList<TaxiwayPath>();
-		
+		ArrayList<Helipad> helipads = new ArrayList<Helipad>(); 
 		
 		for (int i = 0; i < child.getChildCount(); i++){
 			ParseTree current = child.getChild(i);
@@ -157,7 +158,7 @@ class TestXML{
 					a.getLocation().getCoordinates().setAltitude(altitude);
 					break;	
 				case("ident"):
-					a.setICAO(current.getChild(0).getChild(1).getText()); //TODO get IATA from ICAO
+					a.setICAO(current.getChild(0).getChild(1).getText()); 
 					break;
 				case("magvar"):
 					a.setMagvar(current.getChild(0).getChild(1).getText());
@@ -226,12 +227,21 @@ class TestXML{
 						taxiwayPaths.add(tp);
 						break;
 					}
+					
+					case("Helipad"):{
+						Helipad h = parseHelipad(currentElement);
+						//System.out.println("Helipad parsed (?)");
+						helipads.add(h);
+						break;						
+					}
 					default: System.out.println("not parsing element: "+elementName);
 					}
 					
 				}
 			}
 		}
+		
+		a.setHelipads(helipads);
 		
 		System.out.println("number of starts: "+starts.size());
 		System.out.println("number of taxiway points: "+taxiwayPoints.size());
@@ -388,6 +398,53 @@ class TestXML{
 			}
 		}
 		return s;
+	}
+	
+	
+	private static Helipad parseHelipad(ParseTree helipad){
+		Helipad h = new Helipad();
+		for (int i = 0; i < helipad.getChildCount(); i++){
+			ParseTree current = helipad.getChild(i);
+			//System.out.println("Parsing inside Start: "+current.getText());
+			
+			String[] parts = current.getText().split("=");
+			if (parts.length == 2){ //attributes
+				switch(parts[0]){
+				case("lat"): 
+					h.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
+					break;
+				case("lon"):
+					h.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
+					break;
+				case("alt"):
+					String altitude = current.getChild(0).getChild(1).getText();
+					if(!current.getChild(0).getChild(2).equals("\"")){
+						h.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
+					}
+					h.getCoordinates().setAltitude(altitude);
+					break;	
+				case("type"):
+					h.setType(current.getChild(0).getChild(1).getText());
+					break;
+				case("length"):
+					if(!current.getChild(0).getChild(2).equals("\"")){
+						h.setRadiusUnit(current.getChild(0).getChild(2).getText());
+					}
+					
+					//we're calculating radius from length (assuming the helipad is circular)
+					h.calculateRadius(current.getChild(0).getChild(1).getText()); 
+					break;
+				case("surface"):
+					h.setSurface(current.getChild(0).getChild(1).getText());
+					break;
+				
+				}	
+			}
+			else{
+				//not parsing helipad elements
+			}
+		}
+		return h;
 	}
 	
 	private static TaxiwayPoint parseTaxiwayPoint(ParseTree start){

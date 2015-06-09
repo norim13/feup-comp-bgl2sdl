@@ -3,15 +3,21 @@ package classes;
 public class Helipad {
 	public Coordinates coordinates;
 	public String designation, radius, radiusUnit;
-	public String surface, id;
+	public String surface, id, type;
 	
-	public Runway(){
-		
+	public static int idCount = 1;
+	
+	public static int getNextId(){
+		return idCount++;
+	}
+	
+	public Helipad(){
+		designation = "XXXXXXX";
 		coordinates = new Coordinates();
 		surface="XXXXXXX";
 		radius = "XXXXX";
-
-		id = "XXXXX"; //TODO ID sequencial (por static provavelmente)
+		radiusUnit = "XX";
+		id = "h"+String.valueOf(Helipad.getNextId()); 
 	}
 	
 	public String toSDL(String offset){
@@ -20,7 +26,7 @@ public class Helipad {
 						coordinates.toSDL(offset+"	")+
 						offset+"	<designation>"+designation+"</designation>\n"+
 						offset+"	<surface>"+surface+"</surface>\n"+
-						offset+"	<radius>"+radius+radiusUnit+"</radius>\n"+
+						offset+"	<radius lengthUnit=\""+this.radiusUnit+"\">"+radius+"</radius>\n"+
 				offset+"</helipad>\n";
 		return msg;
 	}
@@ -53,11 +59,16 @@ public class Helipad {
 		return radiusUnit;
 	}
 
-	public void setRadiusUnit(String radiusUnit) {
-		this.radiusUnit = radiusUnit;
+
+	public void setRadiusUnit(String altU) {
+		switch(altU){
+		case "M": this.radiusUnit = "Meter"; break;
+		case "N": this.radiusUnit = "Nautical Mile"; break;
+		case "F": this.radiusUnit = "Foot"; break;
+		}		
 	}
 
-	public void calculateRadius(String length, String width) {
+	public void calculateRadius(String length) {
 		this.radius = ""+Double.parseDouble(length)/2.0;
 	}
 
@@ -67,5 +78,13 @@ public class Helipad {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}	
 }
