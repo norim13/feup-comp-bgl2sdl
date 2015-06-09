@@ -77,7 +77,7 @@ public class Location {
 					offset+"	<address>"+address+"</address>\n"+
 					offset+"	<zipCode>"+zipCode+"</zipCode>\n"+
 					offset+"	<city>"+city+"</city>\n"+
-					offset+"	<stateDistrictRegion>"+region+", "+state+"</stateDistrictRegion>\n"+ //TODO ver se aqui é só o state
+					offset+"	<stateDistrictRegion>"+ region + ", " + state + "</stateDistrictRegion>\n"+ //TODO ver se aqui é só o state
 					offset+"	<country>"+country+"</country>\n"+
 					coordinates.toSDL(offset+"	")+
 			offset+"</location>\n";			
