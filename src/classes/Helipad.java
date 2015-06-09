@@ -2,7 +2,7 @@ package classes;
 
 public class Helipad {
 	public Coordinates coordinates;
-	public String designation, radius;
+	public String designation, radius, radiusUnit;
 	public String surface, id;
 	
 	public Runway(){
@@ -20,7 +20,7 @@ public class Helipad {
 						coordinates.toSDL(offset+"	")+
 						offset+"	<designation>"+designation+"</designation>\n"+
 						offset+"	<surface>"+surface+"</surface>\n"+
-						offset+"	<radius>"+radius+"</radius>\n"+
+						offset+"	<radius>"+radius+radiusUnit+"</radius>\n"+
 				offset+"</helipad>\n";
 		return msg;
 	}
@@ -47,6 +47,18 @@ public class Helipad {
 
 	public void setRadius(String radius) {
 		this.radius = radius;
+	}
+
+	public String getRadiusUnit() {
+		return radiusUnit;
+	}
+
+	public void setRadiusUnit(String radiusUnit) {
+		this.radiusUnit = radiusUnit;
+	}
+
+	public void calculateRadius(String length, String width) {
+		this.radius = ""+Double.parseDouble(length)/2.0;
 	}
 
 	public String getId() {
