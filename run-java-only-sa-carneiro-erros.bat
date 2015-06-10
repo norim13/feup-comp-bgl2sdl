@@ -1,0 +1,1 @@
+java -cp "bin\.;lib\antlr-4.5-complete.jar" TestXML "xmls\sa-carneiro-erros.xml" "output\sa-carneiro-erros.xml"

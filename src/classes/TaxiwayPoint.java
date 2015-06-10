@@ -6,4 +6,10 @@ public class TaxiwayPoint extends TaxiwayPointParking{
 		super();
 	}
 
+	@Override
+	public String getNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

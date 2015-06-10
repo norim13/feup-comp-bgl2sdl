@@ -44,7 +44,7 @@ public class Coordinates {
 		longitude = "XXX";
 		altitude = "XXX";
 		measured = "amsl";
-		altUnits = "XX";
+		altUnits = "Meter";
 
 	}
 	
@@ -66,9 +66,7 @@ public class Coordinates {
 		offset+"<coordinates>\n"+
 			offset+"	<latitude>"+latitude+"</latitude>\n"+
 			offset+"	<longitude>"+longitude+"</longitude>\n"+
-			offset+"	<altitude measured=\""+measured+"\""+
-				(altUnits == null? "" : (" lengthUnit=\""+altUnits+"\""))
-						+ ">"+altitude+"</altitude>\n"+
+			offset+"	<altitude measured=\""+measured+"\""+ " lengthUnit=\""+altUnits+"\""+ ">"+altitude+"</altitude>\n"+
 		offset+"</coordinates>\n";
 		
 		return ret;

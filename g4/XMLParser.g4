@@ -417,9 +417,9 @@ airport locals[boolean[] bools = {false, false, false, false, false, false, fals
 				if (!$bools[4])
 					notifyErrorListeners("Missing heading attribute in Runway element");
 				if (!$bools[5])
-					notifyErrorListeners("Missing surface attribute in Runway element");
-				if (!$bools[6])
 					notifyErrorListeners("Missing length attribute in Runway element");
+				if (!$bools[6])
+					notifyErrorListeners("Missing width attribute in Runway element");
 				if (!$bools[7])
 					notifyErrorListeners("Missing number attribute in Runway element");
 				if (!$bools[8] && !$bools[9])

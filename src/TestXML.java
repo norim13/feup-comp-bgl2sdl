@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.gui.TreeViewer;
 
 import classes.Airport;
 import classes.Helipad;
+import classes.Parking;
 import classes.Runway;
 import classes.Start;
 import classes.Taxiway;
@@ -14,6 +15,7 @@ import classes.TaxiwayParking;
 import classes.TaxiwayPath;
 import classes.TaxiwayPoint;
 import classes.TaxiwayPointParking;
+import classes.Utility;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,15 +25,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -41,12 +39,12 @@ import g4.XMLParser;
 class TestXML{
 
 	@SuppressWarnings("resource")
-	public static ParseTree parse(String fileNameToParse,
-		String lexerGrammarFileName,
-		String parserGrammarFileName,
-		String startRule) throws IOException
+	public static ParseTree parse(String fileNameToParse, String output_file, 
+			String lexerGrammarFileName,
+			String parserGrammarFileName,
+			String startRule) throws IOException
 	{
-		int frameWidth = 1400;
+		int frameWidth = 1200;
 		int frameHeight = 800;
 		JFrame frame = new JFrame("Antlr AST");
 
@@ -64,51 +62,67 @@ class TestXML{
 		ParseTree tree = parser.document();
 
 		
-		
-		File folder = new File("output");
-		if(!folder.isDirectory())
-			folder.mkdir();
-		
+		if(errList.errorList.size() == 0){
+			File folder = new File("output");
+			if(!folder.isDirectory())
+				folder.mkdir();
+			
 
-		FileWriter outputFile = new FileWriter("output\\conversion.xml", false);
-		
-		ArrayList<Airport> bases = new ArrayList<Airport>();
-		for (int i = 0; i < tree.getChildCount(); i++){
-			//bases.add(new Airport());
-			bases.add(parseAirport(tree.getChild(i)));
-			String baseSDL = bases.get(i).toSDL("");
-			//System.out.println(baseSDL);
-			outputFile.write(baseSDL);
+			FileWriter outputFile = new FileWriter(output_file, false);
+			
+			outputFile.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<scenario xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"dcs:scenario\">\n	<bases>\n");
+				
+			ArrayList<Airport> bases = new ArrayList<Airport>();
+			for (int i = 0; i < tree.getChildCount(); i++){
+				//bases.add(new Airport());
+				bases.add(parseAirport(tree.getChild(i)));
+				String baseSDL = bases.get(i).toSDL("		");
+				//System.out.println(baseSDL);
+				outputFile.write(baseSDL);
+			}
+			outputFile.write("	</bases>\n</scenario>");
+			outputFile.close();		
+			
+			
+			System.out.println("\n\n SDL file generated in: "+output_file);
+			System.out.println("Press Enter to exit.");
+			new java.util.Scanner(System.in).nextLine();
+		}
+		else{
+			/////////////////////////////////////////////////////////////
+			////////////////////////// GUI //////////////////////////////
+			/////////////////////////////////////////////////////////////
+			
+			//show AST in GUI
+			JPanel panel = new JPanel();
+			
+			TreeViewer viewr = new TreeViewer(Arrays.asList(
+			parser.getRuleNames()),tree);
+			//viewr.setScale(1.5);//scale a little
+			panel.add(viewr);
+			
+			JScrollPane scrollPane = new JScrollPane(panel);
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setBounds(0, 0, frameWidth, (int) (frameHeight*0.6));
+			scrollPane.setPreferredSize(new Dimension(frameWidth, (int) (frameHeight*0.6)));
+			
+			//frame.add(scrollPane, BorderLayout.NORTH);
+			
+			//errList.getErrorsPanel().setDimension(frameWidth, (int) (frameHeight*0.4));
+			errList.getErrorsPanel().setDimension(frameWidth, (int) (frameHeight));
+			frame.add(errList.getErrorsPanel(), BorderLayout.SOUTH);
+			
+			frame.pack();
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setVisible(true);
+			
+			/////////////////////////////////////////////////////////////
+			/////////////////////////////////////////////////////////////
+			/////////////////////////////////////////////////////////////
 		}
 		
-		outputFile.close();		
 		
-		//new java.util.Scanner(System.in).nextLine();
-		
-		//show AST in GUI
-		/*JPanel panel = new JPanel();
-
-		TreeViewer viewr = new TreeViewer(Arrays.asList(
-				parser.getRuleNames()),tree);
-		//viewr.setScale(1.5);//scale a little
-		panel.add(viewr);
-
-		JScrollPane scrollPane = new JScrollPane(panel);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBounds(0, 0, frameWidth, (int) (frameHeight*0.6));
-		scrollPane.setPreferredSize(new Dimension(frameWidth, (int) (frameHeight*0.6)));
-
-		//frame.add(scrollPane, BorderLayout.NORTH);
-
-		//errList.getErrorsPanel().setDimension(frameWidth, (int) (frameHeight*0.4));
-		errList.getErrorsPanel().setDimension(frameWidth, (int) (frameHeight));
-		frame.add(errList.getErrorsPanel(), BorderLayout.SOUTH);
-
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setVisible(true);*/
-
 		return tree;
 	}
 
@@ -117,10 +131,11 @@ class TestXML{
 		
 		Airport a = new Airport();
 		ArrayList<Start> starts = new ArrayList<Start>();
-		ArrayList<TaxiwayPoint> taxiwayPoints = new ArrayList<TaxiwayPoint>();
-		ArrayList<TaxiwayParking> taxiwayParkings = new ArrayList<TaxiwayParking>();
+		ArrayList<TaxiwayPointParking> taxiwayPoints = new ArrayList<TaxiwayPointParking>();
+		ArrayList<TaxiwayPointParking> taxiwayParkings = new ArrayList<TaxiwayPointParking>();
 		ArrayList<TaxiwayPath> taxiwayPaths = new ArrayList<TaxiwayPath>();
 		ArrayList<Helipad> helipads = new ArrayList<Helipad>(); 
+		ArrayList<Parking> parkings = new ArrayList<Parking>(); 
 		ArrayList<Utility> utilities = new ArrayList<Utility>();
 		
 		for (int i = 0; i < child.getChildCount(); i++){
@@ -130,38 +145,38 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("region"): 
+				case("region"): 
 					a.getLocation().setRegion(current.getChild(0).getChild(1).getText());
 					break;
-					case("country"): 
+				case("country"): 
 					a.getLocation().setCountry(current.getChild(0).getChild(1).getText());
 					break;
-					case("state"): 
+				case("state"): 
 					a.getLocation().setState(current.getChild(0).getChild(1).getText());
 					break;
-					case("city"): 
+				case("city"): 
 					a.getLocation().setCity(current.getChild(0).getChild(1).getText());
 					break;
-					case("name"):
+				case("name"):
 					a.setName(current.getChild(0).getChild(1).getText());
 					break;
-					case("lat"):
+				case("lat"):
 					a.getLocation().getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					a.getLocation().getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						a.getLocation().getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					a.getLocation().getCoordinates().setAltitude(altitude);
 					break;	
-					case("ident"):
+				case("ident"):
 					a.setICAO(current.getChild(0).getChild(1).getText()); 
 					break;
-					case("magvar"):
+				case("magvar"):
 					a.setMagvar(current.getChild(0).getChild(1).getText());
 					break;
 				}
@@ -195,54 +210,65 @@ class TestXML{
 					
 					
 					switch(elementName){
-						case ("Runway"):{
-							Runway rw = parseRunway(currentElement);
+					case ("Runway"):{
+						Runway rw = parseRunway(currentElement);
 						//System.out.println(rw.toSDL(""));
-							a.addRunway(rw);
-							break;
-						}
-						case("Start"):{
-							Start start = parseStart(currentElement);
+						a.addRunway(rw);
+						break;
+					}
+					case("Start"):{
+						Start start = parseStart(currentElement);
 						//System.out.println("Start parsed (?)");
-							starts.add(start);
-							break;
-						}
-						
-						case("TaxiwayPoint"):{
-							TaxiwayPoint tp = parseTaxiwayPoint(currentElement);
+						starts.add(start);
+						break;
+					}
+					
+					case("TaxiwayPoint"):{
+						TaxiwayPoint tp = parseTaxiwayPoint(currentElement);
 						//System.out.println("Start parsed (?)");
-							taxiwayPoints.add(tp);
-							break;
-						}
-						
-						case("TaxiwayParking"):{
-							TaxiwayParking tp = parseTaxiwayParking(currentElement);
+						taxiwayPoints.add(tp);
+						break;
+					}
+					
+					case("TaxiwayParking"):{
+						TaxiwayParking tp = parseTaxiwayParking(currentElement);
 						//System.out.println("Start parsed (?)");
-							taxiwayParkings.add(tp);
-							break;
-						}
-						
-						case("TaxiwayPath"):{
-							TaxiwayPath tp = parseTaxiwayPath(currentElement);
+						taxiwayParkings.add(tp);
+						break;
+					}
+					
+					case("TaxiwayPath"):{
+						TaxiwayPath tp = parseTaxiwayPath(currentElement);
 						//System.out.println("TaxiwayPath parsed (?)");
-							taxiwayPaths.add(tp);
-							break;
-						}
-						
-						case("Helipad"):{
-							Helipad h = parseHelipad(currentElement);
+						taxiwayPaths.add(tp);
+						break;
+					}
+					
+					case("Helipad"):{
+						Helipad h = parseHelipad(currentElement);
 						//System.out.println("Helipad parsed (?)");
-							helipads.add(h);
-							break;						
-						}
-						case("Tower"):{
+						helipads.add(h);
+						break;						
+					}
+					case("Tower"):{
 							Utility u = parseUtility(currentElement,"tower");
 						//System.out.println("Utility parsed (?)");
 							utilities.add(u);
 							break;						
+					}
+					case("Services"):{ //FUEL 
+						for (int k = 0; k < currentElement.getChild(1).getChildCount(); k++){
+							Utility f = parseUtility(currentElement.getChild(1).getChild(k),"fuel");
+							//System.out.println("Utility parsed (?)");
+							utilities.add(f);
 						}
-						default: 
-						System.out.println("not parsing element: "+elementName);
+						
+						break;						
+				}
+					default: {
+						//System.out.println("not parsing element: "+elementName);
+					}
+						
 					}
 					
 				}
@@ -250,43 +276,137 @@ class TestXML{
 		}
 		
 		a.setHelipads(helipads);
-		
-		System.out.println("number of starts: "+starts.size());
+		a.setUtilities(utilities);
+		/*System.out.println("number of starts: "+starts.size());
 		System.out.println("number of taxiway points: "+taxiwayPoints.size());
-		System.out.println("number of taxiway parkings: "+taxiwayParkings.size());
+		System.out.println("number of taxiway parkings: "+taxiwayParkings.size());*/
+
 		
-		/*for(TaxiwayParking tp: taxiwayParkings){
-			String m = "TW Parking: "+"index-> "+tp.getIndex()+" = radius->"+tp.getRadius()+tp.getRadiusUnits();
-			System.out.println(m);
-		}*/
 		
-		//remove all paths with type PARKING or PATH //dunno why, mas n ligam bem
+		//remove all paths with type different than "TAXI" and "RUNWAY", or name == "0" //dunno why, mas n ligam bem
 		ArrayList<TaxiwayPath> parkingPaths = new ArrayList<TaxiwayPath>();
+		ArrayList<TaxiwayPath> otherPaths = new ArrayList<TaxiwayPath>();
+		
 		for ( int i = 0; i < taxiwayPaths.size(); i++){
 			String thisType = taxiwayPaths.get(i).getType();
 			String thisName = (taxiwayPaths.get(i).getName() == null)? "notnull" : taxiwayPaths.get(i).getName();
-			if ((!thisType.equals("TAXI") && !thisType.equals("RUNWAY")) || thisName.equals("0")){
-				//System.out.println("removing: "+thisType);
+			if (thisType.equals("PARKING"))
 				parkingPaths.add(taxiwayPaths.remove(i--));
+			/*else if (thisType.equals("VEHICLE"))
+				taxiwayPaths.remove(i--);*/
+			else if ((!thisType.equals("TAXI") && !thisType.equals("RUNWAY")) || thisName.equals("0")){
+				//System.out.println("removing: "+thisType);
+				otherPaths.add(taxiwayPaths.remove(i--));
 			}
 		}
+
+		
+		System.out.println("Generating taxiways: ");
+		ArrayList<ArrayList<Taxiway>> runwaysTaxiways = generatePaths(
+				taxiwayPoints, taxiwayParkings, taxiwayPaths); // runways on [0]
+																// and taxiways
+																// on [1]
+		System.out.println("	Done!\n");
 		
 		
-		ArrayList<ArrayList<Taxiway>> runwaysTaxiways = generatePaths(taxiwayPoints, taxiwayParkings,taxiwayPaths);
-		a.setTaxiways(runwaysTaxiways.get(1));
+		a.setTaxiways(runwaysTaxiways.get(1));// set taxiways in airport
 		
+		// /////////////////////////////////////
+		// link runways returned from path generator to correspondent runways in
+		// airport
+		System.out.println("Linking runways to paths:");
 		ArrayList<Taxiway> runways = runwaysTaxiways.get(0);
 		ArrayList<Runway> currentRunways = a.getRunways();
-		
-		for(Runway r : currentRunways){
-			for(Taxiway t : runways){
-				if(t.getNumber().equals(r.getNumber()))
+
+		for (Runway r : currentRunways) {
+			for (Taxiway t : runways) {
+				if (t.getNumber().equals(r.getNumber()))
 					r.setPath(t);
 			}
 		}
+		System.out.println("	Done!\n");
 		
+		System.out.println("Processing other taxipaths:");
+		boolean missing = true;
+		int count = 0;
+		int connectionsAdded = 1;
+		while(missing && connectionsAdded > 0){
+			missing = false;
+			connectionsAdded = 0;
+			System.out.println("	Iteration "+count);
+			//iterate over otherPaths to add connectsTo
+			for(TaxiwayPointParking tp : taxiwayPoints){
+				//System.out.println("estou no taxi point: "+ tp.getIndex());
+				for(int i = 0; i < otherPaths.size(); i++){
+					TaxiwayPath path = otherPaths.get(i);
+					
+					TaxiwayPointParking temp = null;
+					
+					if (path.getEnd().equals(tp.getIndex())){
+						temp = getTaxiwayPointParkingByIndex(path.getStart(), taxiwayPoints);
+					}
+					else if(path.getStart().equals(tp.getIndex())){
+						temp = getTaxiwayPointParkingByIndex(path.getEnd(), taxiwayPoints);
+					}
+					
+					if(temp != null){
+						ArrayList<String> connected = temp.getConnectedTaxiways();
+						//System.out.println("	devia adicionar algo? tentou conectar "+tp.getIndex()+" ao "+temp.getIndex());
+						if (connected.size() > 0){
+							tp.addConnectedTaxiway(connected.get(0));//adds the main taxiway in the taxiway point
+							temp.addConnectedTaxiway(tp.getConnectedTaxiways().get(0));						
+							//System.out.println("	adicionou connection taxipoint "+tp.getIndex()+" ligou a "+temp.getIndex());	
+							otherPaths.remove(i--);
+							connectionsAdded++;
+						}
+						else{
+							System.out.println("		MISSING	CONNECTION tried to connect "+tp.getIndex()+" to "+temp.getIndex());
+							missing = true;
+						}
+					}
+							
+				}
+			}
+			
+			System.out.println("\n		Number of connections added: "+connectionsAdded+"\n");
+			count++;
+			
+		}
+		System.out.println("	Done!\n");
+		
+		/*
+		for(TaxiwayPath path : parkingPaths)
+			System.out.println("parking path: "+path.getStart() + " -> "+ path.getEnd());
+		for(TaxiwayPath path : otherPaths)
+			System.out.println("other path: "+path.getStart() + " -> "+ path.getEnd());
+	*/
+		
+		System.out.println("Processing parkings:");
+		//iterate over parkings to add connectsTo
+		for(TaxiwayPointParking tp : taxiwayParkings){
+			Parking park = new Parking();
+			park.setId(tp.getIndex());
+			park.setCoordinates(tp.getCoordinates());
+			
+			for(TaxiwayPath path : parkingPaths){
+				
+				if (path.getEnd().equals(tp.getIndex())){ //if PARKING taxiway path connects to this TaxiwayParking
+					TaxiwayPointParking temp = getTaxiwayPointParkingByIndex(path.getStart(), taxiwayPoints); //look for the taxiwaypoint refered in the path (start of the path)
+					if(temp != null){ //if found
+						park.setConnectsTo(temp);
+					}
+				}
+			}
+			parkings.add(park);
+		}
+		System.out.println("	Done!\n");
+		a.setParkings(parkings);
+				
+		
+		// /////////////////////////////////////
 		
 		//Fetch IATA online based on ICAO
+		System.out.println("Fetching IATA online!");
 		String answer;
 		try {
 			answer = readURL(new URL("http://www.airport-data.com/api/ap_info.json?icao="+a.getICAO()));
@@ -305,12 +425,23 @@ class TestXML{
 			answer = answer.substring(0, index_double_quotes);
 			
 			a.setIATA(answer);
-			
-		} catch (Exception ee){}
+			System.out.println("	Done!\n");
+		} catch (Exception ee){
+			System.out.println("	Error fetching IATA!");
+		}
+		// /////////////////////////////////////
+		
 		
 		return a;
 	}
 
+	
+	private static TaxiwayPointParking getTaxiwayPointParkingByIndex(String index, ArrayList<TaxiwayPointParking> taxis){
+		for (TaxiwayPointParking tp : taxis)
+			if (tp.getIndex().equals(index))
+				return tp;
+		return null;
+	}
 	
 	private static Runway parseRunway(ParseTree runway){
 		Runway rw = new Runway();
@@ -321,40 +452,40 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("lat"): 
+				case("lat"): 
 					rw.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					rw.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						rw.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					rw.getCoordinates().setAltitude(altitude);
 					break;	
-					case("surface"):
+				case("surface"):
 					rw.setSurface(current.getChild(0).getChild(1).getText());
 					break;
-					case("length"):
+				case("length"):
 					String length = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						rw.setLengthUnits(current.getChild(0).getChild(2).getText());
 					}
 					rw.setLength(length);
 					break;
-					case("width"):
+				case("width"):
 					String width = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						rw.setWidthUnits(current.getChild(0).getChild(2).getText());
 					}
 					rw.setWidth(width);
 					break;
-					case("number"):
+				case("number"):
 					rw.setNumber(current.getChild(0).getChild(1).getText());
 					break;
-					
+				
 				}	
 			}
 			else{
@@ -373,32 +504,32 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("lat"): 
+				case("lat"): 
 					s.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					s.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						s.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					s.getCoordinates().setAltitude(altitude);
 					break;	
-					case("type"):
+				case("type"):
 					s.setType(current.getChild(0).getChild(1).getText());
 					break;
-					case("heading"):
+				case("heading"):
 					s.setHeading(current.getChild(0).getChild(1).getText());
 					break;
-					case("number"):
+				case("number"):
 					s.setNumber(current.getChild(0).getChild(1).getText());
 					break;
-					case("designator"):
+				case("designator"):
 					s.setDesignator(current.getChild(0).getChild(1).getText());
 					break;
-					
+				
 				}	
 			}
 			else{
@@ -418,23 +549,23 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("lat"): 
+				case("lat"): 
 					h.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					h.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						h.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					h.getCoordinates().setAltitude(altitude);
 					break;	
-					case("type"):
+				case("type"):
 					h.setType(current.getChild(0).getChild(1).getText());
 					break;
-					case("length"):
+				case("length"):
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						h.setRadiusUnit(current.getChild(0).getChild(2).getText());
 					}
@@ -442,10 +573,10 @@ class TestXML{
 					//we're calculating radius from length (assuming the helipad is circular)
 					h.calculateRadius(current.getChild(0).getChild(1).getText()); 
 					break;
-					case("surface"):
+				case("surface"):
 					h.setSurface(current.getChild(0).getChild(1).getText());
 					break;
-					
+				
 				}	
 			}
 			else{
@@ -454,7 +585,7 @@ class TestXML{
 		}
 		return h;
 	}
-
+	
 	private static Utility parseUtility(ParseTree utility, String type){
 		Utility u = new Utility();
 		for (int i = 0; i < utility.getChildCount(); i++) {
@@ -465,18 +596,21 @@ class TestXML{
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
 					case("lat"): 
-					u.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
-					break;
+						u.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
+						break;
 					case("lon"):
-					u.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
+						u.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
 					case("alt"):
-					String altitude = current.getChild(0).getChild(1).getText();
-					if(!current.getChild(0).getChild(2).equals("\"")){
-						u.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
-					}
-					u.getCoordinates().setAltitude(altitude);
-					break;
+						String altitude = current.getChild(0).getChild(1).getText();
+						if(!current.getChild(0).getChild(2).equals("\"")){
+							u.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
+						}
+						u.getCoordinates().setAltitude(altitude);
+						break;
+					case("type"):
+						u.setFuelType(current.getChild(0).getChild(1).getText());
+						break;
 				}
 			}
 			else{
@@ -484,10 +618,15 @@ class TestXML{
 			}
 		}
 		u.setType(type);
-		if(type.equals("tower")) u.setDesignation("Tower");
+		switch(type){
+		case("tower"): u.setDesignation("Tower"); break;
+		case("fuel"): u.setDesignation("fuel"); break;
+		}
 
 		return u;
 	}
+	
+
 	
 	private static TaxiwayPoint parseTaxiwayPoint(ParseTree start){
 		TaxiwayPoint tp = new TaxiwayPoint();
@@ -498,26 +637,26 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("lat"): 
+				case("lat"): 
 					tp.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					tp.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						tp.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					tp.getCoordinates().setAltitude(altitude);
 					break;	
-					case("type"):
+				case("type"):
 					tp.setType(current.getChild(0).getChild(1).getText());
 					break;
-					case("index"):
+				case("index"):
 					tp.setIndex(current.getChild(0).getChild(1).getText());
 					break;
-					
+				
 				}	
 			}
 			else{
@@ -536,33 +675,36 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("lat"): 
+				case("lat"): 
 					tp.getCoordinates().setLatitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("lon"):
+				case("lon"):
 					tp.getCoordinates().setLongitude(current.getChild(0).getChild(1).getText());
 					break;
-					case("alt"):
+				case("alt"):
 					String altitude = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						tp.getCoordinates().setAltUnits(current.getChild(0).getChild(2).getText());
 					}
 					tp.getCoordinates().setAltitude(altitude);
 					break;	
-					case("type"):
+				case("type"):
 					tp.setType(current.getChild(0).getChild(1).getText());
 					break;
-					case("index"):
+				case("index"):
 					tp.setIndex(current.getChild(0).getChild(1).getText());
 					break;
-					case("radius"):
+				case("number"):
+					tp.setNumber(current.getChild(0).getChild(1).getText());
+					break;
+				case("radius"):
 					String radius = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						tp.setRadiusUnits(current.getChild(0).getChild(2).getText());
 					}
 					tp.setRadius(radius);
 					break;	
-					
+				
 				}	
 			}
 			else{
@@ -572,7 +714,7 @@ class TestXML{
 		return tp;
 	}
 	
-	private static TaxiwayPath parseTaxiwayPath(ParseTree start){
+ 	private static TaxiwayPath parseTaxiwayPath(ParseTree start){
 		TaxiwayPath tp = new TaxiwayPath();
 		for (int i = 0; i < start.getChildCount(); i++){
 			ParseTree current = start.getChild(i);
@@ -581,29 +723,29 @@ class TestXML{
 			String[] parts = current.getText().split("=");
 			if (parts.length == 2){ //attributes
 				switch(parts[0]){
-					case("type"):
+				case("type"):
 					tp.setType(current.getChild(0).getChild(1).getText());
 					break;
-					case("start"):
+				case("start"):
 					tp.setStart(current.getChild(0).getChild(1).getText());
 					break;
-					case("end"):
+				case("end"):
 					tp.setEnd(current.getChild(0).getChild(1).getText());
 					break;
-					case("width"):
+				case("width"):
 					String width = current.getChild(0).getChild(1).getText();
 					if(!current.getChild(0).getChild(2).equals("\"")){
 						tp.setWidthUnits(current.getChild(0).getChild(2).getText());
 					}
 					tp.setWidth(width);
 					break;	
-					case("number"):
+				case("number"):
 					tp.setNumber(current.getChild(0).getChild(1).getText());
 					break;
-					case("name"):
+				case("name"):
 					tp.setName(current.getChild(0).getChild(1).getText());
 					break;
-					case("surface"):
+				case("surface"):
 					tp.setSurface(current.getChild(0).getChild(1).getText());
 					break;
 				}
@@ -615,16 +757,16 @@ class TestXML{
 		return tp;
 	}
 
-	
-	public static ArrayList<ArrayList<Taxiway>> generatePaths(ArrayList<TaxiwayPoint> taxiwayPoints, ArrayList<TaxiwayParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
-		ArrayList<ArrayList<Taxiway>> ret = new ArrayList<ArrayList<Taxiway>>();
+ 	
+ 	public static ArrayList<ArrayList<Taxiway>> generatePaths(ArrayList<TaxiwayPointParking> taxiwayPoints, ArrayList<TaxiwayPointParking> taxiwayParkings, ArrayList<TaxiwayPath> taxiwayPaths){
+ 		ArrayList<ArrayList<Taxiway>> ret = new ArrayList<ArrayList<Taxiway>>();
  		ret.add(new ArrayList<Taxiway>());//runways [0]
  		ret.add(new ArrayList<Taxiway>());//taxiways [1]
- 		
- 		ArrayList<TaxiwayPath> taxiwayPathsCopy = new ArrayList<TaxiwayPath>(taxiwayPaths);
- 		while(!taxiwayPathsCopy.isEmpty()){
+		
+		ArrayList<TaxiwayPath> taxiwayPathsCopy = new ArrayList<TaxiwayPath>(taxiwayPaths);
+		while(!taxiwayPathsCopy.isEmpty()){
 			//System.out.println("paths size: "+taxiwayPathsCopy.size());
- 			
+			
 			Taxiway taxiway = new Taxiway(); //taxiway to add to return array
 			TaxiwayPath temp = taxiwayPathsCopy.remove(0);
 			taxiway.setSurface(temp.getSurface());
@@ -641,13 +783,13 @@ class TestXML{
 				getTaxiwayPathsWithSameName(temp, taxiwayPathsCopy, currentPath);
 			else getTaxiwayPathsWithSameNumber(temp, taxiwayPathsCopy, currentPath);
 			
-			System.out.println("## Paths with same name/number ("+temp.getName()+"): " + currentPath.size());
+			System.out.print("	Number of TaxiwayPaths with same name/number ("+temp.getName()+"): " + currentPath.size());
 			
 			/*if (temp.getName()!=null)
 				System.out.println("## name: "+temp.getName());
-				else System.out.println("## number: "+temp.getNumber());*/
+			else System.out.println("## number: "+temp.getNumber());*/
 			//order taxiwaypaths
-				ArrayList<TaxiwayPath> sortedPath = new ArrayList<TaxiwayPath>();
+			ArrayList<TaxiwayPath> sortedPath = new ArrayList<TaxiwayPath>();
 			sortedPath.add(currentPath.remove(0)); //add first path to list
 			
 			TaxiwayPath tp = null;
@@ -664,13 +806,13 @@ class TestXML{
 				currentPath.remove(tp);
 			}
 			
-			System.out.println("	## ordered path size " + sortedPath.size() + "(left on previous array: " + currentPath.size() + ")\n");
+			System.out.println("  ##  ordered : " + sortedPath.size() + " ## unordered : " + currentPath.size());
 			
-			//GET matching taxiwaypoint
+			//GET matching taxiwaypoints
 			ArrayList<TaxiwayPointParking> pointsSequence = new ArrayList<TaxiwayPointParking>();
 			for(TaxiwayPath t : sortedPath){
 				String index = t.getStart();
-				for (TaxiwayPoint t1 : taxiwayPoints){
+				for (TaxiwayPointParking t1 : taxiwayPoints){
 					if (t1.getIndex().equals(index)){
 						pointsSequence.add(t1);
 						break;
@@ -679,29 +821,28 @@ class TestXML{
 			}
 			//add last node
 			String index = sortedPath.get(sortedPath.size()-1).getEnd();
-			for (TaxiwayPoint t1 : taxiwayPoints){
+			for (TaxiwayPointParking t1 : taxiwayPoints){
 				if (t1.getIndex().equals(index)){
 					pointsSequence.add(t1);
 					break;
 				}
 			}
 			
-			//print generated path//////////
-			System.out.println(" #### PATH: ####");
-			
+			//print generated path//////////		
+			System.out.print("	");
 			for(TaxiwayPointParking t2 : pointsSequence)
 				System.out.print(t2.getIndex() + " -> ");
-			System.out.println("\n");
+			System.out.println();
 			//////////////////////////////
 			
-			
+						
 			
 			
 			taxiway.setPath(pointsSequence);
-			System.out.println(taxiway.getId());
+			
 			//set taxiway id, based on its type
 			switch(taxiway.getType()){
-				case("TAXI"):
+			case("TAXI"):
 				
 				//we're adding "0" to numbers lower than 10. ex.: 8 -> 08
 				int num;
@@ -723,101 +864,107 @@ class TestXML{
 				taxiway.setId("x"+newId);
 				break;
 				
-				case("RUNWAY"):
+			case("RUNWAY"):
 				taxiway.setIdRunway();
-				ret.get(0).add(taxiway);
+			ret.get(0).add(taxiway);
 				break;
 			}
 			
 			for(TaxiwayPointParking t2 : pointsSequence)
 				t2.addConnectedTaxiway(taxiway.getId());
 			
+			System.out.println("	Taxiway id: "+taxiway.getId()+"\n");
 			
 			switch(taxiway.getType()){
-				case("TAXI"): ret.get(1).add(taxiway); break;
-				case("RUNWAY"): taxiway.setNumber(temp.getNumber());ret.get(0).add(taxiway); break;
+			case("TAXI"): ret.get(1).add(taxiway); break;
+			case("RUNWAY"): taxiway.setNumber(temp.getNumber());ret.get(0).add(taxiway); break;
 			}
-			
+						
 		}
 
 		
 		return ret;
 	}
+ 	
+ 	
+ 	public static TaxiwayPath getNextPath(String wantedStart, ArrayList<TaxiwayPath> paths){
+ 		for (TaxiwayPath t : paths)
+ 			if (t.getStart().equals(wantedStart))
+ 				return t;
+ 		return null;
+ 	}
+ 	
+ 	public static TaxiwayPath getPreviousPath(String wantedEnd, ArrayList<TaxiwayPath> paths){
+ 		for (TaxiwayPath t : paths)
+ 			if (t.getEnd().equals(wantedEnd))
+ 				return t;
+ 		return null;
+ 	}
+ 	
+	private static void getTaxiwayPathsWithSameName(TaxiwayPath temp, ArrayList<TaxiwayPath> taxiwayPathsCopy, ArrayList<TaxiwayPath> currentPath) {
+		String name = temp.getName();
+		for(int i = 0; i < taxiwayPathsCopy.size(); i++){
+			if(taxiwayPathsCopy.get(i).getName() != null){
+				if (taxiwayPathsCopy.get(i).getName().equals(name)){
+					currentPath.add(taxiwayPathsCopy.remove(i--));
+				}
+			}
+		}	
+	}
 	
-	
-	public static TaxiwayPath getNextPath(String wantedStart, ArrayList<TaxiwayPath> paths){
-		for (TaxiwayPath t : paths)
-			if (t.getStart().equals(wantedStart))
-				return t;
-			return null;
+	private static void getTaxiwayPathsWithSameNumber(TaxiwayPath temp, ArrayList<TaxiwayPath> taxiwayPathsCopy, ArrayList<TaxiwayPath> currentPath) {
+		String number = temp.getNumber();
+		for(int i = 0; i < taxiwayPathsCopy.size(); i++){
+			if(taxiwayPathsCopy.get(i).getNumber() != null){
+				if (taxiwayPathsCopy.get(i).getNumber().equals(number)){
+					currentPath.add(taxiwayPathsCopy.remove(i--));
+				}
+			}
 		}
+	}
+
+
+	public static void recursiveTreePrint(ParseTree tree, String offset){
+		System.out.println(offset+tree.getText());
+		int count = tree.getChildCount();
 		
-		public static TaxiwayPath getPreviousPath(String wantedEnd, ArrayList<TaxiwayPath> paths){
-			for (TaxiwayPath t : paths)
-				if (t.getEnd().equals(wantedEnd))
-					return t;
-				return null;
-			}
-			
-			private static void getTaxiwayPathsWithSameName(TaxiwayPath temp, ArrayList<TaxiwayPath> taxiwayPathsCopy, ArrayList<TaxiwayPath> currentPath) {
-				String name = temp.getName();
-				for(int i = 0; i < taxiwayPathsCopy.size(); i++){
-					if(taxiwayPathsCopy.get(i).getName() != null){
-						if (taxiwayPathsCopy.get(i).getName().equals(name)){
-							currentPath.add(taxiwayPathsCopy.remove(i--));
-						}
-					}
-				}	
-			}
-			
-			private static void getTaxiwayPathsWithSameNumber(TaxiwayPath temp, ArrayList<TaxiwayPath> taxiwayPathsCopy, ArrayList<TaxiwayPath> currentPath) {
-				String number = temp.getNumber();
-				for(int i = 0; i < taxiwayPathsCopy.size(); i++){
-					if(taxiwayPathsCopy.get(i).getNumber() != null){
-						if (taxiwayPathsCopy.get(i).getNumber().equals(number)){
-							currentPath.add(taxiwayPathsCopy.remove(i--));
-						}
-					}
-				}
-			}
-
-
-			public static void recursiveTreePrint(ParseTree tree, String offset){
-				System.out.println(offset+tree.getText());
-				int count = tree.getChildCount();
-				
-				for (int i = 0; i < count; i++){
-					recursiveTreePrint(tree.getChild(i), offset+"  ");	
-				}		
-			}
-			
-			
-			private static String readURL(URL url) {		
-				String inputLine = "";
-				try{
-					URLConnection yc = url.openConnection();
-					BufferedReader in = new BufferedReader(
-						new InputStreamReader(
-							yc.getInputStream()));
-					
-					String inputLineTemp;
-					while ((inputLineTemp = in.readLine()) != null)
-						inputLine += inputLineTemp;
-					in.close();
-				}
-				catch(IOException e){
-					return null;
-				}
-				
-				return inputLine;
-			}
-			
-			public static void main(String[] args)  throws IOException{
-				String fileName;
-				if (args.length < 1)
-					fileName = "pom.xml";
-				else fileName = args[0];
-				ParseTree t = parse(fileName, "XMLLexer.g4", "XMLParser.g4", "document");
-				System.out.println(t.getChild(0));
-			}
+		for (int i = 0; i < count; i++){
+			recursiveTreePrint(tree.getChild(i), offset+"  ");	
 		}
+	}
+	
+	
+private static String readURL(URL url) {		
+	String inputLine = "";
+	try{
+		URLConnection yc = url.openConnection();
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                yc.getInputStream()));
+        
+        String inputLineTemp;
+        while ((inputLineTemp = in.readLine()) != null)
+        	inputLine += inputLineTemp;
+        in.close();
+	}
+	catch(IOException e){
+		return null;
+	}
+    
+    return inputLine;
+}
+	
+	public static void main(String[] args)  throws IOException{
+		String fileName, outputFile;
+		if (args.length < 2){
+			System.out.println("Usage: java -cp \"bin\\.;lib\\antlr-4.5-complete.jar\" TestXML <input_file> <output_file>");
+			return;
+		}
+
+		fileName = args[0];
+		outputFile = args[1];
+		
+		ParseTree t = parse(fileName, outputFile, "XMLLexer.g4", "XMLParser.g4", "document");
+		System.out.println(t.getChild(0));
+	}
+}

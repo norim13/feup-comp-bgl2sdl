@@ -33,7 +33,6 @@
          surface="ASPHALT"
          heading="168.850006103516"
          length="3485.08M"
-         width="100.08M"
          number="17"
          designator="NONE"
          patternAltitude="304.8M"
@@ -111,7 +110,7 @@
             pitch="3"/>
          <Ils
             lat="41.2300398945808"
-            lon="-88.67654249072075"
+            lon="-888.67654249072075"
             alt="69.494M"
             heading="168.850006103516"
             frequency="109.900"

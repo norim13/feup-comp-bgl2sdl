@@ -1,0 +1,1405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="dcs:scenario">
+	<bases>
+		<baseOfOperations id="b0">
+			<name>Francisco Sa Carneiro</name>
+			<mobility water="false" underwater="false" land="true" air="true" />
+			<description>XXX Description XXX</description>
+			<history>XXX History XXX</history>
+			<contactPerson>
+				<name>XXX Name XXX</name>
+				<title>XXX Title XXX</title>
+				<institution>XXX Institution XXX</institution>
+				<position>XXX Position XXX</position>
+				<address>XXX Address XXX</address>
+				<zipCode>XXX ZipCode XXX</zipCode>
+				<city>XXX City XXX</city>
+				<stateDistrictRegion>XXX State XXX</stateDistrictRegion>
+				<country>XXX Country XXX</country>
+				<telephone>XXX Telephone XXX</telephone>
+				<cellphone>XXX Cellphone XXX</cellphone>
+				<fax>XXX Fax XXX</fax>
+				<email>XXX email XXX</email>
+			</contactPerson>
+			<location>
+				<address>xxxxxxxxxxxxx</address>
+				<zipCode>xxxxxxxxxxxxx</zipCode>
+				<city>Porto</city>
+				<stateDistrictRegion>xxxxxxxxxxxxx, xxxxxxxxxxxxx</stateDistrictRegion>
+				<country>Portugal</country>
+				<coordinates>
+					<latitude>41.2355555221438</latitude>
+					<longitude>-8.67805570363998</longitude>
+					<altitude measured="amsl" lengthUnit="Meter">69.494</altitude>
+				</coordinates>
+			</location>
+			<availability available="always" />
+			<airport>
+				<name>Francisco Sa Carneiro</name>
+				<description>XXX Description XXX</description>
+					<contactPerson>
+						<name>XXX Name XXX</name>
+						<title>XXX Title XXX</title>
+						<institution>XXX Institution XXX</institution>
+						<position>XXX Position XXX</position>
+						<address>XXX Address XXX</address>
+						<zipCode>XXX ZipCode XXX</zipCode>
+						<city>XXX City XXX</city>
+						<stateDistrictRegion>XXX State XXX</stateDistrictRegion>
+						<country>XXX Country XXX</country>
+						<telephone>XXX Telephone XXX</telephone>
+						<cellphone>XXX Cellphone XXX</cellphone>
+						<fax>XXX Fax XXX</fax>
+						<email>XXX email XXX</email>
+					</contactPerson>
+					<location>
+						<address>xxxxxxxxxxxxx</address>
+						<zipCode>xxxxxxxxxxxxx</zipCode>
+						<city>Porto</city>
+						<stateDistrictRegion>xxxxxxxxxxxxx, xxxxxxxxxxxxx</stateDistrictRegion>
+						<country>Portugal</country>
+						<coordinates>
+							<latitude>41.2355555221438</latitude>
+							<longitude>-8.67805570363998</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">69.494</altitude>
+						</coordinates>
+					</location>
+				<ICAO>LPPR</ICAO>
+				<IATA>OPO</IATA>
+				<magVar>5</magVar>
+				<runways>
+					<runway id="r17-XX" >
+						<coordinates>
+							<latitude>41.24785579741</latitude>
+							<longitude>-8.6812050640583</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">69.494</altitude>
+						</coordinates>
+						<length lengthUnit="Meter" >3485.08</length>
+						<width lengthUnit="Meter" >100.08</width>
+						<surface>Asphalt</surface>
+						<baseEnd>
+							<designation>17</designation>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2324719876051</latitude>
+									<longitude>-8.67717906832695</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</startpoint>
+							<heading headingType="True">XXX</heading>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2632396072149</latitude>
+									<longitude>-8.68523105978966</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</endpoint>
+						</baseEnd>
+						<reciprocalEnd>
+							<designation>XX</designation>
+							<startpoint>
+								<coordinates>
+									<latitude>XXX</latitude>
+									<longitude>XXX</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</startpoint>
+							<heading headingType="True">XXX</heading>
+							<endpoint>
+								<coordinates>
+									<latitude>XXX</latitude>
+									<longitude>XXX</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</endpoint>
+						</reciprocalEnd>
+					</runway>
+				</runways>
+				<helipads>
+				</helipads>
+				<taxiways>
+					<taxiway id="x01" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2488478794694</latitude>
+									<longitude>-8.68146434426308</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2477223575115</latitude>
+									<longitude>-8.68188679218292</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.247644238174</latitude>
+									<longitude>-8.68191584944725</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2450404837728</latitude>
+									<longitude>-8.68289351463318</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2375292927027</latitude>
+									<longitude>-8.68093907833099</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x04" />
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2356705218554</latitude>
+									<longitude>-8.68045538663864</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x07" />
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2342311814427</latitude>
+									<longitude>-8.68008077144623</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x08" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x02" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2326775118709</latitude>
+									<longitude>-8.67723271250725</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+									<xway idr="x08" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.232762336731</latitude>
+									<longitude>-8.67653712630272</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2327754124999</latitude>
+									<longitude>-8.67643117904663</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2330771610141</latitude>
+									<longitude>-8.67395326495171</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x09" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x03" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2369747459888</latitude>
+									<longitude>-8.67495194077492</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x09" />
+									<xway idr="x10" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2366096302867</latitude>
+									<longitude>-8.67743387818336</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2365942075849</latitude>
+									<longitude>-8.67753937840462</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2364922836423</latitude>
+									<longitude>-8.67823094129562</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x04" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2375292927027</latitude>
+									<longitude>-8.68093907833099</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x01" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2377341464162</latitude>
+									<longitude>-8.67938384413719</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2377482280135</latitude>
+									<longitude>-8.6792778968811</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2378397583961</latitude>
+									<longitude>-8.67858365178108</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x05" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2390718981624</latitude>
+									<longitude>-8.67890596389771</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2391657754779</latitude>
+									<longitude>-8.67821216583252</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2391798570752</latitude>
+									<longitude>-8.67810621857643</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2395184859633</latitude>
+									<longitude>-8.67560416460037</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x10" />
+									<xway idr="x11" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x06" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2499757483602</latitude>
+									<longitude>-8.68175938725472</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2497071921825</latitude>
+									<longitude>-8.6809766292572</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2496736645699</latitude>
+									<longitude>-8.68087872862816</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2492371350527</latitude>
+									<longitude>-8.67960602045059</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2453167513013</latitude>
+									<longitude>-8.67838338017464</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2428249791265</latitude>
+									<longitude>-8.67645174264908</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x11" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x07" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2358435243368</latitude>
+									<longitude>-8.67806106805801</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2357928976417</latitude>
+									<longitude>-8.67876291275024</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2357848510146</latitude>
+									<longitude>-8.678869754076</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2356705218554</latitude>
+									<longitude>-8.68045538663864</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x01" />
+									<xway idr="x01" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x08" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2342311814427</latitude>
+									<longitude>-8.68008077144623</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x01" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2331790849566</latitude>
+									<longitude>-8.67815181612968</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2331314757466</latitude>
+									<longitude>-8.67806509137154</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2326775118709</latitude>
+									<longitude>-8.67723271250725</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<rway idr="r0-8" />
+									<xway idr="x02" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x09" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2330771610141</latitude>
+									<longitude>-8.67395326495171</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x02" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.233449652791</latitude>
+									<longitude>-8.67404848337173</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2338231503963</latitude>
+									<longitude>-8.6741441488266</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2342915311456</latitude>
+									<longitude>-8.67426440119743</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2347052618861</latitude>
+									<longitude>-8.67437034845352</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x10" />
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2351082637906</latitude>
+									<longitude>-8.6744736135006</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.235487125814</latitude>
+									<longitude>-8.67457062005997</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2358840927482</latitude>
+									<longitude>-8.67467254400253</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2362414970994</latitude>
+									<longitude>-8.67476418614388</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2369747459888</latitude>
+									<longitude>-8.67495194077492</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x03" />
+									<xway idr="x10" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x10" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2369747459888</latitude>
+									<longitude>-8.67495194077492</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x03" />
+									<xway idr="x09" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2376825138927</latitude>
+									<longitude>-8.67513343691826</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2380650639534</latitude>
+									<longitude>-8.6752313375473</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2384449318051</latitude>
+									<longitude>-8.67532879114151</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2388341873884</latitude>
+									<longitude>-8.6754284799099</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2395184859633</latitude>
+									<longitude>-8.67560416460037</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x05" />
+									<xway idr="x11" />
+									<xway idr="x05" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+					<taxiway id="x11" >
+						<designation>Taxiway XXXXX</designation>
+						<surface>Asphalt</surface>
+						<width lengthUnit="Meter" >36.58</width>
+						<path>
+							<startpoint>
+								<coordinates>
+									<latitude>41.2395184859633</latitude>
+									<longitude>-8.67560416460037</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x05" />
+									<xway idr="x10" />
+									<xway idr="x05" />
+								</connectsTo>
+							</startpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2400100007653</latitude>
+									<longitude>-8.67573022842407</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2404143437743</latitude>
+									<longitude>-8.67583349347115</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2408076226711</latitude>
+									<longitude>-8.67593452334404</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.241227388382</latitude>
+									<longitude>-8.67604181170464</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2417524307966</latitude>
+									<longitude>-8.67617681622505</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2421607971191</latitude>
+									<longitude>-8.67628142237663</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<midpoint>
+								<coordinates>
+									<latitude>41.2425353005528</latitude>
+									<longitude>-8.6763770878315</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+								</connectsTo>
+							</midpoint>
+							<endpoint>
+								<coordinates>
+									<latitude>41.2428249791265</latitude>
+									<longitude>-8.67645174264908</longitude>
+									<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+								</coordinates>
+								<connectsTo>
+									<xway idr="x06" />
+								</connectsTo>
+							</endpoint>
+						</path>
+					</taxiway>
+				</taxiways>
+				<parkingSpaces>
+					<parking parkingType="XXX Parking Type XXX" id="p00" >
+						<designation>Parking 0</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2414832040668</latitude>
+							<longitude>-8.6741803586483</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.241227388382</latitude>
+								<longitude>-8.67604181170464</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p01" >
+						<designation>Parking 1</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2423579394817</latitude>
+							<longitude>-8.67768824100494</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2425353005528</latitude>
+								<longitude>-8.6763770878315</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p02" >
+						<designation>Parking 2</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2419787421823</latitude>
+							<longitude>-8.6776328086853</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2421607971191</latitude>
+								<longitude>-8.67628142237663</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p03" >
+						<designation>Parking 3</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2415720522404</latitude>
+							<longitude>-8.67751613259315</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2417524307966</latitude>
+								<longitude>-8.67617681622505</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p04" >
+						<designation>Parking 4</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2410480156541</latitude>
+							<longitude>-8.6773918569088</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.241227388382</latitude>
+								<longitude>-8.67604181170464</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p05" >
+						<designation>Parking 5</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2406242266297</latitude>
+							<longitude>-8.67729887366295</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2408076226711</latitude>
+								<longitude>-8.67593452334404</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p06" >
+						<designation>Parking 6</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2402302771807</latitude>
+							<longitude>-8.67719829082489</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2404143437743</latitude>
+								<longitude>-8.67583349347115</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p07" >
+						<designation>Parking 7</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2405424192548</latitude>
+							<longitude>-8.67348745465279</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2406245619059</latitude>
+								<longitude>-8.67435336112976</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p08" >
+						<designation>Parking 8</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2399359047413</latitude>
+							<longitude>-8.67319867014885</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x11">
+							<coordinates>
+								<latitude>41.2402168661356</latitude>
+								<longitude>-8.67427289485931</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p09" >
+						<designation>Parking 9</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2394420430064</latitude>
+							<longitude>-8.67362290620804</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x05">
+							<coordinates>
+								<latitude>41.2396821007133</latitude>
+								<longitude>-8.67450132966042</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p10" >
+						<designation>Parking 10</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2386417388916</latitude>
+							<longitude>-8.67685005068779</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2388341873884</latitude>
+								<longitude>-8.6754284799099</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p11" >
+						<designation>Parking 11</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2382575124502</latitude>
+							<longitude>-8.67671504616737</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2384449318051</latitude>
+								<longitude>-8.67532879114151</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p12" >
+						<designation>Parking 12</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2378799915314</latitude>
+							<longitude>-8.67660686373711</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2380650639534</latitude>
+								<longitude>-8.6752313375473</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p13" >
+						<designation>Parking 13</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2374964356422</latitude>
+							<longitude>-8.67651209235191</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2376825138927</latitude>
+								<longitude>-8.67513343691826</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p14" >
+						<designation>Parking 14</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2360483780503</latitude>
+							<longitude>-8.67618665099144</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2362414970994</latitude>
+								<longitude>-8.67476418614388</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p15" >
+						<designation>Parking 15</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2356949970126</latitude>
+							<longitude>-8.67606997489929</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2358840927482</latitude>
+								<longitude>-8.67467254400253</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p16" >
+						<designation>Parking 16</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2353023886681</latitude>
+							<longitude>-8.67594346404076</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.235487125814</latitude>
+								<longitude>-8.67457062005997</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p17" >
+						<designation>Parking 17</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2349228560925</latitude>
+							<longitude>-8.67584779858589</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2351082637906</latitude>
+								<longitude>-8.6744736135006</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p18" >
+						<designation>Parking 18</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2345242127776</latitude>
+							<longitude>-8.67571145296097</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2347052618861</latitude>
+								<longitude>-8.67437034845352</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p19" >
+						<designation>Parking 19</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2341101467609</latitude>
+							<longitude>-8.67561221122742</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2342915311456</latitude>
+								<longitude>-8.67426440119743</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p20" >
+						<designation>Parking 20</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2336390838027</latitude>
+							<longitude>-8.67550492286682</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.2338231503963</latitude>
+								<longitude>-8.6741441488266</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p21" >
+						<designation>Parking 21</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2378464639187</latitude>
+							<longitude>-8.67282405495644</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2377659976482</latitude>
+								<longitude>-8.67341458797455</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p22" >
+						<designation>Parking 22</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2372215092182</latitude>
+							<longitude>-8.6726376414299</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.237136349082</latitude>
+								<longitude>-8.67326572537422</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p23" >
+						<designation>Parking 23</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2365885078907</latitude>
+							<longitude>-8.67245927453041</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.236499324441</latitude>
+								<longitude>-8.67311552166939</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p24" >
+						<designation>Parking 24</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2358431890607</latitude>
+							<longitude>-8.67223352193832</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2357362359762</latitude>
+								<longitude>-8.67293491959572</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p25" >
+						<designation>Parking 25</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.234871558845</latitude>
+							<longitude>-8.67240563035011</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2350338324904</latitude>
+								<longitude>-8.67301315069199</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p26" >
+						<designation>Parking 26</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2385639548302</latitude>
+							<longitude>-8.67352232336998</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2384083867073</latitude>
+								<longitude>-8.6738558113575</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p27" >
+						<designation>Parking 27</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2339515611529</latitude>
+							<longitude>-8.67227286100388</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.233565993607</latitude>
+								<longitude>-8.67311999201775</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p28" >
+						<designation>Parking 28</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.2335743755102</latitude>
+							<longitude>-8.67185801267624</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.233565993607</latitude>
+								<longitude>-8.67311999201775</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p29" >
+						<designation>Parking 29</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.233103312552</latitude>
+							<longitude>-8.67247000336647</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x09">
+							<coordinates>
+								<latitude>41.233565993607</latitude>
+								<longitude>-8.67311999201775</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+					<parking parkingType="XXX Parking Type XXX" id="p30" >
+						<designation>Parking 30</designation>
+						<description>XXX Description XXX</description>
+						<airlines />
+						<coordinates>
+							<latitude>41.234572827816</latitude>
+							<longitude>-8.6723555624485</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<radius lengthUnit="Meter">-1.0</radius>
+						<connectsToTaxiway xway="x10">
+							<coordinates>
+								<latitude>41.2345349416137</latitude>
+								<longitude>-8.67294922471046</longitude>
+								<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+							</coordinates>
+						</connectsToTaxiway>
+					</parking>
+				</parkingSpaces>
+				<hangars>
+				</hangars>
+				<utilities>
+					<fuelFacility id="u01" fuelType="100" >
+						<coordinates>
+							<latitude>XXX</latitude>
+							<longitude>XXX</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<designation>fuel</designation>
+						<radius lengthUnit="Meter">XXXXX</radius>
+					</fuelFacility>
+					<fuelFacility id="u02" fuelType="JETA" >
+						<coordinates>
+							<latitude>XXX</latitude>
+							<longitude>XXX</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<designation>fuel</designation>
+						<radius lengthUnit="Meter">XXXXX</radius>
+					</fuelFacility>
+					<fuelFacility id="u03" fuelType="JETA1" >
+						<coordinates>
+							<latitude>XXX</latitude>
+							<longitude>XXX</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">XXX</altitude>
+						</coordinates>
+						<designation>fuel</designation>
+						<radius lengthUnit="Meter">XXXXX</radius>
+					</fuelFacility>
+					<tower id="u04">
+						<coordinates>
+							<latitude>41.2387912720442</latitude>
+							<longitude>-8.67242753505707</longitude>
+							<altitude measured="amsl" lengthUnit="Meter">0.0</altitude>
+						</coordinates>
+						<designation>Tower</designation>
+						<radius lengthUnit="Meter">XXXXX</radius>
+						<height lengthUnit="Meter">XXXXX</height>
+					</tower>
+				</utilities>
+			</airport>
+		</baseOfOperations>
+	</bases>
+</scenario>

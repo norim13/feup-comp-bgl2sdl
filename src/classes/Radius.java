@@ -7,7 +7,7 @@ public class Radius {
 	
 	public Radius(){
 		this.value= -1;
-		this.units = "M";
+		this.units = "Meter";
 	}
 	
 	public float getValue() {
@@ -28,14 +28,20 @@ public class Radius {
 
 
 
-	public void setUnits(String units) {
-		this.units = units;
+	public void setUnits(String un) {
+		
+		switch(un){
+			case "M": this.units = "Meter"; break;
+			case "N": this.units = "Nautical Mile"; break;
+			case "F": this.units = "Foot"; break;
+		}		
+		
 	}
 
 
 
-	public String toSDL(){
-		String ret = "radius=\""+value+units+"\"";
+	public String toSDL(String offset){
+		String ret = offset+"<radius lengthUnit=\""+units+"\">"+value+"</radius>\n";
 		return ret;
 	}
 

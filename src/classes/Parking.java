@@ -5,7 +5,7 @@ public class Parking {
 	public String parkingType, id, designation, description;
 	public Coordinates coordinates;
 	public Radius radius;
-	public TaxiwayPoint connectsTo;
+	public TaxiwayPointParking connectsTo;
 	
 	
 	public Parking() {
@@ -14,24 +14,94 @@ public class Parking {
 		designation = "XXX Designation XXX";
 		description = "XXX Description XXX";
 		coordinates = new Coordinates();
-		radius = new Radius();
+		radius = new Radius(); //TODO n sei de onde vem o radius
 		connectsTo = new TaxiwayPoint();
 	}
 	
 	public String toSDL(String offset){
 		String ret = 
-			"<parking parkingType=\"" + parkingType + "\"id=\"" + id + "\" > "+
-				"<designation>" + designation + "</designation>"+
-				"<description>" + description + "</description>"+
-				"<airlines />" + 
+			offset+"<parking parkingType=\"" + parkingType + "\" id=\"" + id + "\" >\n"+
+				offset+"	<designation>" + designation + "</designation>\n"+
+				offset+"	<description>" + description + "</description>\n"+
+				offset+"	<airlines />\n" + 
 				coordinates.toSDL(offset+"	") + 
-				radius.toSDL()+
-				"<connectsToTaxiway xway=\""+connectsTo.getIndex()+"\">"+
-					connectsTo.getCoordinates().toSDL(offset+"	")+
-				"</connectsTo>"+
-			"</parking>";
+				radius.toSDL(offset+"	")+
+				offset+"	<connectsToTaxiway xway=\""+connectsTo.getConnectedTaxiways().get(0)+"\">\n"+
+					connectsTo.getCoordinates().toSDL(offset+"		")+
+				offset+"	</connectsToTaxiway>\n"+
+			offset+"</parking>\n";
 		
 		return ret;
+	}
+
+	public String getParkingType() {
+		return parkingType;
+	}
+
+	public void setParkingType(String parkingType) {
+		this.parkingType = parkingType;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * gets id straight from bgl, and converts it to sdl id (and also sets designation)
+	 * @param id
+	 */
+	public void setId(String id) {
+		
+		try{
+			int i = Integer.parseInt(id);
+			if (i < 10)
+				this.id = "p0"+i;
+			else this.id = "p"+i;
+		}
+		catch (Exception e){
+			this.id = id;
+		}
+		this.designation = "Parking "+id;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Coordinates getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
+	}
+
+	public Radius getRadius() {
+		return radius;
+	}
+
+	public void setRadius(Radius radius) {
+		this.radius = radius;
+	}
+
+	public TaxiwayPointParking getConnectsTo() {
+		return connectsTo;
+	}
+
+	public void setConnectsTo(TaxiwayPointParking connectsTo) {
+		this.connectsTo = connectsTo;
 	}
 	
 	/**

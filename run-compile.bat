@@ -1,0 +1,1 @@
+antlr4 -o bin -package g4 g4\XMLLexer.g4 && antlr4 -o bin -package g4 -lib bin\g4 g4\XMLParser.g4 &&  javac -d bin -cp "lib\antlr-4.5-complete.jar;bin" src\classes\*.java && javac -d bin -cp "lib\antlr-4.5-complete.jar;bin" src\*.java
