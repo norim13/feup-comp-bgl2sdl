@@ -3,12 +3,13 @@ package classes;
 public class TaxiwayParking extends TaxiwayPointParking{
 
 	public String radius, radiusUnits;
-
+	public String number;
 	
 	public TaxiwayParking(){
 		super();
 		radius = "XXXXX";
 		radiusUnits = "Meter";
+		number = "XXX";
 	}
 	
 
@@ -30,6 +31,16 @@ public class TaxiwayParking extends TaxiwayPointParking{
 		case "N": this.radiusUnits = "Nautical Mile"; break;
 		case "F": this.radiusUnits = "Foot"; break;
 		}		
+	}
+
+
+	public String getNumber() {
+		return number;
+	}
+
+
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	

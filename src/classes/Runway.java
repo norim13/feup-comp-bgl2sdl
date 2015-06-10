@@ -1,7 +1,5 @@
 package classes;
 
-import java.util.ArrayList;
-
 public class Runway {
 	
 	public Coordinates coordinates;
@@ -128,7 +126,13 @@ public class Runway {
 	}
 
 	public void setSurface(String surface) {
-		this.surface = surface;
+		String first = surface.substring(0, 1);
+		String rem = surface.substring(1, surface.length());
+		this.surface = first.toUpperCase()+rem.toLowerCase();
+		
+		//Concrete, Grass, Water, Grass_bumpy, Asphalt, Short_grass, Long_grass, Hard_turf, 
+		//Snow, Ice, Urban, Forest, Dirt, Coral, Gravel, Oil_treated, Steel_mats, Bituminus, 
+		//Brick, Macadam, Planks, Sand, Shale, Tarmac, Wood, Cement
 	}
 
 	public String getId() {

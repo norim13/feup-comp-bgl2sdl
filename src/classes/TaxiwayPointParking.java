@@ -63,5 +63,9 @@ public abstract class TaxiwayPointParking {
 		return msg;
 	}
 
+
+
+	public abstract String getNumber();
+
 	
 }

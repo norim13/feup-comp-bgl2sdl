@@ -30,7 +30,7 @@ public class Utility {
 	public String idToString(int num) {
 		String newId = "";
 		if (num < 0)
-			newId = "_void"
+			newId = "_void";
 		else{
 			if (num < 10)
 				newId = "0" + num;
@@ -43,9 +43,9 @@ public class Utility {
 		designation = "XXXXXXX";
 		coordinates = new Coordinates();
 		radius = "XXXXX";
-		radiusUnit = "XX";
+		radiusUnit = "Meter";
 		height = "XXXXX";
-		heightUnit = "XX";
+		heightUnit = "Meter";
 		quantity = "XXXXXX";
 		fuelType = "XXXXXX";
 		id = "u"+ idToString(Utility.getNextId());
@@ -53,13 +53,11 @@ public class Utility {
 	
 	public String toSDL(String offset){
 		String msg = 
-		offset+"<"+type" id=\""+ id +"\" >\n"+
+		offset+"<"+type+" id=\""+ id +"\""+ (this.type.equals("fuelFacility")? " fuelType=\""+this.fuelType + "\" " : "")  +">\n"+
 		coordinates.toSDL(offset+"	")+
 		offset+"	<designation>"+designation+"</designation>\n"+
-		offset+"	<surface>"+surface+"</surface>\n"+
 		offset+"	<radius lengthUnit=\""+this.radiusUnit+"\">"+radius+"</radius>\n"+
-		if(type.equals("tower"))
-			offset+"	<height lengthUnit=\""+this.heightUnit+"\">"+height+"</height>\n"+
+		((type.equals("tower"))? (offset+"	<height lengthUnit=\""+this.heightUnit+"\">"+height+"</height>\n") : "") +
 		offset+"</"+type+">\n";
 		return msg;
 	}
@@ -128,8 +126,10 @@ public class Utility {
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setType(String t) {
+		if (t.equals("fuel"))
+			this.type = "fuelFacility";
+		else this.type = t;
 	}	
 
 	public String getQuantity() {

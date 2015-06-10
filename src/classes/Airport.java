@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Airport {
 
-	public String name, ident, ICAO, IATA, region, magvar;
+	public String   name, ident, ICAO, IATA, region, magvar;
 	
 	public ContactPerson contactPerson;
 	public int id;
@@ -14,9 +14,7 @@ public class Airport {
 
 	private ArrayList<Helipad> helipads;
 
-	private ArrayList<Utility> utilities;
-	
-	public ArrayList<Taxiway> getTaxiways() {
+	private ArrayList<Utility> utilities;	private ArrayList<Parking> parkings;	public ArrayList<Taxiway> getTaxiways() {
 		return taxiways;
 	}
 
@@ -125,6 +123,7 @@ public class Airport {
 		this.taxiways = new ArrayList<Taxiway>();
 		this.helipads = new ArrayList<Helipad>(); 
 		this.utilities = new ArrayList<Utility>();
+		this.parkings = new ArrayList<Parking>();
 	}
 	
 	public String toSDL(String offset){
@@ -157,7 +156,14 @@ public class Airport {
 						offset+"		<taxiways>\n"+
 						printTaxiways(offset+"			")+
 						offset+"		</taxiways>\n"+
-
+						
+						offset+"		<parkingSpaces>\n"+
+							printParkings(offset+"			")+
+						offset+"		</parkingSpaces>\n"+
+						
+						offset+"		<hangars>\n"+
+						offset+"		</hangars>\n"+
+						
 						offset+"		<utilities>\n"+
 							printUtilities(offset+"			")+
 						offset+"		</utilities>\n"+
@@ -190,17 +196,34 @@ public class Airport {
 		}
 		return msg;
 	}
+	
+	public String printParkings(String offset){
+		String msg = "";
+		for(Parking p : parkings){
+			msg += p.toSDL(offset);
+		}
+		return msg;
+	}
 
 	public String printUtilities(String offset){
 		String msg = "";
+		
+		
 		for(Utility u : utilities){
 			msg += u.toSDL(offset);
 		}
+		
+		
 		return msg;
 	}
 
 	public void setHelipads(ArrayList<Helipad> helipads) {
 		this.helipads = helipads;
+		
+	}
+
+	public void setParkings(ArrayList<Parking> parkings) {
+		this.parkings = parkings;
 		
 	}
 	

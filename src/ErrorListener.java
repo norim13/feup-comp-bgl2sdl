@@ -19,7 +19,7 @@ public class ErrorListener extends BaseErrorListener {
 		return errorsPanel;
 	}
 
-	private ArrayList<Error> errorList; 
+	public ArrayList<Error> errorList; 
 	public ErrorListener(JFrame frame){
 		errorList = new ArrayList<Error>();
 		errorsPanel = new ErrorsPanel(errorList);		
