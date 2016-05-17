@@ -167,8 +167,6 @@ CloseBlastFence: '</BlastFence>';
 //////////////////////////////////////////////////////////////////////
 
 
-
-
 PRIMARYTAKEOFF: 'primaryTakeoff' ;
 PRIMARYLANDING: 'primaryLanding' ;
 SECONDARYTAKEOFF: 'secondaryTakeoff' ;
